@@ -26,8 +26,6 @@ const getAllProducts=asyncHandler(async(req,res)=>{
 
     const searchKeyword=req.query;
 
-    console.log(searchKeyword);
-
     const apifeature=new ApiFeature(Product.find(),searchKeyword).search().filter();
     const products=await apifeature.query;
 
