@@ -13,26 +13,35 @@ import { asyncHandler } from '../utils/asyncHandler.js'
 //create a new product
 const createProduct=asyncHandler(async(req,res)=>{
     
-    const product=await Product.find();
+    const newProduct=new Product(req.body);
 
-    if(!product)
+    const saveProduct=await newProduct.save();
+
+    if(!saveProduct)
         new ApiError(500,"Product Not Found!");
 
-    res.status(201).json(new ApiResponse(201,product,"Product Created Successfully"));
+    res.status(201).json(new ApiResponse(201,newProduct,"Product Created Successfully"));
 });
 
 //get all products
 const getAllProducts=asyncHandler(async(req,res)=>{
 
     const searchKeyword=req.query;
+    const productCount=await Product.countDocuments();
 
-    const apifeature=new ApiFeature(Product.find(),searchKeyword).search().filter();
+    const resultPerPage=5;
+
+    const apifeature=new ApiFeature(Product.find(),searchKeyword)
+    .search()
+    .filter()
+    .pagination(resultPerPage);
+
     const products=await apifeature.query;
 
     if(!products)
         throw new ApiError(500,"Products Not Found!!!");
 
-    res.status(200).send(new ApiResponse(200,products,"Product fatch from DB successfully"));
+    res.status(200).send(new ApiResponse(200,{products,productCount},"Product fatch from DB successfully"));
 });
 
 //update product
