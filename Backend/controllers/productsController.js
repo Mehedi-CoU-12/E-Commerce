@@ -13,14 +13,18 @@ import { asyncHandler } from '../utils/asyncHandler.js'
 //create a new product
 const createProduct=asyncHandler(async(req,res)=>{
     
-    const newProduct=new Product(req.body);
+    // const newProduct=new Product(req.body);
 
-    const saveProduct=await newProduct.save();
+    // const saveProduct=await newProduct.save();
 
-    if(!saveProduct)
-        new ApiError(500,"Product Not Found!");
+    // if(!saveProduct)
+    //     throw new ApiError(500,"Product Not Found!");
 
-    res.status(201).json(new ApiResponse(201,newProduct,"Product Created Successfully"));
+    req.body.user=req.user.id;
+
+    const product=await Product.create(req.body);
+
+    res.status(201).json(new ApiResponse(201,product,"Product Created Successfully"));
 });
 
 //get all products

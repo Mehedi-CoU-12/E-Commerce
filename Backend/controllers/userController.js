@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { sendToken } from "../utils/jwtToken.js";
+import {sendEmail} from "../utils/sendEmail.js";
 
 //register a user
 const registerUser=asyncHandler(async(req,res)=>{
@@ -26,7 +27,6 @@ const registerUser=asyncHandler(async(req,res)=>{
 })
 
 //log-in user
-
 const logInUser=asyncHandler(async(req,res,next)=>{
 
     const {email,password}=req.body;
@@ -52,7 +52,6 @@ const logInUser=asyncHandler(async(req,res,next)=>{
 })
 
 //logout user
-
 const logOutUser=asyncHandler(async(req,res)=>{
 
     res.cookie('token',null,{
@@ -63,8 +62,49 @@ const logOutUser=asyncHandler(async(req,res)=>{
     res.status(201).json(new ApiResponse(201,'','user log out successfully'));
 })
 
+//forget password
+const forgetPassword=asyncHandler(async(req,res,next)=>{
+
+    const user=await User.findOne({email:req.body.email});
+
+    if(!user)
+        throw new ApiError(404,"User not found");
+
+    //get resetpassword token
+    const resetToken=user.getResetPasswordToken();
+
+    await user.save({validateBeforeSave:false});
+
+    //creating direct link for forget password
+
+    const resetPasswordUrl=`${req.protocol}://${req.get('host')}/api/v1/password/reset/${resetToken}`;
+
+    const message=`Your password reset token is :- \n\n ${resetPasswordUrl}\n\n if you have not requested this email then, please ignore it`;
+
+    try {
+
+        await sendEmail({
+            email:user.email,
+            subject:'E-commerce Password Recovery',
+            message
+        });
+
+        res.status(201).json(new ApiResponse(201,'',`Email send to ${user.email} successfully!`));
+        
+    } catch (error) {
+        
+        user.resetPasswordToken=undefined;
+        user.resetPasswordExpire=undefined;
+
+        await user.save({validateBeforeSave:false});
+
+        throw new ApiError(500,error.message);
+    }
+})
+
 export {
     registerUser,
     logInUser,
     logOutUser,
+    forgetPassword,
 };
