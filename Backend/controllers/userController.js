@@ -1,16 +1,16 @@
+import path from "path";
 import { User } from "../Models/userModels.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { sendToken } from "../utils/jwtToken.js";
 import {sendEmail} from "../utils/sendEmail.js";
+import crypto from 'crypto';
 
 //register a user
 const registerUser=asyncHandler(async(req,res)=>{
 
     const {name,email,password}=req.body;
-
-    console.log(req.body);
 
     const user=await User.create({
         name,email,password,
@@ -39,7 +39,7 @@ const logInUser=asyncHandler(async(req,res,next)=>{
     if(!user)
         throw new ApiError(401,'Invalid Email & Password');
 
-    const isPasswordMatched=user.comparePassword(password);
+    const isPasswordMatched=await user.comparePassword(password);
 
     if(!isPasswordMatched)
         throw new ApiError(401,'Invalid Email & Password');
@@ -56,10 +56,11 @@ const logOutUser=asyncHandler(async(req,res)=>{
 
     res.cookie('token',null,{
         expires:new Date(Date.now()),
-        httpOnly:true
+        httpOnly:true,
+        path:'/'
     });
 
-    res.status(201).json(new ApiResponse(201,'','user log out successfully'));
+    res.status(200).json(new ApiResponse(200,'','user log out successfully'));
 })
 
 //forget password
@@ -102,9 +103,34 @@ const forgetPassword=asyncHandler(async(req,res,next)=>{
     }
 })
 
+//reset password
+const resetPassword=asyncHandler(async(req,res,next)=>{
+
+    const resetPasswordToken=crypto.createHash('sha256').update(req.params.token).digest('hex');
+
+    const user=await User.findOne({
+        resetPasswordToken,resetPasswordExpire:{ $gt:Date.now()}
+    });
+
+    if(!user)
+        throw new ApiError(400,'reset password token is invalid or has been expired!');
+
+    if(req.body.password!==req.body.confirmPassword)
+        throw new ApiError(400,'password does not matched!')
+
+    user.password=req.body.password;
+    user.resetPasswordToken=undefined;
+    user.resetPasswordExpire=undefined;
+
+    await user.save();
+
+    sendToken(user,200,res);
+})
+
 export {
     registerUser,
     logInUser,
     logOutUser,
     forgetPassword,
+    resetPassword,
 };

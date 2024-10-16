@@ -11,11 +11,30 @@ const errorHandler=(err,req,res,next)=>{
         })
     }
 
-    //mongodb error 
+    //mongodb wrong id error 
 
     if(err.name==='CastError')
     {
         const message=`Resource not found. Invalid:${err.path}`;
+        err=new ApiError(400,message);
+    }
+
+    //mongoDB duplicate key error
+    if(err.code===11000){
+        const message=`Duplicate ${Object.keys(err.keyValue)} Entered`;
+        err=new ApiError(400,message);
+    }
+
+
+    //wrong jwt token
+    if(err.name==='JsonWebTokenError'){
+        const message=`Json Web Token is invalid,try again`;
+        err=new ApiError(400,message);
+    }
+
+    //jwt expirer error
+    if(err.name==='TokenExpiredError'){
+        const message= `Json Web Token is expired,try again`;
         err=new ApiError(400,message);
     }
 
