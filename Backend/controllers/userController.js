@@ -127,10 +127,86 @@ const resetPassword=asyncHandler(async(req,res,next)=>{
     sendToken(user,200,res);
 })
 
+//get user details
+const getUserDetails=asyncHandler(async(req,res,next)=>{
+    const user=await User.findById(req.user.id);
+
+    res.status(200).json(new ApiResponse(200,user,'user data fatched successfully!'))
+})
+
+//update user password
+const updatePassword=asyncHandler(async(req,res,next)=>{
+
+    const {oldPassword,newPassword,confirmPassword}=req.body;
+
+    const user=await User.findById(req.user.id).select("+password");
+
+    const isPasswordMatched=await user.comparePassword(oldPassword);
+
+    if(!isPasswordMatched)
+        throw new ApiError(400,'old password is incorrect');
+
+    if(newPassword!==confirmPassword)
+        throw new ApiError(400,'password does not matched!');
+
+    user.password=newPassword;
+
+    await user.save();
+
+    sendToken(user,200,res);
+})
+
+//update user
+const updateUser=asyncHandler(async(req,res,next)=>{
+    const newUser={
+        name:req.body.name,
+        email:req.body.email
+    }
+
+    const user=await User.findByIdAndUpdate(req.user.id,newUser,{
+        new:true,
+        runValidators:true,
+        useFindAndModify:false
+    })
+
+    //we will update user profile later;
+
+    res.status(200).json(new ApiResponse(200,'','user updated successfully!'));
+})
+
+//get all users (admin)
+const getAllUsers=asyncHandler(async(req,res)=>{
+    const users=await User.find();
+
+    res.status(200).json(new ApiResponse(200,users,'all user are fatched successfully!'));
+})
+
+//get single user (admin)
+const getSingleUser=asyncHandler(async(req,res)=>{
+    const user=await User.findById(req.params.id);
+
+    if(!user)
+        throw new ApiError(400,`User does not exist with id:${req.params.id}`);
+
+    res.status(200).json(new ApiResponse(200,user,'user details are fatched successfully!'));
+})
+
+//update user role
+const updateUserRole=asyncHandler(async(req,res)=>{
+    const newUser={
+        role:req.body.role
+    }
+})
+
 export {
     registerUser,
     logInUser,
     logOutUser,
     forgetPassword,
     resetPassword,
+    getUserDetails,
+    updatePassword,
+    updateUser,
+    getAllUsers,
+    getSingleUser,
 };

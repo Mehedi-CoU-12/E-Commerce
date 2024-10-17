@@ -12,9 +12,9 @@ const productRouter=express.Router();
 
 
 productRouter.get('/products',getAllProducts);
-productRouter.post('/products/new',isAuthenticatedUser,isRoleAdmin('admin'),createProduct)
-productRouter.put('/product/:id',isAuthenticatedUser,isRoleAdmin('admin'),updateProduct)
-productRouter.delete('/product/:id',isAuthenticatedUser,isRoleAdmin('admin'),deleteProduct)
+productRouter.post('/admin/products/new',isAuthenticatedUser,isRoleAdmin('admin'),createProduct)
+productRouter.put('/admin/product/:id',isAuthenticatedUser,isRoleAdmin('admin'),updateProduct)
+productRouter.delete('/admin/product/:id',isAuthenticatedUser,isRoleAdmin('admin'),deleteProduct)
 productRouter.get('/product/:id',getProductDetails)
 
 export {productRouter};
