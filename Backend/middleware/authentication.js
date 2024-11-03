@@ -23,7 +23,7 @@ const isRoleAdmin=(role)=>{
     return (req,res,next)=>{
 
         if(role!==req.user.role)
-            return next(new ApiError(403,`Role : ${req.user.role} is not allowed to access this resource`));
+            throw new ApiError(403,`Role : ${req.user.role} is not allowed to access this resource`);
         else
         next();
     }

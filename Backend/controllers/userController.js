@@ -1,4 +1,3 @@
-import path from "path";
 import { User } from "../Models/userModels.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -185,18 +184,45 @@ const getAllUsers=asyncHandler(async(req,res)=>{
 const getSingleUser=asyncHandler(async(req,res)=>{
     const user=await User.findById(req.params.id);
 
+    console.log(req.user);
+
     if(!user)
         throw new ApiError(400,`User does not exist with id:${req.params.id}`);
 
     res.status(200).json(new ApiResponse(200,user,'user details are fatched successfully!'));
 })
 
-//update user role
+//update user role (admin)
 const updateUserRole=asyncHandler(async(req,res)=>{
-    const newUser={
+
+    const newUserData={
+        name:req.body.name,
+        email:req.body.email,
         role:req.body.role
     }
+
+    const user=await User.findByIdAndUpdate(req.params.id,newUserData,{
+        new:true,
+        runValidators:true,
+        useFindAndModify:false,
+    });
+
+    res.status(200).json(new ApiResponse(200,'','user role updated successfully!'));
 })
+
+//delete user (admin)
+const deleteUser=asyncHandler(async(req,res)=>{
+
+    const user=await User.findById(req.params.id);
+
+    if(!user)
+        throw new ApiError(400,`User does not exist with Id:${req.params.id}`)
+
+    await user.deleteOne();
+
+    res.status(200).json(new ApiResponse(200,'','user delete successfully!'))
+})
+
 
 export {
     registerUser,
@@ -209,4 +235,6 @@ export {
     updateUser,
     getAllUsers,
     getSingleUser,
+    updateUserRole,
+    deleteUser,
 };
