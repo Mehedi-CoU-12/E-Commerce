@@ -1,8 +1,12 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import {CgMouse} from 'react-icons/cg';
 import './Home.css';
 import Product from './Product';
-import MetaData from '../layout/MetaData.js'
+import MetaData from '../layout/MetaData.js';
+import axios from 'axios';
+import { useDispatch,useSelector } from 'react-redux';
+import { allProductRequest } from '../../features/productSlice.js';
+
 
 const product={
     name:'MI 11 Lite Ne 5G',
@@ -14,7 +18,27 @@ const product={
 
 function Home() {
 
-    
+    const dispatch=useDispatch();
+    const allProducts=useSelector((state)=>state.products.items);
+
+
+    useEffect(()=>{
+
+        const fatchProdect=async()=>{
+            try {
+                const response=await axios.get('http://localhost:3000/api/v1/products');
+                const products=response.data.data.products;
+                dispatch(allProductRequest(products));
+
+                // console.log(products);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        fatchProdect();
+
+    },[]);
 
   return (
     <Fragment>
@@ -35,7 +59,7 @@ function Home() {
         <h2 className="homeHeading"> Featured Products </h2>
 
         <div className="container" id="container">
-            <Product product={product} />
+            {/* <Product product={product} />
             <Product product={product} />
             <Product product={product} />
             <Product product={product} />
@@ -43,7 +67,13 @@ function Home() {
             <Product product={product} />
             <Product product={product} />
             <Product product={product} />
-            <Product product={product} />
+            <Product product={product} /> */}
+
+            {
+                allProducts.map((product)=>{
+                    return ( <Product product={product} />)
+                })
+            }
 
         </div>
 
