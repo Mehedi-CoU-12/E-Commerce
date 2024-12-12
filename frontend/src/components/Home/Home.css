@@ -41,7 +41,7 @@
     color: white;
 }
 
-.banner::after{
+/* .banner::after{
     content: "";
     width: 100vmax;
     height: 100vmax;
@@ -52,7 +52,7 @@
     clip-path: polygon(100% 30%, 0 100%, 100% 100%);
     max-width: 100%;
 
-}
+} */
 
 .homeHeading{
     text-align: center;
