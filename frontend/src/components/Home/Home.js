@@ -8,29 +8,34 @@ import { useDispatch,useSelector } from 'react-redux';
 import { allProductRequest } from '../../features/productSlice.js';
 
 
-const product={
-    name:'MI 11 Lite Ne 5G',
-    price:27500,
-    country:'Bangladesh',
-    images:[{url:'https://i.ibb.co/DRST11n/1.webp'}],
-    _id:'mehedi_hasan'
-}
+// const product={
+//     name:'MI 11 Lite Ne 5G',
+//     price:27500,
+//     country:'Bangladesh',
+//     images:[{url:'https://i.ibb.co/DRST11n/1.webp'}],
+//     _id:'mehedi_hasan'
+// }
 
 function Home() {
 
     const dispatch=useDispatch();
-    const allProducts=useSelector((state)=>state.products.items);
+    //import data from redux store
+    const allProducts=useSelector((state)=>state.products.items) || [];
+    console.log(allProducts);
 
 
     useEffect(()=>{
 
         const fatchProdect=async()=>{
             try {
+                //fatch data from backend
                 const response=await axios.get('http://localhost:3000/api/v1/products');
                 const products=response.data.data.products;
+                
+                //send data to the redux store
                 dispatch(allProductRequest(products));
-
-                // console.log(products);
+ 
+                // console.log(products); 
             } catch (error) {
                 console.log(error);
             }
@@ -38,7 +43,7 @@ function Home() {
 
         fatchProdect();
 
-    },[]);
+    },[dispatch]);
 
   return (
     <Fragment>
@@ -71,7 +76,7 @@ function Home() {
 
             {
                 allProducts.map((product)=>{
-                    return ( <Product product={product} />)
+                    return ( <Product key={product._id} product={product} />)
                 })
             }
 

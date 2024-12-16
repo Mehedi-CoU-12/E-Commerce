@@ -7,7 +7,7 @@ function Footer() {
   return (
     <footer id="footer" >
     
-        <div class="leftFooter" >
+        <div className="leftFooter" >
             <h4>Download Our App</h4>
             <p>Download Our App For Android and IOS Mobile Phone</p>
             <img src={playStore} alt='playStore' />
