@@ -80,6 +80,7 @@ const deleteProduct=asyncHandler(async(req,res)=>{
 
 //get individuals product details
 const getProductDetails=asyncHandler(async(req,res)=>{
+    
     const productId=req.params.id;
 
     const product=await Product.findById(productId);

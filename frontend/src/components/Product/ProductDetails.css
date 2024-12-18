@@ -1,0 +1,9 @@
+.ProductDetails{
+    background-color: rgb(201, 221, 215);
+    width: 100vw;
+    max-width: 100%;
+    padding: 6vmax;
+    box-sizing: border-box;
+    display: flex;
+    /* border: 5px solid red; */
+}
