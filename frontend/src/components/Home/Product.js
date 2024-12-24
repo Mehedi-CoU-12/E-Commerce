@@ -8,7 +8,7 @@ const Product = ({product}) => {
         edit:false,
         color: "rgba(20,20,20,0.1)",
         activeColor:"tomato",
-        value:product.ratings,
+        value:product?.ratings || 0,
         isHalf:true,
         size:window.innerWidth < 600 ? 18:22,
     }

@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect } from "react";
 import Carousel from "react-material-ui-carousel";
-import { Paper, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,55 +7,8 @@ import { productDetails, productDetailsFail } from "../../features/productSlice"
 import './ProductDetails.css';
 
 import ReactStars from 'react-rating-stars-component'
-
-// function CarouselItem({ item }) {
-//   return (
-//     <Paper
-//       elevation={10}
-//       style={{ padding: "20px", textAlign: "center", position: "relative" }}
-//     >
-//       <img
-//         src={item.image}
-//         alt={item.name}
-//         style={{ width: "100%", height: "300px", objectFit: "cover" }}
-//       />
-//       <Typography
-//         variant="h5"
-//         style={{
-//           position: "absolute",
-//           bottom: "20px",
-//           left: "20px",
-//           color: "white",
-//           fontWeight: "bold",
-//           textShadow: "2px 2px 4px rgba(0, 0, 0, 0.8)",
-//         }}
-//       >
-//         {item.name}
-//       </Typography>
-//       <Typography
-//         variant="body1"
-//         style={{
-//           position: "absolute",
-//           bottom: "10px",
-//           left: "20px",
-//           color: "white",
-//           textShadow: "1px 1px 3px rgba(0, 0, 0, 0.7)",
-//         }}
-//       >
-//         {item.description}
-//       </Typography>
-//     </Paper>
-//   );
-// }
-
-const options={
-    edit:false,
-    color: "rgba(20,20,20,0.1)",
-    activeColor:"tomato",
-    value:product.ratings,
-    isHalf:true,
-    size:window.innerWidth < 600 ? 18:22,
-}
+import ReviewCard from "./ReviewCard";
+import Loader from "../layout/Loader/Loader";
 
 const ProductDetails = () => {
 
@@ -67,6 +19,7 @@ const ProductDetails = () => {
 
     //receive data from redux store
     const product=useSelector((state)=>state.products.productDetails);
+    const loading=useSelector((state)=>state.products.loading);
     const error=useSelector((state)=>state.products.error);
 
     useEffect(()=>{
@@ -86,42 +39,107 @@ const ProductDetails = () => {
 
         fatchProductInfo();
 
+
     },[dispatch,id])
 
+    const options={
+        edit:false,
+        color: "rgba(20,20,20,0.1)",
+        activeColor:"tomato",
+        value:product?.ratings,
+        isHalf:true,
+        size:window.innerWidth < 600 ? 18:22,
+    }
+
     return (
-        <Fragment>
-            <div className="ProductDetails">
-                <div>
-                    <Carousel
-                        animation="slide"
-                        duration={1000}
-                        indicators={true}
-                        navButtonsAlwaysVisible={true}
-                    >
-                        {product && product.images.map((item, i) => (
-                            <img
-                                className="CarouselImage"
-                                key={i}
-                                src={item.url}
-                                alt={`${i} Slide`}
-                            />
-                        ))}
-                    </Carousel>
-                </div>
-
-                <div>
-                    <div class="detailsBlock-1">
-                        <h2>{ product.name }</h2>
-                        <p> Product # {product._id} </p>
+       <Fragment>
+        {
+            loading?(<Loader/>)
+            :( 
+            <Fragment>
+                <div className="ProductDetails">
+                    <div>
+                        <Carousel
+                            animation="slide"
+                            duration={1000}
+                            // indicators={true}
+                            // navButtonsAlwaysVisible={false}
+                            navButtonsAlwaysInvisible={true} 
+                        >
+                            {product && product.images.map((item, i) => (
+                                <img
+                                    className="CarouselImage"
+                                    key={i}
+                                    src={item.url}
+                                    alt={`${i} Slide`}
+                                />
+                            ))} 
+                        </Carousel>
                     </div>
-
-                    <div class="detailsBlock-2">
-                        <ReactStars  />
+    
+                    <div>
+                        <div class="detailsBlock-1">
+                            <h2>{product && product.name }</h2>
+                            <p> Product # { product && product._id} </p>
+                        </div>
+    
+                        <div class="detailsBlock-2">
+                            <ReactStars {...options} />
+                            <p> ( {product?.reviews?.length} Reviews) </p>
+                        </div>
+    
+                        <div class="detailsBlock-3">
+    
+                            <h1>{`৳ ${product?.price || 0}`}</h1>
+    
+                            <div class="detailsBlock-3-1">
+    
+                                <div class="detailsBlock-3-1-1">
+                                    <button>-</button>
+                                    <input type="number" value={1} />
+                                    <button>+</button>
+                                </div>
+                                
+                                <button>Add to Cart</button>
+                            </div>
+    
+                            <p>
+                                Status:
+                                <b className={product?.stock<1 ? 'redColor':'greenColor'} >
+                                    {product?.stock<1? 'Out of Stock': 'In Stock'}
+                                </b>
+                            </p>
+    
+                        </div>
+    
+                        <div class="detailsBlock-4">
+                            Description : 
+                            <span>{ product?.description || 'No Description Available'}</span>
+                        </div>
+                        
+                        <button class="submitReview">Submit Review</button>
+    
                     </div>
+    
                 </div>
-
-            </div>
-        </Fragment>
+    
+                <h3 class="reviewHeading">Reviews</h3>
+    
+                {
+                    product?.reviews && product.reviews[0]?(
+                        <div className="reviews">
+                            {
+                                product?.reviews.map((review)=><ReviewCard review={review} />)
+                            }
+                        </div>
+                    ):(
+                        <p className="noReviews">No Reviews Yet</p>
+                    )
+                }
+    
+            </Fragment>)
+        }
+       </Fragment>
     );
 };
 
