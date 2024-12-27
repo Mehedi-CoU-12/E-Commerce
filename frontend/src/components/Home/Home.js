@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react'
 import {CgMouse} from 'react-icons/cg';
 import './Home.css';
-import Product from './Product';
+import ProductCard from './ProductCard.js';
 import MetaData from '../layout/MetaData.js';
 import axios from 'axios';
 import { useDispatch,useSelector } from 'react-redux';
@@ -90,7 +90,7 @@ function Home() {
         
                     {
                         allProducts.map((product)=>{
-                            return ( <Product key={product._id} product={product} />)
+                            return ( <ProductCard key={product._id} product={product} />)
                         })
                     }
         
