@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../layout/Loader/Loader';
 import ProductCard from '../Home/ProductCard';
@@ -7,6 +7,7 @@ import { allProductFail, allProductRequest } from '../../features/productSlice';
 import { toast, ToastContainer } from 'react-toastify';
 import './Products.css';
 import { useParams } from 'react-router-dom';
+import Pagination from 'react-js-pagination';
 
 const stylesForAlert={
     position: "top-right", // Position of the toast
@@ -21,19 +22,29 @@ const stylesForAlert={
 const Products = () => {
 
     const dispatch=useDispatch();
-    const loading=useSelector((state)=>state.products.loading);
-    const products=useSelector((state)=>state.products.items);
+    // const loading=useSelector((state)=>state.products.loading);
+    // const products=useSelector((state)=>state.products.items);
+    // const resultPerPage=useSelector((state)=>state.products.resultPerPage);
+    // const productCount=useSelector((state)=>state.products.productCount);
+
+    const {items ,loading,resultPerPage,productCount}=useSelector((state)=>state.products);
 
     const {keyword=""}=useParams();
+
+    const [currentPage,setCurrentPage]=useState(1);
+
+    const setCurrentPageNo=(e)=>{
+        setCurrentPage(e);
+    }
 
     useEffect(()=>{
 
         const fatchAllProducts=async()=>{
 
             try {
-                const response=await axios.get(`http://localhost:3000/api/v1/products?keyword=${keyword}`);
+                const response=await axios.get(`http://localhost:3000/api/v1/products?keyword=${keyword}&page=${currentPage}`);
                 
-                const product=response.data.data.products;
+                const product=response.data.data;
                 dispatch(allProductRequest(product));
 
             } catch (error) {
@@ -44,7 +55,7 @@ const Products = () => {
 
         fatchAllProducts();
 
-    },[dispatch,keyword])
+    },[dispatch,keyword,currentPage])
 
     return (
         <Fragment>
@@ -55,9 +66,28 @@ const Products = () => {
                     <h2 class="productsHeading">Products</h2>
                     <div class="products">
                     {
-                        products?.map((item)=><ProductCard key={item._id} product={item} />)
+                        items?.map((item)=><ProductCard key={item._id} product={item} />)
                     }
                     </div>
+                    {
+                        currentPage*resultPerPage<productCount && (<div class="paginationBox">
+                            <Pagination
+                                activePage={currentPage}
+                                itemsCountPerPage={resultPerPage}
+                                totalItemsCount={productCount}
+                                onChange={setCurrentPageNo}
+                                nextPageText="Next"
+                                prevPageText="Prev"
+                                firstPageText="First"
+                                lastPageText="Last"
+                                itemClass='page-item'
+                                linkClass='page-link'
+                                activeClass='pageItemActive'
+                                activeLinkClass='pageLinkActive'
+    
+                            />
+                        </div>)
+                    }
                 </Fragment>)
             }
         </Fragment>

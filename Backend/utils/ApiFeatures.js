@@ -40,7 +40,7 @@ class ApiFeature{
 
         return this;
     }
-
+    
     pagination(resultPerPage){
 
         const currentPage=Number(this.queryString.page) || 1;

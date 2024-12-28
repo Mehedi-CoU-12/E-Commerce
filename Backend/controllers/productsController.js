@@ -33,7 +33,7 @@ const getAllProducts=asyncHandler(async(req,res)=>{
     const searchKeyword=req.query;
     const productCount=await Product.countDocuments();
 
-    const resultPerPage=6;
+    const resultPerPage=8;
 
     const apifeature=new ApiFeature(Product.find(),searchKeyword)
     .search()
@@ -45,7 +45,7 @@ const getAllProducts=asyncHandler(async(req,res)=>{
     if(!products)
         throw new ApiError(500,"Products Not Found!!!");
 
-    res.status(200).send(new ApiResponse(200,{products,productCount},"Product fatch from DB successfully"));
+    res.status(200).send(new ApiResponse(200,{products,productCount,resultPerPage},"Product fatch from DB successfully"));
 });
 
 //update product

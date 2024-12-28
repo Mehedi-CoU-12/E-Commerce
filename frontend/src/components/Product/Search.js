@@ -14,7 +14,6 @@ const Search = () => {
         else
             navigate(`/products`)
 
-        console.log('navigate->',navigate);
     }
 
   return (
