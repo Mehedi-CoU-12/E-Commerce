@@ -33,7 +33,7 @@ const getAllProducts=asyncHandler(async(req,res)=>{
     const searchKeyword=req.query;
     const productCount=await Product.countDocuments();
 
-    const resultPerPage=8;
+    const resultPerPage=6;
 
     const apifeature=new ApiFeature(Product.find(),searchKeyword)
     .search()

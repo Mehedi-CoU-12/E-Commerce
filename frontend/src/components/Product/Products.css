@@ -13,6 +13,7 @@
     flex-wrap: wrap;
     padding: 0.5vmax;
     justify-content: center;
+    min-height: 30vh;
 }
 
 .paginationBox{
@@ -68,5 +69,49 @@
     color: white;
 }
 
+.filterBox{
+    width: 8vmax;
+    position:absolute;
+    top: 10vmax;
+    left:2vmax;
+}
 
+.categoryBox{
+    padding: 0%;
+}
+
+.category-link{
+    list-style: none;
+    color: rgba(0,0,0,0.667);
+    font: 400 1vmax 'Roboto';
+    margin: 0.4vmax;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.category-link:hover{
+    color: tomato;
+}
+
+.filterBox>fieldset{
+    border: 1px solid rgb(31, 30, 30);
+    margin-top: 2vmax;
+}
+
+
+@media screen and (max-width:600px) {
+    .filterBox{
+        width: 20vmax;
+        position: static;
+        margin: auto;
+    }
+
+    .page-link{
+        font:300 1.8vmax 'Roboto';
+    }
+
+    .category-link{
+        font: 400 1.6vmax 'Roboto';
+    }
+}
 

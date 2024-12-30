@@ -8,6 +8,7 @@ import Home from './components/Home/Home.js';
 import ProductDetails from './components/Product/ProductDetails.js'
 import Products from './components/Product/Products.js';
 import Search from './components/Product/Search.js';
+import LogInSignUp from './components/User/LogInSignUp.js';
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
             <Route path='/products' Component={Products} />
             <Route path='/products/:keyword' Component={Products} />
             <Route path='/search' Component={Search} />
+            <Route path='/login' Component={LogInSignUp} />
         </Routes>
         <Footer/> 
     </>  

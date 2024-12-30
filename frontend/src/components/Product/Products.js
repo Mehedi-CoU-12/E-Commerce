@@ -8,6 +8,9 @@ import { toast, ToastContainer } from 'react-toastify';
 import './Products.css';
 import { useParams } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
+import Slider from '@mui/material/Slider'
+import { Typography } from '@mui/material';
+import MetaData from '../layout/MetaData.js';
 
 const stylesForAlert={
     position: "top-right", // Position of the toast
@@ -19,22 +22,35 @@ const stylesForAlert={
     theme: "dark",
 };
 
+const categories=[
+    "Laptop",
+    "Footwear",
+    "Bottom",
+    "Tops",
+    "Attire",
+    "Camera",
+    "SmartPhones",
+]
+
 const Products = () => {
-
+    
     const dispatch=useDispatch();
-    // const loading=useSelector((state)=>state.products.loading);
-    // const products=useSelector((state)=>state.products.items);
-    // const resultPerPage=useSelector((state)=>state.products.resultPerPage);
-    // const productCount=useSelector((state)=>state.products.productCount);
-
+    
     const {items ,loading,resultPerPage,productCount}=useSelector((state)=>state.products);
-
+    
     const {keyword=""}=useParams();
-
+    
     const [currentPage,setCurrentPage]=useState(1);
+    const [price,setPrice]=useState([0,50000]);
+    const [category,setCategory]=useState("");
+    const [ratings,setRatings]=useState(0);
 
     const setCurrentPageNo=(e)=>{
         setCurrentPage(e);
+    }
+
+    const priceHandler=(e,newPrice)=>{
+        setPrice(newPrice);
     }
 
     useEffect(()=>{
@@ -42,7 +58,13 @@ const Products = () => {
         const fatchAllProducts=async()=>{
 
             try {
-                const response=await axios.get(`http://localhost:3000/api/v1/products?keyword=${keyword}&page=${currentPage}`);
+
+                let link=`http://localhost:3000/api/v1/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
+
+                if(category)
+                    link=`http://localhost:3000/api/v1/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}&ratings[gte]=${ratings}`;
+
+                const response=await axios.get(link);
                 
                 const product=response.data.data;
                 dispatch(allProductRequest(product));
@@ -55,7 +77,7 @@ const Products = () => {
 
         fatchAllProducts();
 
-    },[dispatch,keyword,currentPage])
+    },[dispatch,keyword,currentPage,price,category,ratings])
 
     return (
         <Fragment>
@@ -63,12 +85,63 @@ const Products = () => {
             {
                 loading?(<Loader/>)
                 :(<Fragment>
+                    <MetaData title={`All Products`}  />
                     <h2 class="productsHeading">Products</h2>
                     <div class="products">
                     {
                         items?.map((item)=><ProductCard key={item._id} product={item} />)
                     }
                     </div>
+
+                    <div class="filterBox">
+                        <Typography>Price</Typography>
+                        <Slider
+                            value={price}
+                            onChange={priceHandler}
+                            valueLabelDisplay='auto'
+                            aria-labelledby='range-slider'
+                            min={0}
+                            max={50000} 
+                        />
+
+                        <Typography>Category</Typography>
+                        <ul class="categoryBox">
+                            {
+                                categories.map((categoryItem)=>(
+                                    <li 
+                                        class="category-link"
+                                        key={categoryItem}
+                                        onClick={()=>setCategory(categoryItem)}
+                                    >
+                                        {categoryItem}
+                                    </li>
+                                ))
+                            }
+                        </ul>
+
+                        <fieldset>
+                            <Typography 
+                                component="legend"  
+                                style={{
+                                    fontSize:"12px", 
+                                    whiteSpace: "nowrap", // Prevents text wrapping
+                                    overflow: "hidden",   // Hides overflow if text is too long
+                                    textOverflow: "ellipsis", // Adds ellipsis if text is too long
+                                  }}
+                            >Ratings Above</Typography>
+                            <Slider
+                                value={ratings}
+                                onChange={(e,newRating)=>{
+                                    setRatings(newRating);
+                                }}
+                                aria-labelledby='continuous-slider'
+                                valueLabelDisplay='auto'
+                                min={0}
+                                max={5}
+                            />
+                        </fieldset>
+                    </div>
+
                     {
                         currentPage*resultPerPage<productCount && (<div class="paginationBox">
                             <Pagination

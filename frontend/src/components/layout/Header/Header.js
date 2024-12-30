@@ -29,7 +29,7 @@ const options = {
 
   profileIcon: true,
   ProfileIconElement: FaUserAlt, 
-  profileIconUrl: "/profile",
+  profileIconUrl: "/login",
 
   searchIcon: true,
   SearchIconElement: FaSearch, 
