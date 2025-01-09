@@ -1,0 +1,218 @@
+.LogInSignUpContainer{
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(231,231,231);
+    position: fixed;
+    top: 0%;
+    left: 0;
+}
+
+.LogInSignUpBox{
+    background-color: white;
+    width: 25vw;
+    height: 70vh;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.logIn_signUp_toggle{
+    display: flex;
+    height: 3vmax;
+}
+
+.logIn_signUp_toggle>p{
+    color: rgba(0,0,0,0.678);
+    font: 300 1.3vmax 'Roboto';
+    transition: all 0.5s;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.logIn_signUp_toggle>p:hover{
+    color: tomato;
+}
+
+.LogInSignUpBox>div>button{
+    background-color: tomato;
+    height: 3px;
+    width: 50%;
+    border: none;
+    transition: all 0.5s;
+}
+
+.logInForm,.signUpForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: auto;
+    padding: 2vmax;
+    height: 70%;
+    transition: all 0.5s;
+}
+
+.signUpForm{
+    transform: translateY(-100%) translateX(-100vmax);
+}
+
+.logInForm>div,
+.signUpForm>div{
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.logInForm>div>input,
+.signUpForm>div>input{
+    padding: 1vmax 4vmax;
+    padding-right: 1vmax;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    font: 300 0.9vmax cursive;
+    border: 1px solid rgba(0,0,0,0.267);
+    border-radius: 4px;
+}
+
+.logInForm>div>svg,
+.signUpForm>div>svg{
+    position: absolute;
+    transform: translateX(1vmax);
+    font: 1.6vmax;
+    color: rgba(0,0,0,0.678);
+}
+
+.logInForm>a{
+    text-decoration: none;
+    color: rgba(0,0,0,0.678);
+    align-self: flex-end;
+    font: 500 1.1vmax 'Gill Sans';
+    transition: all 0.5s;
+}
+
+.logInForm>a:hover{
+    color: black;
+}
+
+#registerImage>img{
+    width: 3vmax;
+    border-radius: 100%;
+}
+
+#registerImage>input{
+    display: flex;
+    padding: 0%;
+}
+
+#registerImage>input::file-selector-button{
+    cursor: pointer;
+    width: 100%;
+    z-index: 2;
+    height: 5vh;
+    border: none;
+    margin: 0%;
+    transition: all 0.5s;
+    font: 400 0.9vmax cursive;
+    padding: 0 1vmax;
+    color: rgba(0,0,0,0.673);
+    background-color: white;
+}
+
+#registerImage>input::file-selector-button:hover{
+    background-color: rgba(0,0,0,0.267);
+    color: rgb(247, 247, 247);
+}
+
+.logInBtn,.signUpBtn{
+    border: none;
+    background-color: tomato;
+    color: white;
+    width: 100%;
+    font: 300 1.1vmax 'Roboto';
+    padding: 0.8vmax;
+    cursor: pointer;
+    transition: all 0.5s;
+    border-radius: 4px;
+    outline:none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.267);
+}
+
+
+.logInBtn:hover,.signUpBtn:hover{
+    background-color: rgb(231, 11, 11);
+}
+
+.shiftToRight{
+    transform: translateX(100%);
+}
+
+.shiftToLeft{
+    transform:translateX(-100%);
+}
+
+.shiftToNeutral{
+    transform: translateX(0%);
+}
+
+.shiftToNeutralForm{
+    transform: translateX(0%) translateY(-100%);
+}
+
+@media screen and (max-width:600px) {
+    .LogInSignUpContainer{
+        background-color: white;
+    }
+
+    .LogInSignUpBox{
+        width: 100vw;
+        height: 95vh;
+    }
+
+    .logIn_signUp_toggle{
+        height: 5vmax;
+    }
+
+    .logIn_signUp_toggle>p{
+        font: 300 1.6vmax roboto;
+    }
+
+    .logInForm,.signUpForm{
+        padding: 5vmax;
+    }
+
+    .logInForm>div>input,
+    .signUpForm>div>input{
+        padding: 2.5vmax 5vmax;
+        font: 300 1.8vmax cursive; 
+    }
+
+    .logInForm>div>input>svg,
+    .signUpForm>div>input>svg{
+        font-size: 2.8vmax;
+    }
+
+    .logInForm>a{
+        font: 500 2vmax 'Gill Sans';
+    }
+
+    .logInBtn,.signUpBtn{
+        font: 500 2.5vmax 'Roboto';
+        padding: 1.8vmax;
+    }
+
+    #registerImage>img{
+        width: 8vmax;
+    }
+
+    #registerImage>input::file-selector-button{
+        height: 7vh;
+        font: 500 2.5vmax cursive;
+    }
+}
