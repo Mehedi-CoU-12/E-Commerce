@@ -14,13 +14,13 @@ function Footer() {
             <img src={appStore} alt='appStore' />
         </div>
 
-        <div class="midFooter" >
+        <div className="midFooter" >
             <h1>ECOMMERCE.</h1>
             <p>High Quality is Our First Priority</p>
             <p>Copyrights 2024 &copy; MeMehedi</p>
         </div>
 
-        <div class="rightFooter" >
+        <div className="rightFooter" >
             <h4>Follow Us</h4>
             <a href='http://facebook.com/mehedi' >Facebook</a>
             <a href='http://instagram.com/mehedi' >Instagram</a>

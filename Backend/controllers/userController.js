@@ -36,12 +36,12 @@ const logInUser=asyncHandler(async(req,res,next)=>{
     const user=await User.findOne({email}).select("+password");
 
     if(!user)
-        throw new ApiError(401,'Invalid Email & Password');
+        throw new ApiError(401,'Invalid Email or Password');
 
     const isPasswordMatched=await user.comparePassword(password);
 
     if(!isPasswordMatched)
-        throw new ApiError(401,'Invalid Email & Password');
+        throw new ApiError(401,'Invalid Email or Password');
 
     const token=user.getJWTToken();
 

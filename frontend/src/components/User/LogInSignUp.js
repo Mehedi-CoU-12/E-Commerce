@@ -1,20 +1,33 @@
-import React, { Fragment, useRef, useState } from 'react';
-import {Link} from 'react-router-dom';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
+import {Link, useNavigate} from 'react-router-dom';
 import './LogInSignUp.css';
 
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { logInFailed, logInRequest, logInSuccess } from '../../features/usersSlice';
+import { toast,ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Loader from '../layout/Loader/Loader.js';
 
 const LogInSignUp = () => {
 
-    const logInTab=useRef(null);
+    //to change the html tag class;
     const registerTab=useRef(null);
+    const logInTab=useRef(null);
     const switcherTab=useRef(null);
 
+    const dispath=useDispatch();
+    const navigate=useNavigate();
+    const { isAuthenticated,loading,error }=useSelector((state)=>state.user);
+
+    //for login data
     const [logInEmail, setLogInEmail] = useState();
     const [logInPassword, setLogInPassword] = useState()
     
+    //for sign up data
     const [user,setUser]=useState({
         name:"",
         email:"",
@@ -22,8 +35,8 @@ const LogInSignUp = () => {
     })
     
     const {name,email,password}=user;
-    const [avater,setAvater]=useState();
-    const [avaterPreview,setAvaterPreview]=useState("/Profile.png");
+    const [avatar,setAvatar]=useState();
+    const [avatarPreview,setAvatarPreview]=useState("/Profile.png");
 
     const switchTabs=(e,tab)=>{
         if(tab==='LogIn'){
@@ -42,19 +55,58 @@ const LogInSignUp = () => {
         }
     }
 
-    const logInSubmit=(e)=>{
+    const stylesForAlert={
+        position: "top-right", // Position of the toast
+        autoClose: 3000, // Auto-close after 3 seconds
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+    };
 
+    useEffect(()=>{
+        if(error){
+            console.log('error',error)
+            toast.error(error?.response?.data?.message,stylesForAlert);
+        }
+
+        if(isAuthenticated){
+            navigate('/account');
+        }
+    },[error,isAuthenticated])
+
+    const logInSubmit=async(e)=>{
+        e.preventDefault();
+        dispath(logInRequest());
+
+        try {
+            
+            const response=await axios.post('http://localhost:3000/api/v1/login',{email:logInEmail,password:logInPassword},{Headers:{"Content-Type":"application/json"}});
+
+            // console.log('response',response);
+            dispath(logInSuccess(response?.data?.data))
+
+        } catch (error) {
+            dispath(logInFailed(error?.response?.data?.message));
+            toast.error(error?.response?.data?.message,stylesForAlert);
+        }
     }
 
     const registerSubmit=(e)=>{
         e.preventDefault();
 
         const myForm=new FormData();
+        myForm.set("name",name);
+        myForm.set("email",email);
+        myForm.set("password",password);
+        myForm.set("avatar",avatar);
+        myForm.set("")
     }
 
     const registerDataChange=(e)=>{
 
-        if(e.targer.name==='avater'){
+        if(e.target.name==='avater'){
 
         }
         else{
@@ -63,12 +115,14 @@ const LogInSignUp = () => {
     }
 
   return (
-    <Fragment>
-        <div class="LogInSignUpContainer">
-            <div class="LogInSignUpBox">
+   <div>
+    {loading?<Loader/>: <Fragment>
+        <ToastContainer/>
+        <div className="LogInSignUpContainer">
+            <div className="LogInSignUpBox">
 
                 <div>
-                    <div class="logIn_signUp_toggle">
+                    <div className="logIn_signUp_toggle">
                         <p onClick={(e)=>switchTabs(e,"LogIn")} >LOGIN</p>
                         <p onClick={(e)=>switchTabs(e,"register")} >REGISTER</p>
                     </div>
@@ -77,7 +131,7 @@ const LogInSignUp = () => {
 
                 <form ref={logInTab}  onSubmit={logInSubmit} className="logInForm">
 
-                    <div class="logInEmail">
+                    <div className="logInEmail">
                         <MailOutlineIcon/>
                         <input 
                             type="email" 
@@ -88,7 +142,7 @@ const LogInSignUp = () => {
                         />
                     </div>
 
-                    <div class="logInPassword">
+                    <div className="logInPassword">
                         <LockOpenIcon/>
                         <input 
                             type="password" 
@@ -104,7 +158,7 @@ const LogInSignUp = () => {
 
                 <form ref={registerTab} onSubmit={registerSubmit} className='signUpForm' encType='multipart/form-data' >
 
-                    <div class="signUpName">
+                    <div className="signUpName">
                         <AccountBoxIcon/>
                         <input 
                             type="text"
@@ -116,7 +170,7 @@ const LogInSignUp = () => {
                         />
                     </div>
 
-                    <div class="signUpEmail">
+                    <div className="signUpEmail">
                         < MailOutlineIcon />
                         <input 
                             type="email" 
@@ -128,7 +182,7 @@ const LogInSignUp = () => {
                         />
                     </div>
 
-                    <div class="signUpPassword">
+                    <div className="signUpPassword">
                         <LockOpenIcon/>
                         <input 
                             type="password" 
@@ -141,10 +195,10 @@ const LogInSignUp = () => {
                     </div>
 
                     <div id="registerImage">
-                        <img src={avaterPreview} alt="Avater Preview"/>
+                        <img src={avatarPreview} alt="Avatar Preview"/>
                         <input 
                             type="file" 
-                            name='avater'
+                            name='avatar'
                             accept='image/*'
                             onChange={registerDataChange}
                         />
@@ -158,7 +212,8 @@ const LogInSignUp = () => {
 
 
         </div>
-    </Fragment>
+    </Fragment>}
+   </div>
   )
 }
 
