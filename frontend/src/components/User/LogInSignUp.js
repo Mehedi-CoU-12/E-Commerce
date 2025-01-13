@@ -57,7 +57,7 @@ const LogInSignUp = () => {
 
     const stylesForAlert={
         position: "top-right", // Position of the toast
-        autoClose: 3000, // Auto-close after 3 seconds
+        autoClose: 2000, // Auto-close after 3 seconds
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -67,12 +67,14 @@ const LogInSignUp = () => {
 
     useEffect(()=>{
         if(error){
-            console.log('error',error)
+            // console.log('error',error)
             toast.error(error?.response?.data?.message,stylesForAlert);
         }
 
         if(isAuthenticated){
-            navigate('/account');
+            setTimeout(() => {
+                navigate('/account');
+            }, 2000);
         }
     },[error,isAuthenticated])
 
@@ -81,11 +83,14 @@ const LogInSignUp = () => {
         dispath(logInRequest());
 
         try {
-            
-            const response=await axios.post('http://localhost:3000/api/v1/login',{email:logInEmail,password:logInPassword},{Headers:{"Content-Type":"application/json"}});
+
+            const config={Headers:{"Content-Type":"application/json"},withCredentials:true};
+
+            const response=await axios.post('http://localhost:4000/api/v1/login',{email:logInEmail,password:logInPassword},config);
 
             // console.log('response',response);
             dispath(logInSuccess(response?.data?.data))
+            toast.success("Log-in successful!", stylesForAlert);
 
         } catch (error) {
             dispath(logInFailed(error?.response?.data?.message));
@@ -93,7 +98,7 @@ const LogInSignUp = () => {
         }
     }
 
-    const registerSubmit=(e)=>{
+    const registerSubmit=async(e)=>{
         e.preventDefault();
 
         const myForm=new FormData();
@@ -101,18 +106,51 @@ const LogInSignUp = () => {
         myForm.set("email",email);
         myForm.set("password",password);
         myForm.set("avatar",avatar);
-        myForm.set("")
+
+        
+        // for (let [key, value] of myForm.entries()) {
+            //     console.log(`${key}: ${value}`);
+            // }
+            
+        dispath(logInRequest());
+
+        try {
+            const config={Headers:{"Content-Type":"multipart/form-data"},withCredentials:true};
+            const {data}=await axios.post('http://localhost:4000/api/v1/register',myForm,config);
+            
+            console.log(data);
+            dispath(logInSuccess(data.user));
+            toast.success("Registration successful!", stylesForAlert);
+
+        } catch (error) {
+            const errorMessage =
+            error?.response?.data?.message || "Something went wrong!";
+            dispath(logInFailed(errorMessage));
+            toast.error(errorMessage, stylesForAlert);
+        }
     }
 
-    const registerDataChange=(e)=>{
+    const registerDataChange = (e) => {
 
-        if(e.target.name==='avater'){
+        if (e.target.name === "avatar") {
 
+            const file = e.target.files[0];
+            const reader = new FileReader();
+    
+            reader.onload = () => {
+
+                if (reader.readyState === 2) {
+                    setAvatarPreview(reader.result);
+                    setAvatar(file);
+                }
+            };
+            reader.readAsDataURL(file); // Ensure this is called
+
+        } else {
+            setUser({ ...user, [e.target.name]: e.target.value });
         }
-        else{
-            setUser({...user,[e.target.name]:e.target.value});
-        }
-    }
+    };
+    
 
   return (
    <div>

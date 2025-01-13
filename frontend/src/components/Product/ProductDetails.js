@@ -28,7 +28,7 @@ const ProductDetails = () => {
         const fatchProductInfo=async()=>{
             try {
 
-                const response=await axios.get(`http://localhost:3000/api/v1/product/${id}`);
+                const response=await axios.get(`http://localhost:4000/api/v1/product/${id}`);
 
                 //send data to redux store
                 dispatch(productDetails(response.data.data))

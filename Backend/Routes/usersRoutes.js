@@ -14,10 +14,11 @@ import {
     updateUserRole
 } from "../controllers/userController.js";
 import { isAuthenticatedUser, isRoleAdmin } from '../middleware/authentication.js';
+import { upload } from '../middleware/multer.middleware.js';
 
 const userRouter=express.Router();
 
-userRouter.post('/register',registerUser);
+userRouter.post('/register',upload.single('avatar'),registerUser);
 userRouter.post('/login',logInUser);
 userRouter.get('/logout',logOutUser);
 

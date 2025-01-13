@@ -2,28 +2,43 @@ import { User } from "../Models/userModels.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { uploadOnCloudinary } from "../utils/Cloudinary.js";
 import { sendToken } from "../utils/jwtToken.js";
 import {sendEmail} from "../utils/sendEmail.js";
 import crypto from 'crypto';
 
 //register a user
-const registerUser=asyncHandler(async(req,res)=>{
+const registerUser = asyncHandler(async (req, res) => {
+    const { name, email, password } = req.body;
 
-    const {name,email,password}=req.body;
+    // Check if a file exists
+    if (!req.file || !req.file.path) {
+        return res.status(400).json({ message: 'No file uploaded!' });
+    }
 
-    const user=await User.create({
-        name,email,password,
-        avatar:{
-            public_id:'sample id',
-            url:'profilePicUrl'
-        }
+    // Upload the file to Cloudinary
+    const uploadResult = await uploadOnCloudinary(req.file.path);
+
+    if (!uploadResult) {
+        return res.status(500).json({ message: 'Failed to upload avatar to Cloudinary' });
+    }
+
+    const user = await User.create({
+        name,
+        email,
+        password,
+        avatar: {
+            public_id: uploadResult.public_id,
+            url: uploadResult.secure_url,
+        },
     });
 
-    const token=user.getJWTToken();
+    const token = user.getJWTToken();
 
-    // res.status(201).json(new ApiResponse(201,token,'User Created Successfully!'))
-    sendToken(user,201,res);
-})
+    // Send response with token
+    sendToken(user, 201, res);
+});
+
 
 //log-in user
 const logInUser=asyncHandler(async(req,res,next)=>{
