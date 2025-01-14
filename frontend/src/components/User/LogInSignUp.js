@@ -19,7 +19,7 @@ const LogInSignUp = () => {
     const logInTab=useRef(null);
     const switcherTab=useRef(null);
 
-    const dispath=useDispatch();
+    const dispatch=useDispatch();
     const navigate=useNavigate();
     const { isAuthenticated,loading,error }=useSelector((state)=>state.user);
 
@@ -72,30 +72,36 @@ const LogInSignUp = () => {
         }
 
         if(isAuthenticated){
-            setTimeout(() => {
-                navigate('/account');
-            }, 2000);
+            // setTimeout(() => {
+            //     navigate('/account');
+            // }, 2000);
+
+            navigate('/account');
         }
     },[error,isAuthenticated])
 
     const logInSubmit=async(e)=>{
         e.preventDefault();
-        dispath(logInRequest());
+        dispatch(logInRequest());
 
         try {
 
             const config={Headers:{"Content-Type":"application/json"},withCredentials:true};
 
             const response=await axios.post('http://localhost:4000/api/v1/login',{email:logInEmail,password:logInPassword},config);
-
+            
             // console.log('response',response);
-            dispath(logInSuccess(response?.data?.data))
+            dispatch(logInSuccess(response?.data?.data))
             toast.success("Log-in successful!", stylesForAlert);
 
         } catch (error) {
-            dispath(logInFailed(error?.response?.data?.message));
+            dispatch(logInFailed(error?.response?.data?.message));
             toast.error(error?.response?.data?.message,stylesForAlert);
         }
+
+        // //clear the form data
+        setLogInEmail("");
+        setLogInPassword("");
     }
 
     const registerSubmit=async(e)=>{
@@ -112,20 +118,20 @@ const LogInSignUp = () => {
             //     console.log(`${key}: ${value}`);
             // }
             
-        dispath(logInRequest());
+        dispatch(logInRequest());
 
         try {
             const config={Headers:{"Content-Type":"multipart/form-data"},withCredentials:true};
             const {data}=await axios.post('http://localhost:4000/api/v1/register',myForm,config);
             
-            console.log(data);
-            dispath(logInSuccess(data.user));
+            // console.log(data);
+            dispatch(logInSuccess(data.user));
             toast.success("Registration successful!", stylesForAlert);
 
         } catch (error) {
             const errorMessage =
             error?.response?.data?.message || "Something went wrong!";
-            dispath(logInFailed(errorMessage));
+            dispatch(logInFailed(errorMessage));
             toast.error(errorMessage, stylesForAlert);
         }
     }

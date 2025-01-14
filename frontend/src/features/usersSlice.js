@@ -29,9 +29,24 @@ export const userSlice = createSlice({
             state.isAuthenticated = false;
             state.error = action.payload; // Set the error
         },
+        logOutUserSuccess:(state)=>{
+            state.logInUser=null;
+            state.isAuthenticated=false;
+            state.loading=false;
+            state.error=null;
+        },
+        logOutUserFailed:(state,action)=>{
+            state.loading=false;
+            state.error=action.payload;
+        }
     },
 });
 
-export const { logInRequest, logInSuccess, logInFailed } = userSlice.actions;
+export const { 
+    logInRequest, 
+    logInSuccess, 
+    logInFailed ,
+    logOutUserSuccess,
+    logOutUserFailed } = userSlice.actions;
 
 export default userSlice.reducer;
