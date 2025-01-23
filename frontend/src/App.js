@@ -1,18 +1,24 @@
-import { useEffect } from 'react';
+import axios from 'axios';
+import webFont from 'webfontloader';
 import './App.css';
+
+import { useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logInRequest, logInSuccess, logInFailed } from './features/usersSlice.js';
+
+//pages
 import Header from './components/layout/Header/Header.js';
 import Footer from './components/layout/Footer/Footer.js';
-import { Route, Routes } from 'react-router-dom';
-import webFont from 'webfontloader';
 import Home from './components/Home/Home.js';
 import ProductDetails from './components/Product/ProductDetails.js';
 import Products from './components/Product/Products.js';
 import Search from './components/Product/Search.js';
 import LogInSignUp from './components/User/LogInSignUp.js';
-import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
-import { logInRequest, logInSuccess, logInFailed } from './features/usersSlice.js';
 import UserOption from './components/layout/Header/UserOption.js';
+import Profile  from './components/User/Profile.js';
+import UpdateProfile from './components/User/UpdateProfile.js';
+
 
 function App() {
     const dispatch = useDispatch();
@@ -60,6 +66,8 @@ function App() {
                 <Route path="/products/:keyword" Component={Products} />
                 <Route path="/search" Component={Search} />
                 <Route path="/login" Component={LogInSignUp} />
+                <Route path="/account" Component={Profile}/>
+                {isAuthenticated && <Route path='/me/update' Component={UpdateProfile} />}
             </Routes>
             <Footer />
         </>

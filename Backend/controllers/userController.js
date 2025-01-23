@@ -5,6 +5,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/Cloudinary.js";
 import { sendToken } from "../utils/jwtToken.js";
 import {sendEmail} from "../utils/sendEmail.js";
+import { v2 as cloudinary } from 'cloudinary'
 import crypto from 'crypto';
 
 //register a user
@@ -20,7 +21,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const uploadResult = await uploadOnCloudinary(req.file.path);
 
     if (!uploadResult) {
-        return res.status(500).json({ message: 'Failed to upload avatar to Cloudinary' });
+        return res.status(500).json({ message: 'Failed to upload avatar on Cloudinary' });
     }
 
     const user = await User.create({
@@ -172,10 +173,40 @@ const updatePassword=asyncHandler(async(req,res,next)=>{
 
 //update user
 const updateUser=asyncHandler(async(req,res,next)=>{
-    const newUser={
-        name:req.body.name,
-        email:req.body.email
+
+    console.log('-------req.body-----------,',req.body);
+    console.log('-------req.files-----------,',req.file);
+
+    let newUser={};
+
+    if(req.body.name){
+        newUser.name=req.body.name;
     }
+
+    if(req.body.email){
+        newUser.email=req.body.email;
+    }
+
+    if(req.body.avatar!=="")
+    {
+        const user=await User.findById(req.user.id);
+        const imageId=user.avatar.public_id;
+
+        console.log('-----------imgId-------------------',imageId);
+
+        //delete the previous profile picture
+        await cloudinary.uploader.destroy(imageId);
+
+        // Upload the file to Cloudinary
+        const uploadResult = await uploadOnCloudinary(req.file.path);
+
+        newUser.avatar={
+            public_id: uploadResult.public_id,
+            url: uploadResult.secure_url,
+        };
+    }
+
+    console.log('newUser---------------',newUser);
 
     const user=await User.findByIdAndUpdate(req.user.id,newUser,{
         new:true,
