@@ -39,21 +39,6 @@ export const userSlice = createSlice({
             state.loading=false;
             state.error=action.payload;
         },
-        // Triggered when login starts
-        updateUserRequest: (state) => {
-            state.loading = true;
-            state.error = null; // Clear previous errors
-        },
-        // update user data
-        updateUserSuccess:(state,action)=>{
-            state.logInUser = {...state.logInUser,...action.payload};
-            state.loading = false;
-            state.error = null; // Reset error in case of success
-        },
-        updateUserFailed:(state,action)=>{
-            state.loading=false;
-            state.error=action.payload;
-        }
     },
 });
 
@@ -63,9 +48,6 @@ export const {
     logInFailed ,
     logOutUserSuccess,
     logOutUserFailed,
-    updateUserRequest,
-    updateUserSuccess,
-    updateUserFailed,
  } = userSlice.actions;
 
 export default userSlice.reducer;

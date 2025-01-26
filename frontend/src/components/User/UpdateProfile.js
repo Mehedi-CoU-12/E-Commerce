@@ -6,11 +6,11 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { updateUserFailed, updateUserRequest, updateUserSuccess } from '../../features/usersSlice';
 import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Loader from '../layout/Loader/Loader.js';
 import MetaData from '../layout/MetaData.js';
+import { updateUserFailed, updateUserRequest, updateUserSuccess } from '../../features/profileSlice.js';
 
 const stylesForAlert={
     position: "top-right", // Position of the toast
@@ -26,32 +26,32 @@ const UpdateProfile = () => {
 
     const dispatch=useDispatch();
     const navigate=useNavigate();
-    const {loading,isAuthenticated,logInUser}=useSelector((state)=>state.user);
-
-    
+    const {loading,isUpdated,user}=useSelector((state)=>state.profile);
+    const isAuthenticated=useSelector((state)=>state.user.isAuthenticated);
     
     const [name,setName]=useState("");
     const [email,setEmail]=useState("");
     const [avatar,setAvatar]=useState("");
     const [avatarPreview,setAvatarPreview]=useState("/Profile.png");
 
-    useEffect(()=>{
-
-        if(logInUser){
-            setName(logInUser.name);
-            setEmail(logInUser.email);
-            setAvatarPreview(logInUser.avatar.url);
-        }
-
-        if(!isAuthenticated)
-            navigate('/login');
-
-    },[dispatch,isAuthenticated])
 
     // const [user,setUser]=useState({
     //     name:name,
     //     email:email
     // });
+
+    useEffect(()=>{
+
+        if(user){
+            setName(user.name);
+            setEmail(user.email);
+            setAvatarPreview(user?.avatar?.url);
+        }
+
+        if(!isAuthenticated)
+            navigate('/login');
+
+    },[dispatch,isUpdated,isAuthenticated])
 
     const UpdateProfileSubmit=async(e)=>{
         e.preventDefault();
@@ -60,6 +60,10 @@ const UpdateProfile = () => {
         myForm.set("name",name);
         myForm.set("email",email);
         myForm.append("avatar",avatar);
+
+        // const myForm={   
+        //     name,email
+        // }
 
             
         dispatch(updateUserRequest());
@@ -72,7 +76,7 @@ const UpdateProfile = () => {
 
             const {data}=await axios.put('http://localhost:4000/api/v1/me/update',myForm,config);
 
-            console.log(data);
+            console.log('===res===',data);
 
             dispatch(updateUserSuccess(data.user));
             toast.success("User Updated successfully!", stylesForAlert);
@@ -83,26 +87,25 @@ const UpdateProfile = () => {
             error?.response?.data?.message || "Something went wrong!";
             dispatch(updateUserFailed(errorMessage));
             toast.error(errorMessage, stylesForAlert);
-            // console.log(errorMessage);
+
+            console.log('=---error=',errorMessage);
         }
     }
 
     const UpdateProfileDataChange = (e) => {
-
+        
         if (e.target.name === "avatar") {
-
             const file = e.target.files[0];
-            const reader = new FileReader();
+            if (!file) return; // Ensure file exists
     
+            const reader = new FileReader();
             reader.onload = () => {
-
                 if (reader.readyState === 2) {
                     setAvatarPreview(reader.result);
                     setAvatar(file);
                 }
             };
-            reader.readAsDataURL(file); // Ensure this is called
-
+            reader.readAsDataURL(file);
         }
     };
 

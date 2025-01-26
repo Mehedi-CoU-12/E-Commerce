@@ -40,7 +40,6 @@ const registerUser = asyncHandler(async (req, res) => {
     sendToken(user, 201, res);
 });
 
-
 //log-in user
 const logInUser=asyncHandler(async(req,res,next)=>{
 
@@ -151,7 +150,7 @@ const getUserDetails=asyncHandler(async(req,res,next)=>{
 
 //update user password
 const updatePassword=asyncHandler(async(req,res,next)=>{
-
+    
     const {oldPassword,newPassword,confirmPassword}=req.body;
 
     const user=await User.findById(req.user.id).select("+password");
@@ -191,15 +190,13 @@ const updateUser=asyncHandler(async(req,res,next)=>{
     {
         const user=await User.findById(req.user.id);
         const imageId=user.avatar.public_id;
-
-        console.log('-----------imgId-------------------',imageId);
-
+        
         //delete the previous profile picture
         await cloudinary.uploader.destroy(imageId);
-
+        
         // Upload the file to Cloudinary
         const uploadResult = await uploadOnCloudinary(req.file.path);
-
+        
         newUser.avatar={
             public_id: uploadResult.public_id,
             url: uploadResult.secure_url,

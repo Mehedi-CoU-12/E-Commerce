@@ -18,6 +18,8 @@ import LogInSignUp from './components/User/LogInSignUp.js';
 import UserOption from './components/layout/Header/UserOption.js';
 import Profile  from './components/User/Profile.js';
 import UpdateProfile from './components/User/UpdateProfile.js';
+import UpdatePassword from './components/User/UpdatePassword.js';
+import ForgotPassword from './components/User/ForgotPassword.js';
 
 
 function App() {
@@ -67,7 +69,9 @@ function App() {
                 <Route path="/search" Component={Search} />
                 <Route path="/login" Component={LogInSignUp} />
                 <Route path="/account" Component={Profile}/>
+                <Route path="/password/forgot" Component={ForgotPassword} />
                 {isAuthenticated && <Route path='/me/update' Component={UpdateProfile} />}
+                {isAuthenticated && <Route path='/password/update' Component={UpdatePassword} />}
             </Routes>
             <Footer />
         </>
