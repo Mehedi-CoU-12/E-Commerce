@@ -1,10 +1,10 @@
-import React, { Fragment, useEffect } from "react";
-import Carousel from "react-material-ui-carousel";
+import React, { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { productDetails, productDetailsFail } from "../../features/productSlice";
+import Carousel from "react-material-ui-carousel";
 import './ProductDetails.css';
+import axios from "axios";
 
 import ReactStars from 'react-rating-stars-component'
 import ReviewCard from "./ReviewCard";
@@ -17,6 +17,7 @@ const ProductDetails = () => {
     const id = params.id;
 
     const dispatch=useDispatch();
+    const [quantity,setQuantity]=useState(1);
 
     //receive data from redux store
     const product=useSelector((state)=>state.products.productDetails);
@@ -50,6 +51,20 @@ const ProductDetails = () => {
         value:product?.ratings,
         isHalf:true,
         size:window.innerWidth < 600 ? 18:22,
+    }
+
+    const decreaseQuantity=()=>{
+        if(product?.Stock>1){
+            const qty=quantity-1;
+            setQuantity(qty);
+        }
+    }
+
+    const increaseQuantity=()=>{
+        if(product?.Stock>quantity){
+            const qty=quantity+1;
+            setQuantity(qty);
+        }
     }
 
     return (
@@ -97,9 +112,9 @@ const ProductDetails = () => {
                             <div class="detailsBlock-3-1">
     
                                 <div class="detailsBlock-3-1-1">
-                                    <button>-</button>
-                                    <input type="number" value={1} />
-                                    <button>+</button>
+                                    <button onClick={decreaseQuantity} >-</button>
+                                    <input readOnly type="number" value={quantity} />
+                                    <button onClick={increaseQuantity} >+</button>
                                 </div>
                                 
                                 <button>Add to Cart</button>

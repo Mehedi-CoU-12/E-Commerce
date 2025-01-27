@@ -66,15 +66,14 @@ const ForgotPassword = () => {
             const {data}=await axios.post('http://localhost:4000/api/v1/password/forgot',myForm,config);
 
             dispatch(forgotPasswordSuccess(data.user));
-            toast.success("Password Forgotd successfully!", stylesForAlert);
-            navigate('/account');
+            toast.success("Password Forgoted successfully!", stylesForAlert);
+            // navigate('/account');
 
         } catch (error) {
             const errorMessage =
             error?.response?.data?.message || "Something went wrong!";
             dispatch(forgotPasswordFailed(errorMessage));
             toast.error(errorMessage, stylesForAlert);
-
         }
     }
 

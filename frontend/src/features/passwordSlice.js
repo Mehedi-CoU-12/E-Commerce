@@ -27,6 +27,23 @@ const passwordSlice = createSlice({
             state.isUpdated=false;
             state.error=action.payload;
         },
+
+        //Triggered when reset password starts
+        resetPasswordRequest:(state)=>{
+            state.loading=true;
+            state.error=null;
+        },
+        resetPasswordSuccess:(state,action)=>{
+            state.user={...state.user,...action.payload};
+            state.loading=false;
+            state.isUpdated=true;
+            state.error=null;
+        },
+        resetPasswordFailed:(state,action)=>{
+            state.loading=false;
+            state.isUpdated=false;
+            state.error=action.payload;
+        }
     },
 });
 
@@ -34,6 +51,9 @@ export const {
     forgotPasswordRequest,
     forgotPasswordSuccess,
     forgotPasswordFailed,
+    resetPasswordRequest,
+    resetPasswordSuccess,
+    resetPasswordFailed,
  } = passwordSlice.actions;
 
 export default passwordSlice.reducer;

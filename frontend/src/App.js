@@ -20,6 +20,7 @@ import Profile  from './components/User/Profile.js';
 import UpdateProfile from './components/User/UpdateProfile.js';
 import UpdatePassword from './components/User/UpdatePassword.js';
 import ForgotPassword from './components/User/ForgotPassword.js';
+import ResetPassword from './components/User/ResetPassword.js';
 
 
 function App() {
@@ -70,6 +71,7 @@ function App() {
                 <Route path="/login" Component={LogInSignUp} />
                 <Route path="/account" Component={Profile}/>
                 <Route path="/password/forgot" Component={ForgotPassword} />
+                <Route path='/password/reset/:token' Component={ResetPassword} />
                 {isAuthenticated && <Route path='/me/update' Component={UpdateProfile} />}
                 {isAuthenticated && <Route path='/password/update' Component={UpdatePassword} />}
             </Routes>

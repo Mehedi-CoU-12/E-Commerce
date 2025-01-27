@@ -72,11 +72,10 @@ const LogInSignUp = () => {
         }
 
         if(isAuthenticated){
-            // setTimeout(() => {
-            //     navigate('/account');
-            // }, 2000);
-
-            navigate('/account');
+            setTimeout(() => {
+                navigate('/account');
+            }, 500);
+            // navigate('/account');
         }
     },[error,isAuthenticated])
 

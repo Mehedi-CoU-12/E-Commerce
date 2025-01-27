@@ -7,22 +7,20 @@ import './Profile.css';
 
 const Profile = () => {
 
-    const user=useSelector((state)=>state.user.logInUser);
-    const loading=useSelector((state)=>state.user.loading);
-    const isAuthenticated=useSelector((state)=>state.user.isAuthenticated);
+    const {logInUser:user,loading,isAuthenticated}=useSelector((state)=>state.user);
     const navigate=useNavigate();
-
+    
     useEffect(() => {
-     
+        
         if(!isAuthenticated)
             navigate('/login')
-
-    }, [isAuthenticated])
+        
+    }, [isAuthenticated,navigate])
     
 
   return (
     <Fragment>
-        {loading?<Loader/>: 
+        {loading && !user?<Loader/>: 
         <Fragment>
             <MetaData title={`${user?.name}'s Profile`} />
             <div className='profileContainer' >
