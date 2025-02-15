@@ -1,0 +1,98 @@
+.cartPage{
+    padding: 5vmax;
+}
+
+.cartHeader{
+    background-color: tomato;
+    display: grid;
+    width: 90%;
+    box-sizing: border-box;
+    color: white;
+    margin: auto;
+    grid-template-columns: 4fr 1fr 1fr;
+    font: 300 1vmax Roboto;
+}
+
+.cartHeader>p{
+    margin: 10px;
+}
+
+.cartHeader>p:last-child{
+    text-align: end;
+}
+
+.cartContainer{
+    width: 90%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 4fr 1fr 1fr;   
+}
+
+.cartInput{
+    display: flex;
+    height: 8vmax;
+    align-items: center;
+}
+
+.cartInput>button{
+    border: none;
+    background-color: rgba(0, 0, 0, 0.616);
+    color: white;
+    transition: all 0.5s;
+    cursor: pointer;
+    padding: 0.5vmax;
+}
+
+.cartInput>input{
+    border: none;
+    padding: 0.5vmax;
+    width: 1vmax;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.5);
+    outline: none;
+    font: 400 1vmax Roboto;
+}
+
+.cartSubtotal{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0.5vmax;
+    height: 8vmax;
+    box-sizing: border-box;
+    color: rgba(0, 0, 0, 0.716);
+    font: 400 1.2vmax cursive;
+}
+
+.cartGrossTotal{
+    display: grid;
+    grid-template-columns: 3fr 1.2fr;
+}
+
+.cartGrossTotalBox{
+    border-top: 3px solid tomato;
+    margin: 1vmax 4vmax;
+    justify-content: space-between;
+    display: flex;
+    font: 300 1vmax Roboto;
+    padding: 2vmax 0;
+
+}
+
+.checkOutBtn{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.checkOutBtn>button{
+    background-color: tomato;
+    border: none;
+    color: white;
+    padding: 0.8vmax 4vmax;
+    margin: 1vmax 4vmax;
+    font: 300 1vmax Roboto;
+    width: 50%;
+    border-radius: 30px;
+    cursor: pointer;
+
+}
