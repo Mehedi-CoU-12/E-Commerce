@@ -6,10 +6,11 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonIcon from "@mui/icons-material/Person";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ListAltIcon from "@mui/icons-material/ListAlt";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useNavigate } from 'react-router-dom';
 import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { logOutUser, logOutUserFailed, logOutUserSuccess } from '../../../features/usersSlice';
 import './UserOption.css';
@@ -22,6 +23,7 @@ const UserOption = ({user}) => {
     const [open,setOpen]=useState(false);
     const navigate=useNavigate();
     const dispatch=useDispatch();
+    const {items}=useSelector((state)=>state.cart);
 
     function orders() {
         navigate('/orders')
@@ -31,6 +33,9 @@ const UserOption = ({user}) => {
     }
     function dashboard() {
         navigate('/dashboard')
+    }
+    function shoppingCart() {
+        navigate('/cart')
     }
 
     const logOutUserFunc=async()=> {
@@ -62,6 +67,7 @@ const UserOption = ({user}) => {
     const options = [
         { icon: <ListAltIcon />, name: "Orders" ,func:orders},
         { icon: <PersonIcon />, name: "Profile",func:account},
+        { icon:<ShoppingCartIcon style={{color:items.length>0?"tomato":"unset"}} />,name:`Cart(${items.length})`,func:shoppingCart },
         { icon: <ExitToAppIcon />, name: "Logout",func:logOutUserFunc},
     ];
     
@@ -94,6 +100,7 @@ const UserOption = ({user}) => {
                     icon={item.icon} 
                     tooltipTitle={item.name} 
                     onClick={item.func}
+                    tooltipOpen={window.innerWidth<=600 ? true : false}
                 />
             ))}
         </SpeedDial>

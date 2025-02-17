@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link, useLocation, useNavigate} from 'react-router-dom';
 import './LogInSignUp.css';
 
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
@@ -21,6 +21,7 @@ const LogInSignUp = () => {
 
     const dispatch=useDispatch();
     const navigate=useNavigate();
+    const location=useLocation();
     const { isAuthenticated,loading,error }=useSelector((state)=>state.user);
 
     //for login data
@@ -65,6 +66,9 @@ const LogInSignUp = () => {
         theme: "dark",
     };
 
+    // Extract 'redirect' query parameter safely
+    const redirect = new URLSearchParams(location.search).get("redirect") || "/account";
+
     useEffect(()=>{
         if(error){
             // console.log('error',error)
@@ -73,11 +77,11 @@ const LogInSignUp = () => {
 
         if(isAuthenticated){
             setTimeout(() => {
-                navigate('/account');
+                navigate(redirect);
             }, 500);
             // navigate('/account');
         }
-    },[error,isAuthenticated])
+    },[error,isAuthenticated,redirect])
 
     const logInSubmit=async(e)=>{
         e.preventDefault();
