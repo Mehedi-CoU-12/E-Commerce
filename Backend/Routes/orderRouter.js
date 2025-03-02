@@ -20,6 +20,4 @@ orderRouter.put('/admin/order/:id',isAuthenticatedUser,isRoleAdmin('admin'),upda
 orderRouter.delete('/admin/order/:id',isAuthenticatedUser,isRoleAdmin('admin'),deleteOrder);
 
 
-
-
 export{orderRouter};

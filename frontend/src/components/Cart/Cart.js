@@ -13,7 +13,7 @@ const Cart = () => {
     const {items,totalPrice}=useSelector((state)=>state.cart);
 
     const checkOutHandler=()=>{
-        navigate('/login?redirect=shipping');
+        navigate("/login?redirect=shipping");
     }
 
   return (

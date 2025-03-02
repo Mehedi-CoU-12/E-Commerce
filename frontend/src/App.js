@@ -23,6 +23,7 @@ import ForgotPassword from './components/User/ForgotPassword.js';
 import ResetPassword from './components/User/ResetPassword.js';
 import Cart from './components/Cart/Cart.js';
 import Shipping from './components/Cart/Shipping.js';
+import ConfirmOrder from './components/Cart/ConfirmOrder.js';
 
 
 function App() {
@@ -78,6 +79,7 @@ function App() {
                 {isAuthenticated && <Route path='/me/update' Component={UpdateProfile} />}
                 {isAuthenticated && <Route path='/password/update' Component={UpdatePassword} />}
                 {isAuthenticated && <Route path='/shipping' Component={Shipping} />}
+                {isAuthenticated && <Route path='/order/confirm' Component={ConfirmOrder} />}
             </Routes>
             <Footer />
         </>

@@ -77,7 +77,7 @@ const LogInSignUp = () => {
 
         if(isAuthenticated){
             setTimeout(() => {
-                navigate(redirect);
+                navigate(`/${redirect}`);
             }, 500);
             // navigate('/account');
         }
