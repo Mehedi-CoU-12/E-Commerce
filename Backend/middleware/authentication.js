@@ -14,7 +14,6 @@ const isAuthenticatedUser=asyncHandler(async(req,res,next)=>{
     const user=await User.findById(decodedToken.id);
 
     req.user=user;
-
     next();
 });
 

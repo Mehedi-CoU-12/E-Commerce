@@ -13,6 +13,7 @@ import CheckoutSteps from "./CheckoutSteps";
 import "./Shipping.css";
 import { setShippingInfo } from "../../features/shippingSlice";
 import { useNavigate } from "react-router-dom";
+import MetaData from "../layout/MetaData";
 
 const Shipping = () => {
 
@@ -57,6 +58,7 @@ const Shipping = () => {
   return (
     <div>
         <ToastContainer/>
+        <MetaData title="Shipping" />
         <CheckoutSteps activeStep={0} />
         <div className="shippingContainer">
             <div className="shippingBox">

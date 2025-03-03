@@ -8,7 +8,6 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Cart = () => {
 
-    const dispatch=useDispatch();
     const navigate=useNavigate();
     const {items,totalPrice}=useSelector((state)=>state.cart);
 
@@ -32,8 +31,8 @@ const Cart = () => {
                 <p>Subtotal</p>
             </div>
 
-            {items && items.map((item)=>(
-                <div class="cartContainer">
+            {items && items.map((item,index)=>(
+                <div key={index} class="cartContainer">
                     <CartItemCard item={item}/>
                     <div class="cartInput">
                         <button>-</button>

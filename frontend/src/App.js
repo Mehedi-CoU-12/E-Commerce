@@ -2,33 +2,49 @@ import axios from 'axios';
 import webFont from 'webfontloader';
 import './App.css';
 
-import { useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { useEffect,useState } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logInRequest, logInSuccess, logInFailed } from './features/usersSlice.js';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 
 //pages
+import Home from './components/Home/Home.js';
 import Header from './components/layout/Header/Header.js';
 import Footer from './components/layout/Footer/Footer.js';
-import Home from './components/Home/Home.js';
+import UserOption from './components/layout/Header/UserOption.js';
+
 import ProductDetails from './components/Product/ProductDetails.js';
 import Products from './components/Product/Products.js';
 import Search from './components/Product/Search.js';
+
 import LogInSignUp from './components/User/LogInSignUp.js';
-import UserOption from './components/layout/Header/UserOption.js';
 import Profile  from './components/User/Profile.js';
 import UpdateProfile from './components/User/UpdateProfile.js';
 import UpdatePassword from './components/User/UpdatePassword.js';
 import ForgotPassword from './components/User/ForgotPassword.js';
 import ResetPassword from './components/User/ResetPassword.js';
+
 import Cart from './components/Cart/Cart.js';
 import Shipping from './components/Cart/Shipping.js';
 import ConfirmOrder from './components/Cart/ConfirmOrder.js';
+import Payment from './components/Cart/Payment.js';
 
 
 function App() {
+
     const dispatch = useDispatch();
     const { isAuthenticated,logInUser } = useSelector((state) => state.user);
+    const [stripeApiKey,setStripeApiKey]=useState('');
+
+    async function getStripeApiKey() {
+        const {data}=await axios.get('http://localhost:4000/api/v1/stripeapikey',{
+            withCredentials:true
+        });
+
+        setStripeApiKey(data.data.stripeApiKey);
+    }
 
     useEffect(() => {
         webFont.load({
@@ -57,6 +73,7 @@ function App() {
         // Fetch user data only if not authenticated
         if (!isAuthenticated) {
             fetchUserData();
+            getStripeApiKey();
         }
 
     }, [dispatch, isAuthenticated]);
@@ -66,21 +83,37 @@ function App() {
             <Header />
             {isAuthenticated && <UserOption user={logInUser} />}
             <Routes>
-                <Route path="/" Component={Home} />
-                <Route path="/product/:id" Component={ProductDetails} />
-                <Route path="/products" Component={Products} />
-                <Route path="/products/:keyword" Component={Products} />
-                <Route path="/search" Component={Search} />
-                <Route path="/login" Component={LogInSignUp} />
-                <Route path="/account" Component={Profile}/>
-                <Route path="/password/forgot" Component={ForgotPassword} />
-                <Route path='/password/reset/:token' Component={ResetPassword} />
-                <Route path='/cart' Component={Cart} />
-                {isAuthenticated && <Route path='/me/update' Component={UpdateProfile} />}
-                {isAuthenticated && <Route path='/password/update' Component={UpdatePassword} />}
-                {isAuthenticated && <Route path='/shipping' Component={Shipping} />}
-                {isAuthenticated && <Route path='/order/confirm' Component={ConfirmOrder} />}
+                <Route path="/" element={<Home />} />
+                <Route path="/product/:id" element={<ProductDetails />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/products/:keyword" element={<Products />} />
+                <Route path="/search" element={<Search />} />
+                <Route path="/login" element={<LogInSignUp />} />
+                <Route path="/account" element={<Profile />} />
+                <Route path="/password/forgot" element={<ForgotPassword />} />
+                <Route path="/password/reset/:token" element={<ResetPassword />} />
+                <Route path="/cart" element={<Cart />} />
+                {isAuthenticated && <Route path="/me/update" element={<UpdateProfile />} />}
+                {isAuthenticated && <Route path="/password/update" element={<UpdatePassword />} />}
+                {isAuthenticated && <Route path="/shipping" element={<Shipping />} />}
+                {isAuthenticated && <Route path="/order/confirm" element={<ConfirmOrder />} />}
+
+                <Route 
+                    path="/process/payment" 
+                    element={
+                        isAuthenticated && stripeApiKey ? (
+                            <Elements stripe={loadStripe(stripeApiKey)}>
+                                <Payment />
+                            </Elements>
+                        ) : null
+                    }
+                />
+
+                {/* Redirect any unmatched routes to home */}
+                {/* <Route path="*" element={<Navigate to="/" />} /> */}
+
             </Routes>
+
             <Footer />
         </>
     );
