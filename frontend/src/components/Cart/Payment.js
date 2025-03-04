@@ -3,8 +3,8 @@ import CheckoutSteps from "../Cart/CheckoutSteps";
 import { useSelector, useDispatch } from "react-redux";
 import MetaData from "../layout/MetaData";
 import Typography from "@mui/material/Typography";
-import TransferWithinAStationIcon from "@mui/icons-material/TransferWithinAStation";
 import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 import {
   CardNumberElement,
@@ -106,12 +106,30 @@ const Payment = () => {
                         id: result.paymentIntent.id,
                         status: result.paymentIntent.status,
                     };
+                    
+                    //save the order to the database
+                    try {
+                        dispatch(createOrderRequest());
+                    
+                        const config = {
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            withCredentials: true,
+                        };
+                    
+                        const response = await axios.post("http://localhost:4000/api/v1/order/new", order, config);
 
-                    dispatch(createOrderSuccess(data));
+                        console.log('----mehedi----------->',response);
+                
+                        dispatch(createOrderSuccess(response.data.order)); // Save order to Redux store
+                    }catch (error) {
+                        dispatch(createOrderFailed(error.response?.data2?.message || "Failed to place order"));
+                    }
 
-                navigate("/success");
+                    // navigate("/success");
                 } else {
-                toast.error("There's some issue while processing payment.",stylesForAlert);
+                    toast.error("There's some issue while processing payment.",stylesForAlert);
                 }
             }
         } catch (error) {
@@ -123,8 +141,8 @@ const Payment = () => {
 
     useEffect(() => {
         if (error) {
-        toast.error(error);
-        dispatch(clearErrors());
+            toast.error(error);
+            dispatch(clearErrors());
         }
     }, [dispatch, error]);
 

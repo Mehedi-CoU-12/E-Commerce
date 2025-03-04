@@ -30,6 +30,7 @@ import Cart from './components/Cart/Cart.js';
 import Shipping from './components/Cart/Shipping.js';
 import ConfirmOrder from './components/Cart/ConfirmOrder.js';
 import Payment from './components/Cart/Payment.js';
+import OrderSuccess from './components/Cart/OrderSuccess.js';
 
 
 function App() {
@@ -97,6 +98,8 @@ function App() {
                 {isAuthenticated && <Route path="/password/update" element={<UpdatePassword />} />}
                 {isAuthenticated && <Route path="/shipping" element={<Shipping />} />}
                 {isAuthenticated && <Route path="/order/confirm" element={<ConfirmOrder />} />}
+                {isAuthenticated && <Route path="/success" element={<OrderSuccess />} />}
+
 
                 <Route 
                     path="/process/payment" 
@@ -109,8 +112,7 @@ function App() {
                     }
                 />
 
-                {/* Redirect any unmatched routes to home */}
-                {/* <Route path="*" element={<Navigate to="/" />} /> */}
+                
 
             </Routes>
 

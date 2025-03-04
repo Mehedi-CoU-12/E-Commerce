@@ -19,6 +19,10 @@ const newOrder=asyncHandler(async(req,res)=>{
 
     console.log(req.body);
 
+    if (!shippingInfo || !orderItems || !paymentInfo || !totalPrice) {
+        return next(new ApiError(400, "Missing required order details"));
+    }
+
     const order=await Order.create({
         shippingInfo,
         orderItems,
