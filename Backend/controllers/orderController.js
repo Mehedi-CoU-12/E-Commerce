@@ -17,23 +17,29 @@ const newOrder=asyncHandler(async(req,res)=>{
         totalPrice,
     }=req.body;
 
-    console.log(req.body);
-
     if (!shippingInfo || !orderItems || !paymentInfo || !totalPrice) {
         return next(new ApiError(400, "Missing required order details"));
     }
 
-    const order=await Order.create({
+    const sanitizedOrderItems = orderItems.map(item => ({
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity || 1, 
+        image: item.image,
+        product: item.id
+    }));
+    
+    const order = await Order.create({
         shippingInfo,
-        orderItems,
+        orderItems: sanitizedOrderItems,
         paymentInfo,
         itemPrice,
         taxPrice,
         shippingPrice,
         totalPrice,
-        paidAt:Date.now(),
-        user:req.user._id,
-    })
+        paidAt: Date.now(),
+        user: req.user._id,
+    });
 
     res.status(201).json(new ApiResponse(201,order,'order created successfully!'));
 })

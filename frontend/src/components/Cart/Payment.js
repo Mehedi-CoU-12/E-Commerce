@@ -54,7 +54,7 @@ const Payment = () => {
     const order = {
         shippingInfo,
         orderItems: items,
-        itemsPrice: orderInfo.subtotal,
+        itemPrice: orderInfo.subtotal,
         taxPrice: orderInfo.tax,
         shippingPrice: orderInfo.shippingCharges,
         totalPrice: orderInfo.totalPrice,
@@ -118,16 +118,14 @@ const Payment = () => {
                             withCredentials: true,
                         };
                     
-                        const response = await axios.post("http://localhost:4000/api/v1/order/new", order, config);
-
-                        console.log('----mehedi----------->',response);
+                        const {data} = await axios.post("http://localhost:4000/api/v1/order/new", order, config);
                 
-                        dispatch(createOrderSuccess(response.data.order)); // Save order to Redux store
+                        dispatch(createOrderSuccess(data?.data)); // Save order to Redux store
                     }catch (error) {
                         dispatch(createOrderFailed(error.response?.data2?.message || "Failed to place order"));
                     }
 
-                    // navigate("/success");
+                    navigate("/success");
                 } else {
                     toast.error("There's some issue while processing payment.",stylesForAlert);
                 }
