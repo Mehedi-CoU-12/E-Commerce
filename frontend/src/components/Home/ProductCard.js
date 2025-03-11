@@ -1,17 +1,15 @@
+import { Rating } from '@mui/material';
 import React from 'react'
-import ReactStars from 'react-rating-stars-component'
 import { Link } from 'react-router-dom'
 
 const ProductCard = ({product}) => {
 
-    const options={
-        edit:false,
-        color: "rgba(20,20,20,0.1)",
-        activeColor:"tomato",
-        value:product?.ratings || 0,
-        isHalf:true,
-        size:window.innerWidth < 600 ? 18:22,
-    }
+    const options = {
+        size:'large',
+        value: product?.ratings || 0,
+        readOnly:true,
+        precision:0.5,
+    };
     
 
   return (
@@ -21,7 +19,7 @@ const ProductCard = ({product}) => {
         <p> {product.name}</p>
 
         <div>
-            <ReactStars {...options} /> <span>({product.numberOfReviews} reviews)</span>
+            <Rating {...options} /> <span className='porductCardSpan' >({product.numberOfReviews} reviews)</span>
         </div>
 
         <span>{`৳ ${product.price}`}</span>

@@ -61,13 +61,20 @@ const Products = () => {
 
                 let link=`http://localhost:4000/api/v1/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
 
+                // console.log(keyword,currentPage,price[0],price[1]);
+
                 if(category)
                     link=`http://localhost:4000/api/v1/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}&ratings[gte]=${ratings}`;
-
-                const response=await axios.get(link);
                 
-                const product=response.data.data;
+                
+                const response=await axios.get(link,{
+                    withCredentials:true
+                });
+                
+                const product=response?.data?.data;
                 dispatch(allProductRequest(product));
+
+                console.log('res---,',product);
 
             } catch (error) {
                 dispatch(allProductFail(error.response?.data?.message));

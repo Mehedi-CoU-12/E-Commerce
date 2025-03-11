@@ -32,6 +32,9 @@ import ConfirmOrder from './components/Cart/ConfirmOrder.js';
 import Payment from './components/Cart/Payment.js';
 import OrderSuccess from './components/Cart/OrderSuccess.js';
 
+import MyOrder from './components/Order/MyOrder.js';
+import OrderDetails from './components/Order/OrderDetails.js';
+
 
 function App() {
 
@@ -94,12 +97,14 @@ function App() {
                 <Route path="/password/forgot" element={<ForgotPassword />} />
                 <Route path="/password/reset/:token" element={<ResetPassword />} />
                 <Route path="/cart" element={<Cart />} />
+
                 {isAuthenticated && <Route path="/me/update" element={<UpdateProfile />} />}
                 {isAuthenticated && <Route path="/password/update" element={<UpdatePassword />} />}
                 {isAuthenticated && <Route path="/shipping" element={<Shipping />} />}
-                {isAuthenticated && <Route path="/order/confirm" element={<ConfirmOrder />} />}
                 {isAuthenticated && <Route path="/success" element={<OrderSuccess />} />}
-
+                {isAuthenticated && <Route path="/order/confirm" element={<ConfirmOrder />} />}
+                {isAuthenticated && <Route path="/orders" element={<MyOrder />} />}
+                {isAuthenticated && <Route path="/order/:id" element={<OrderDetails />} />}
 
                 <Route 
                     path="/process/payment" 

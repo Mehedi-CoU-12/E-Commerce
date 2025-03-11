@@ -13,6 +13,9 @@ export const productSlice=createSlice({
     name:'Products',
     initialState,
     reducers:{
+        productRequest: (state) => {
+            state.loading = true;
+          },
         //all product
         allProductRequest:(state,action)=>{
             state.items=action.payload.products;
@@ -39,7 +42,7 @@ export const productSlice=createSlice({
 })
 
 export const {
-    
+    productRequest,
     allProductRequest,
     allProductFail,
     productDetails,

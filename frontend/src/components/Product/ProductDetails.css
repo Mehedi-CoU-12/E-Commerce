@@ -180,7 +180,7 @@
     font: 600 1vmax 'Roboto';
 }
 
-.reviewCard>span{
+.reviewCardSpan{
     color: rgba(0, 0, 0, 0.445);
     font: 300 0.9vmax cursive;
 }

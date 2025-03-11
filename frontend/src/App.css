@@ -16,10 +16,10 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-.greenColor{
-    color: green;
+.greenColor {
+    color: green !important;
 }
 
-.redColor{
-    color: red;
+.redColor {
+    color: red !important;
 }

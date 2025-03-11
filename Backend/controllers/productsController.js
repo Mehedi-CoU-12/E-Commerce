@@ -132,6 +132,7 @@ const createProductReviews=asyncHandler(async(req,res)=>{
     }
 
     let totalRatings=0;
+    
     product.reviews.forEach((id)=>{
         totalRatings+=Number(id.rating);
     })

@@ -39,7 +39,7 @@ const Cart = () => {
                         <input type="number" value={item?.quantity} readOnly />
                         <button>+</button>
                     </div>
-                    <div class="cartSubtotal">"{`৳ ${item?.price*item?.quantity}`}</div>
+                    <div class="cartSubtotal">{`৳ ${item?.price*item?.quantity}`}</div>
             </div>
  
             ))}

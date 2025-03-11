@@ -92,11 +92,12 @@
     display: flex;
     margin: 0.5vmax;
     justify-content: flex-start;
+    align-items: center;
 }
 
-.productCard > div > span{
-    margin: 0.7vmax;
-    font: 300 0.9vmax "Roboto";
+.porductCardSpan{
+    margin: 0.5vmax;
+    font: 300 0.8vmax "Roboto";
 }
 
 .productCard > p{
