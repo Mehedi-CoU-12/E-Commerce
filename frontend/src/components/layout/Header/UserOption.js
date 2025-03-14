@@ -32,7 +32,7 @@ const UserOption = ({user}) => {
         navigate('/account')
     }
     function dashboard() {
-        navigate('/dashboard')
+        navigate('/admin/dashboard')
     }
     function shoppingCart() {
         navigate('/cart')

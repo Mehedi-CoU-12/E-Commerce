@@ -34,6 +34,8 @@ import OrderSuccess from './components/Cart/OrderSuccess.js';
 
 import MyOrder from './components/Order/MyOrder.js';
 import OrderDetails from './components/Order/OrderDetails.js';
+import Dashboard from './components/Admin/Dashboard.js';
+import ProtectedRoute from './components/Routes/ProtectedRoute.js';
 
 
 function App() {
@@ -41,13 +43,14 @@ function App() {
     const dispatch = useDispatch();
     const { isAuthenticated,logInUser } = useSelector((state) => state.user);
     const [stripeApiKey,setStripeApiKey]=useState('');
+    let isAdmin="user";
 
     async function getStripeApiKey() {
         const {data}=await axios.get('http://localhost:4000/api/v1/stripeapikey',{
             withCredentials:true
         });
 
-        setStripeApiKey(data.data.stripeApiKey);
+        setStripeApiKey(data?.data?.stripeApiKey);
     }
 
     useEffect(() => {
@@ -59,15 +62,16 @@ function App() {
         
         //this extra api call is for persisting login data even if we refresh the page
         const fetchUserData = async () => {
-            dispatch(logInRequest()); // Start loading user data
 
+            dispatch(logInRequest());
             try {
                 const response = await axios.get('http://localhost:4000/api/v1/me', {
-                    withCredentials: true, // Ensure cookies are sent with the request
+                    withCredentials: true, 
                 });
 
-                if (response.data.success) {
-                    dispatch(logInSuccess(response.data.data)); // Dispatch success action to update state
+                if (response?.data?.success) {
+                    dispatch(logInSuccess(response?.data?.data));
+                    isAdmin=response?.data?.data?.role;
                 }
             } catch (error) {
                 dispatch(logInFailed(error?.response?.data?.message || 'Error fetching user data'));
@@ -77,8 +81,10 @@ function App() {
         // Fetch user data only if not authenticated
         if (!isAuthenticated) {
             fetchUserData();
-            getStripeApiKey();
         }
+        
+        if(isAuthenticated)
+        getStripeApiKey();
 
     }, [dispatch, isAuthenticated]);
 
@@ -98,6 +104,11 @@ function App() {
                 <Route path="/password/reset/:token" element={<ResetPassword />} />
                 <Route path="/cart" element={<Cart />} />
 
+                {/* protected router */}
+                {/* <Route element={<ProtectedRoute isAdmin={isAdmin} />}>
+                    <Route path='/mehedi' element={<Mehedi/>} />
+                </Route> */}
+
                 {isAuthenticated && <Route path="/me/update" element={<UpdateProfile />} />}
                 {isAuthenticated && <Route path="/password/update" element={<UpdatePassword />} />}
                 {isAuthenticated && <Route path="/shipping" element={<Shipping />} />}
@@ -105,6 +116,7 @@ function App() {
                 {isAuthenticated && <Route path="/order/confirm" element={<ConfirmOrder />} />}
                 {isAuthenticated && <Route path="/orders" element={<MyOrder />} />}
                 {isAuthenticated && <Route path="/order/:id" element={<OrderDetails />} />}
+                {isAuthenticated && <Route path="/admin/dashboard" element={<Dashboard />} />}
 
                 <Route 
                     path="/process/payment" 
@@ -117,10 +129,7 @@ function App() {
                     }
                 />
 
-                
-
             </Routes>
-
             <Footer />
         </>
     );

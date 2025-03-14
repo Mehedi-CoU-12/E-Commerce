@@ -267,7 +267,7 @@
         text-align: center;
     }
 
-    .detailsBlock-4>p{
+    .detailsBlock-4>span{
         font: 300 1.8vmax 'sans-serif';
     }
 
@@ -278,6 +278,13 @@
         font: 500 1.7vmax 'Roboto';
     }   
 
+    .reviewCard>p{
+        font: 600 3vw 'Roboto';
+    }
+
+    .reviewCard>span{
+        font: 300 5vw cursive;
+    }
 }
  
 

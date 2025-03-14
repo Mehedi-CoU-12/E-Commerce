@@ -69,6 +69,8 @@ const LogInSignUp = () => {
     // Extract 'redirect' query parameter safely
     const redirect = new URLSearchParams(location.search).get("redirect") || "/account";
 
+    console.log(redirect);
+
     useEffect(()=>{
         if(error){
             // console.log('error',error)
@@ -76,10 +78,8 @@ const LogInSignUp = () => {
         }
 
         if(isAuthenticated){
-            setTimeout(() => {
-                navigate(`/${redirect}`);
-            }, 500);
-            // navigate('/account');
+            // navigate(`/${redirect}`);
+            navigate('/account');
         }
     },[error,isAuthenticated,redirect])
 
@@ -95,6 +95,7 @@ const LogInSignUp = () => {
             
             // console.log('response',response);
             dispatch(logInSuccess(response?.data?.data))
+            // dispatch(updateUserSuccess(response?.data?.data));
             toast.success("Log-in successful!", stylesForAlert);
 
         } catch (error) {
@@ -128,7 +129,8 @@ const LogInSignUp = () => {
             const {data}=await axios.post('http://localhost:4000/api/v1/register',myForm,config);
             
             // console.log(data);
-            dispatch(logInSuccess(data.user));
+            dispatch(logInSuccess(data?.user));
+            // dispatch(updateUserSuccess(data?.user));
             toast.success("Registration successful!", stylesForAlert);
 
         } catch (error) {
