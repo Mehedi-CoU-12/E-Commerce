@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 import Sidebar from "./Sidebar.js";
 import "./dashboard.css";
 import Typography from "@mui/material/Typography";
@@ -6,9 +6,11 @@ import { Link } from "react-router-dom";
 import { Doughnut, Line } from "react-chartjs-2";
 import { useSelector, useDispatch } from "react-redux";
 import MetaData from "../layout/MetaData";
+import { adminProductFail, adminProductRequest, adminProductSuccess } from "../../features/adminProductSlice.js";
+import axios from "axios";
 
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement } from "chart.js";
-
+import Loader from "../layout/Loader/Loader.js";
 ChartJS.register(
   CategoryScale, 
   LinearScale, 
@@ -24,20 +26,42 @@ const Dashboard = () => {
 
   const dispatch = useDispatch();
 
-  const { items } = useSelector((state) => state.products);
+  const { products,error,loading } = useSelector((state) => state.adminProduct);
 
 //   const { orders } = useSelector((state) => state.allOrders);
 
 //   const { users } = useSelector((state) => state.allUsers);
 
+    useEffect(()=>{
+
+        const getAllProduct=async()=>{
+            try {
+                dispatch(adminProductRequest());
+                const {data}=await axios.get('http://localhost:4000/api/v1/admin/products',{
+                    withCredentials:true
+                })
+
+                dispatch(adminProductSuccess(data?.data));
+                
+            } catch (error) {
+                dispatch(adminProductFail(error));
+            }
+        }
+
+        getAllProduct();
+
+    },[dispatch,error])
+
+
   let outOfStock = 0;
 
-  items &&
-    items.forEach((item) => {
+  products &&
+    products.forEach((item) => {
       if (item.Stock === 0) {
         outOfStock += 1;
       }
     });
+    
 
 //   useEffect(() => {
 //     dispatch(getAdminProduct());
@@ -63,21 +87,25 @@ const Dashboard = () => {
     ],
   };
 
+
   const doughnutState = {
     labels: ["Out of Stock", "InStock"],
     datasets: [
       {
         backgroundColor: ["#00A6B4", "#6800B4"],
         hoverBackgroundColor: ["#4B5000", "#35014F"],
-        data: [outOfStock, items.length - outOfStock],
+        data: [outOfStock, (products?.length || 0) - outOfStock],
       },
     ],
   };
 
   return (
-    <div className="dashboard">
-      <MetaData title="Dashboard - Admin Panel" />
-      <Sidebar />
+    <Fragment>
+        {loading?
+        <Loader/> :
+        <div className="dashboard">
+        <MetaData title="Dashboard - Admin Panel" />
+        <Sidebar />
 
       <div className="dashboardContainer">
         <Typography component="h1">Dashboard</Typography>
@@ -85,13 +113,13 @@ const Dashboard = () => {
         <div className="dashboardSummary">
           <div>
             <p>
-              Total Amount <br /> ₹{totalAmount}
+              Total Amount <br /> ৳ {totalAmount}
             </p>
           </div>
           <div className="dashboardSummaryBox2">
             <Link to="/admin/products">
               <p>Product</p>
-              <p>{items && items.length}</p>
+              <p>{products && products?.length}</p>
             </Link>
             <Link to="/admin/orders">
               <p>Orders</p>
@@ -118,7 +146,8 @@ const Dashboard = () => {
           <Doughnut data={doughnutState} />
         </div>
       </div>
-    </div>
+    </div>}
+    </Fragment>
   );
 };
 

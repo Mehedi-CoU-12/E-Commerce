@@ -16,7 +16,7 @@ const individualsOrderSlice = createSlice({
     },
     IndOrderSuccess: (state, action) => {
       state.loading = false;
-      state.individualOrder = action.payload; // Fix: Store order correctly
+      state.individualOrder = action.payload;
       state.success = true;
     },
     IndOrderFailed: (state, action) => {
@@ -28,7 +28,7 @@ const individualsOrderSlice = createSlice({
     },
     resetIndOrder: (state) => {
       state.success = false;
-      state.individualOrder = null; // Reset order properly
+      state.individualOrder = null;
     },
   },
 });

@@ -2,10 +2,10 @@ import { User } from "../Models/userModels.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { uploadOnCloudinary } from "../utils/Cloudinary.js";
 import { sendToken } from "../utils/jwtToken.js";
 import {sendEmail} from "../utils/sendEmail.js";
 import { v2 as cloudinary } from 'cloudinary'
+import { uploadOnCloudinary } from "../utils/Cloudinary.js";
 import crypto from 'crypto';
 
 //register a user

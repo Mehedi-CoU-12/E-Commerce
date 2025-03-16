@@ -1,9 +1,8 @@
 import React from "react";
 import "./sidebar.css";
 import logo from "../../images/logo.png";
-import { Link } from "react-router-dom";
-import { TreeView, TreeItem } from '@mui/x-tree-view';
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Link, useNavigate } from "react-router-dom";
+import {  TreeItem, SimpleTreeView } from '@mui/x-tree-view';
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import AddIcon from "@mui/icons-material/Add";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
@@ -13,46 +12,61 @@ import PeopleIcon from "@mui/icons-material/People";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 
 const Sidebar = () => {
+
+    const navigate=useNavigate();
+
   return (
     <div className="sidebar">
-      <Link to="/">
-        <img src={logo} alt="Ecommerce" />
-      </Link>
-      <Link to="/admin/dashboard">
-        <p>
-          <DashboardIcon /> Dashboard
-        </p>
-      </Link>
-      <TreeView
-        defaultCollapseIcon={<ExpandMoreIcon />}
-        defaultExpandIcon={<ImportExportIcon />}
-      >
-        <TreeItem nodeId="1" label="Products">
-          <Link to="/admin/products">
-            <TreeItem nodeId="2" label="All" icon={<PostAddIcon />} />
-          </Link>
-          <Link to="/admin/product">
-            <TreeItem nodeId="3" label="Create" icon={<AddIcon />} />
-          </Link>
-        </TreeItem>
-      </TreeView>
-      <Link to="/admin/orders">
-        <p>
-          <ListAltIcon />
-          Orders
-        </p>
-      </Link>
-      <Link to="/admin/users">
-        <p>
-          <PeopleIcon /> Users
-        </p>
-      </Link>
-      <Link to="/admin/reviews">
-        <p>
-          <RateReviewIcon />
-          Reviews
-        </p>
-      </Link>
+        <Link to="/">
+            <img src={logo} alt="Ecommerce" />
+        </Link>
+
+        <Link to="/admin/dashboard">
+            <p>
+            <DashboardIcon /> Dashboard
+            </p>
+        </Link>
+
+        <SimpleTreeView>
+            <TreeItem itemId="1" id="products" label="Products" itemIcon={<ImportExportIcon />}>
+
+                <TreeItem
+                    itemId="2"
+                    id="all-products"
+                    label="All"
+                    itemIcon={<PostAddIcon />}
+                    onClick={() => navigate('/admin/products')}
+                />
+
+                <TreeItem
+                    itemId="3"
+                    id="create-product"
+                    label="Create"
+                    itemIcon={<AddIcon />}
+                    onClick={() => navigate('/admin/products/new')}
+                />
+            </TreeItem>
+        </SimpleTreeView>
+
+        <Link to="/admin/orders">
+            <p>
+            <ListAltIcon />
+            Orders
+            </p>
+        </Link>
+        
+        <Link to="/admin/users">
+            <p>
+            <PeopleIcon /> Users
+            </p>
+        </Link>
+
+        <Link to="/admin/reviews">
+            <p>
+            <RateReviewIcon />
+            Reviews
+            </p>
+        </Link>
     </div>
   );
 };

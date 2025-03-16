@@ -23,6 +23,27 @@
     padding: 2rem;
     transition: all 0.5s;
   }
+
+  #products{
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.493);
+    font: 200 1rem "Roboto";
+    padding: 2rem;
+    transition: all 0.5s;
+  }
+
+  #all-products,#create-product{
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.493);
+    font: 200 1rem "Roboto";
+    transition: all 0.5s;
+  }
+
+  #all-products:hover,#create-product:hover{
+    color: tomato;
+    transform: scale(1.1);
+  }
+
   .sidebar a:hover {
     color: tomato;
     transform: scale(1.1);

@@ -1,8 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+
+const storedUser = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
+
 const initialState = {
     logInUser: {},
-    isAuthenticated: false,
+    isAuthenticated:storedUser?true: false,
     loading: false,
     error: null,
 };
@@ -22,6 +25,7 @@ export const userSlice = createSlice({
             state.isAuthenticated = true;
             state.loading = false;
             state.error = null; // Reset error in case of success
+            localStorage.setItem("user", JSON.stringify(action.payload));
         },
         // Triggered when login fails
         logInFailed: (state, action) => {
@@ -29,11 +33,18 @@ export const userSlice = createSlice({
             state.isAuthenticated = false;
             state.error = action.payload; // Set the error
         },
+
+        //log-out 
+        logOutRequest: (state) => {
+            state.loading = true;
+            state.error = null; // Clear previous errors
+        },
         logOutUserSuccess:(state)=>{
-            state.logInUser=null;
+            state.logInUser={};
             state.isAuthenticated=false;
             state.loading=false;
             state.error=null;
+            localStorage.removeItem("user"); 
         },
         logOutUserFailed:(state,action)=>{
             state.loading=false;
@@ -46,6 +57,7 @@ export const {
     logInRequest, 
     logInSuccess, 
     logInFailed ,
+    logOutRequest,
     logOutUserSuccess,
     logOutUserFailed,
  } = userSlice.actions;

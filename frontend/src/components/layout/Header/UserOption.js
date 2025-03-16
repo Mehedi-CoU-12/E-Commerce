@@ -12,7 +12,7 @@ import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { logOutUser, logOutUserFailed, logOutUserSuccess } from '../../../features/usersSlice';
+import { logOutRequest, logOutUserFailed, logOutUserSuccess } from '../../../features/usersSlice';
 import './UserOption.css';
 
 
@@ -49,7 +49,9 @@ const UserOption = ({user}) => {
             theme: "dark",
         });
 
+
         try {
+            dispatch(logOutRequest());
             const response=await axios.get("http://localhost:4000/api/v1/logout",{
                 withCredentials: true,
               });

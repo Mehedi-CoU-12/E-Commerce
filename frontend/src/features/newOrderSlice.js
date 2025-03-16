@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  loading: false,
-  order: null,
-  error: null,
-  success: false,
+    order: null,
+    loading: false,
+    error: null,
+    success: false,
 };
 
 const newOrderSlice = createSlice({

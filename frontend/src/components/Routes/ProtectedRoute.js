@@ -1,19 +1,27 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
+import Loader from '../layout/Loader/Loader';
 
-const ProtectedRoute = ({isAdmin}) => {
+const ProtectedRoute = ({ isAdmin }) => {
+    const { logInUser, isAuthenticated, loading } = useSelector((state) => state.user);
 
-    const {loading,logInuser,isAuthenticated}=useSelector((state)=>state.user);
+    // console.log('auth:', isAuthenticated);
+    // console.log('admin:', isAdmin);
+    // console.log('user:', logInUser);
+    // console.log('loading:', loading);
 
-  return (
-    <div>
-        {isAuthenticated ?
-            (isAdmin==='admin'? 
-                <Outlet/>:<Navigate to='/login' />)
-        :<Navigate to="/login"/>}
-    </div>
-  )
-}
+    //Wait until loading is finished before making a decision
+    if (loading) return <Loader />;
 
-export default ProtectedRoute
+    if (!isAuthenticated && !loading) return <Navigate to="/login" replace />;
+
+    // If it's an admin route and user isn't an admin, redirect to home
+    if (isAdmin && (!logInUser || !logInUser.role || logInUser.role !== 'admin')) {
+        return <Navigate to="/" replace />;
+    }
+
+    return <Outlet />;
+};
+
+export default ProtectedRoute;

@@ -3,7 +3,7 @@ import webFont from 'webfontloader';
 import './App.css';
 
 import { useEffect,useState } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logInRequest, logInSuccess, logInFailed } from './features/usersSlice.js';
 import { Elements } from '@stripe/react-stripe-js';
@@ -34,8 +34,11 @@ import OrderSuccess from './components/Cart/OrderSuccess.js';
 
 import MyOrder from './components/Order/MyOrder.js';
 import OrderDetails from './components/Order/OrderDetails.js';
-import Dashboard from './components/Admin/Dashboard.js';
+
 import ProtectedRoute from './components/Routes/ProtectedRoute.js';
+import Dashboard from './components/Admin/Dashboard.js';
+import ProductList from './components/Admin/ProductList.js';
+import NewProduct from './components/Admin/NewProduct.js';
 
 
 function App() {
@@ -43,7 +46,6 @@ function App() {
     const dispatch = useDispatch();
     const { isAuthenticated,logInUser } = useSelector((state) => state.user);
     const [stripeApiKey,setStripeApiKey]=useState('');
-    let isAdmin="user";
 
     async function getStripeApiKey() {
         const {data}=await axios.get('http://localhost:4000/api/v1/stripeapikey',{
@@ -59,6 +61,12 @@ function App() {
                 families: ['Roboto', 'Droid Sans', 'Chilanka'],
             },
         });
+
+        //store user data to the local storage
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            dispatch(logInSuccess(JSON.parse(storedUser))); // Restore user from localStorage
+        }
         
         //this extra api call is for persisting login data even if we refresh the page
         const fetchUserData = async () => {
@@ -71,7 +79,6 @@ function App() {
 
                 if (response?.data?.success) {
                     dispatch(logInSuccess(response?.data?.data));
-                    isAdmin=response?.data?.data?.role;
                 }
             } catch (error) {
                 dispatch(logInFailed(error?.response?.data?.message || 'Error fetching user data'));
@@ -105,18 +112,22 @@ function App() {
                 <Route path="/cart" element={<Cart />} />
 
                 {/* protected router */}
-                {/* <Route element={<ProtectedRoute isAdmin={isAdmin} />}>
-                    <Route path='/mehedi' element={<Mehedi/>} />
-                </Route> */}
+                <Route element={<ProtectedRoute/>} >
+                    <Route path="/me/update" element={<UpdateProfile />} />
+                    <Route path="/password/update" element={<UpdatePassword />} />
+                    <Route path="/shipping" element={<Shipping />} />
+                    <Route path="/success" element={<OrderSuccess />} />
+                    <Route path="/order/confirm" element={<ConfirmOrder />} />
+                    <Route path="/orders" element={<MyOrder />} />
+                    <Route path="/order/:id" element={<OrderDetails />} />
+                </Route>
 
-                {isAuthenticated && <Route path="/me/update" element={<UpdateProfile />} />}
-                {isAuthenticated && <Route path="/password/update" element={<UpdatePassword />} />}
-                {isAuthenticated && <Route path="/shipping" element={<Shipping />} />}
-                {isAuthenticated && <Route path="/success" element={<OrderSuccess />} />}
-                {isAuthenticated && <Route path="/order/confirm" element={<ConfirmOrder />} />}
-                {isAuthenticated && <Route path="/orders" element={<MyOrder />} />}
-                {isAuthenticated && <Route path="/order/:id" element={<OrderDetails />} />}
-                {isAuthenticated && <Route path="/admin/dashboard" element={<Dashboard />} />}
+                {/* Protected route for admin */}
+                <Route element={<ProtectedRoute isAdmin={true} />} >
+                    <Route path="/admin/dashboard" element={<Dashboard />} />
+                    <Route path="/admin/products" element={<ProductList />} />
+                    <Route path="/admin/products/new" element={<NewProduct />} />
+                </Route>
 
                 <Route 
                     path="/process/payment" 

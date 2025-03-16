@@ -27,7 +27,7 @@ userRouter.put('/password/reset/:token',resetPassword);
 userRouter.put('/password/update',isAuthenticatedUser,updatePassword);
 
 userRouter.get('/me',isAuthenticatedUser,getUserDetails);
-userRouter.put('/me/update',isAuthenticatedUser,updateUser);
+userRouter.put('/me/update',isAuthenticatedUser,upload.single('avatar'),updateUser);
 
 userRouter.get('/admin/users',isAuthenticatedUser,isRoleAdmin('admin'),getAllUsers);
 userRouter.get('/admin/user/:id',isAuthenticatedUser,isRoleAdmin('admin'),getSingleUser);

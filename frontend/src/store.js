@@ -8,6 +8,8 @@ import shippingReducer from './features/shippingSlice';
 import newOrderReducer from './features/newOrderSlice';
 import individualOrderReducer from './features/individualsOrderDetailsSlice';
 import reviewReducer from './features/reviewSlice';
+import adminProductReducer from './features/adminProductSlice';
+import newProductReducer from './features/newProductSlice';
 
 const store = configureStore({
     reducer: {
@@ -20,6 +22,8 @@ const store = configureStore({
         newOrder:newOrderReducer,
         individualOrder:individualOrderReducer,
         reviews:reviewReducer,
+        adminProduct:adminProductReducer,
+        newProduct:newProductReducer,
     },
 });
 
