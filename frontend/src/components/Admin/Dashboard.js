@@ -1,13 +1,13 @@
+import axios from "axios";
 import React, { Fragment, useEffect } from "react";
 import Sidebar from "./Sidebar.js";
-import "./dashboard.css";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import { Doughnut, Line } from "react-chartjs-2";
 import { useSelector, useDispatch } from "react-redux";
 import MetaData from "../layout/MetaData";
 import { adminProductFail, adminProductRequest, adminProductSuccess } from "../../features/adminProductSlice.js";
-import axios from "axios";
+import "./dashboard.css";
 
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement } from "chart.js";
 import Loader from "../layout/Loader/Loader.js";

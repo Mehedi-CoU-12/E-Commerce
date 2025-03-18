@@ -10,20 +10,22 @@ import individualOrderReducer from './features/individualsOrderDetailsSlice';
 import reviewReducer from './features/reviewSlice';
 import adminProductReducer from './features/adminProductSlice';
 import newProductReducer from './features/newProductSlice';
+import deleteProductReducer from './features/deleteProductSlice';
 
 const store = configureStore({
     reducer: {
         products: productReducer,
-        cart: cartReducer,
-        shipping:shippingReducer,
         user: userReducer,
         profile:profileReducer,
         forgotPassword:passwordReducer,
+        cart: cartReducer,
         newOrder:newOrderReducer,
+        shipping:shippingReducer,
         individualOrder:individualOrderReducer,
         reviews:reviewReducer,
         adminProduct:adminProductReducer,
         newProduct:newProductReducer,
+        deleteProduct:deleteProductReducer,
     },
 });
 

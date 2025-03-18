@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom'
 import MetaData from '../layout/MetaData';
 import Loader from '../layout/Loader/Loader';
 import Sidebar from './Sidebar';
@@ -8,15 +8,44 @@ import { Button } from '@mui/material';
 import { DataGrid } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import './productList.css';
-
+import { deleteProductFail, deleteProductRequest, deleteProductSuccess } from '../../features/deleteProductSlice';
+import axios from 'axios';
 
 const ProductList = () => {
 
+    const dispatch=useDispatch();
+    const navigate=useNavigate();
     const {products,loading}=useSelector((state)=>state.adminProduct);
+
+    const toastOptions = {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+    };
 
     const deleteProductHandler = (id) => {
         
+        const deleteProduct=async()=>{
+            try {
+                dispatch(deleteProductRequest());
+                const {data}=await axios.delete(`http://localhost:4000/api/v1/admin/product/${id}`,{
+                    withCredentials:true
+                });
+                dispatch(deleteProductSuccess(data?.data));
+                navigate('/admin/dashboard');
+            } catch (error) {
+                toast.error(error?.message,toastOptions);
+                dispatch(deleteProductFail(error?.message));
+            }
+        }
+        deleteProduct();
     };
 
     const columns = [
@@ -29,28 +58,28 @@ const ProductList = () => {
         {
           field: "name",
           headerName: "Name",
-          minWidth: 350,
+          minWidth: 300,
           flex: 1,
         },
         {
           field: "stock",
           headerName: "Stock",
           type: "number",
-          minWidth: 150,
+          minWidth: 50,
           flex: 0.3,
         },
         {
           field: "price",
           headerName: "Price",
           type: "number",
-          minWidth: 270,
+          minWidth: 200,
           flex: 0.5,
         },
         {
           field: "actions",
           flex: 0.3,
           headerName: "Actions",
-          minWidth: 150,
+          minWidth: 200,
           type: "number",
           sortable: false,
           renderCell: (params) => {
@@ -89,24 +118,25 @@ const ProductList = () => {
     <Fragment>
         {loading? <Loader/>
         :<Fragment>
-        <MetaData title={`ALL PRODUCTS - Admin`} />
+            <ToastContainer/>
+            <MetaData title={`ALL PRODUCTS - Admin`} />
 
-        <div className="dashboard">
-            <Sidebar />
-            <div className="productListContainer">
-                <h1 id="productListHeading">ALL PRODUCTS</h1>
+            <div className="dashboard">
+                <Sidebar />
+                <div className="productListContainer">
+                    <h1 id="productListHeading">ALL PRODUCTS</h1>
 
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    pageSize={10} // Number of rows per page
-                    rowsPerPageOptions={[10, 20, 30]} // Options for rows per page
-                    disableSelectionOnClick
-                    className="productListTable"
-                    autoHeight
-                />
+                    <DataGrid
+                        rows={rows}
+                        columns={columns}
+                        pageSize={10} // Number of rows per page
+                        rowsPerPageOptions={[10, 20, 30]} // Options for rows per page
+                        disableSelectionOnClick
+                        className="productListTable"
+                        autoHeight
+                    />
+                </div>
             </div>
-        </div>
         </Fragment>}
     </Fragment>
   )
