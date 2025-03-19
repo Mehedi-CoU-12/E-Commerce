@@ -5,7 +5,7 @@ import ProductCard from './ProductCard.js';
 import MetaData from '../layout/MetaData.js';
 import axios from 'axios';
 import { useDispatch,useSelector } from 'react-redux';
-import { allProductRequest,allProductFail } from '../../features/productSlice.js';
+import { allProductRequest,allProductFail, allProductSuccess } from '../../features/productSlice.js';
 import Loader from '../layout/Loader/Loader.js';
 import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -46,11 +46,12 @@ function Home() {
         const fatchProduct=async()=>{
             try {
                 //fatch data from backend
+                dispatch(allProductRequest());
                 const response=await axios.get('http://localhost:4000/api/v1/products');
-                const products=response.data.data;
+                const products=response?.data?.data;
                 
                 //send data to the redux store
-                dispatch(allProductRequest(products));
+                dispatch(allProductSuccess(products));
  
             } catch (err) {
                 // console.log(error.response.data.message);

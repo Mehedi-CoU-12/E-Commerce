@@ -1,20 +1,24 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { Fragment, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../layout/Loader/Loader';
 import ProductCard from '../Home/ProductCard';
 import axios from 'axios';
-import { allProductFail, allProductRequest } from '../../features/productSlice';
+import { 
+    allProductFail, 
+    allProductRequest, 
+    allProductSuccess 
+} from '../../features/productSlice';
 import { toast, ToastContainer } from 'react-toastify';
-import './Products.css';
 import { useParams } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
-import Slider from '@mui/material/Slider'
+import Slider from '@mui/material/Slider';
 import { Typography } from '@mui/material';
 import MetaData from '../layout/MetaData.js';
+import './Products.css';
 
-const stylesForAlert={
-    position: "top-right", // Position of the toast
-    autoClose: 3000, // Auto-close after 3 seconds
+const stylesForAlert = {
+    position: "top-right",
+    autoClose: 3000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
@@ -22,7 +26,7 @@ const stylesForAlert={
     theme: "dark",
 };
 
-const categories=[
+const categories = [
     "Laptop",
     "Footwear",
     "Bottom",
@@ -30,61 +34,55 @@ const categories=[
     "Attire",
     "Camera",
     "SmartPhones",
-]
+];
 
 const Products = () => {
-    
-    const dispatch=useDispatch();
-    
-    const {items ,loading,resultPerPage,productCount}=useSelector((state)=>state.products);
-    
-    const {keyword=""}=useParams();
-    
-    const [currentPage,setCurrentPage]=useState(1);
-    const [price,setPrice]=useState([0,50000]);
-    const [category,setCategory]=useState("");
-    const [ratings,setRatings]=useState(0);
+    const dispatch = useDispatch();
+    const { items, loading, resultPerPage, productCount } = useSelector((state) => state.products);
+    const { keyword = "" } = useParams();
 
-    const setCurrentPageNo=(e)=>{
+    const [currentPage, setCurrentPage] = useState(1);
+    const [price, setPrice] = useState([0, 50000]);
+    const [category, setCategory] = useState("");
+    const [ratings, setRatings] = useState(0);
+
+    const setCurrentPageNo = (e) => {
         setCurrentPage(e);
-    }
+    };
 
-    const priceHandler=(e,newPrice)=>{
+    const priceHandler = (e, newPrice) => {
         setPrice(newPrice);
-    }
+    };
 
-    useEffect(()=>{
-
-        const fatchAllProducts=async()=>{
-
+    useEffect(() => {
+        const fetchAllProducts = async () => {
             try {
-
-                let link=`http://localhost:4000/api/v1/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
-
-                // console.log(keyword,currentPage,price[0],price[1]);
-
-                if(category)
-                    link=`http://localhost:4000/api/v1/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}&ratings[gte]=${ratings}`;
+                dispatch(allProductRequest());
                 
-                
-                const response=await axios.get(link,{
-                    withCredentials:true
-                });
-                
-                const product=response?.data?.data;
-                dispatch(allProductRequest(product));
+                let link = `http://localhost:4000/api/v1/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
 
-                console.log('res---,',product);
+                if (category) {
+                    link += `&category=${category}`;
+                }
+
+                const response = await axios.get(link, { withCredentials: true });
+
+                if (response?.data?.data) {
+                    dispatch(allProductSuccess(response.data.data));
+                } else {
+                    throw new Error("Invalid API response");
+                }
 
             } catch (error) {
-                dispatch(allProductFail(error.response?.data?.message));
-                toast.error(error.response?.data?.message,stylesForAlert);
+                const errorMessage = error.response?.data?.message || "Failed to fetch products";
+                dispatch(allProductFail(errorMessage));
+                toast.error(errorMessage, stylesForAlert);
             }
-        }
+        };
 
-        fatchAllProducts();
+        fetchAllProducts();
 
-    },[dispatch,keyword,currentPage,price,category,ratings])
+    }, [dispatch, keyword, currentPage, price, category, ratings]);
 
     return (
         <Fragment>

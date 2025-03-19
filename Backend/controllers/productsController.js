@@ -11,6 +11,11 @@ import { uploadOnCloudinary } from "../utils/Cloudinary.js";
     here aysnHandler is used instead of try-catch block.
     that means we don't have to use try-catch if we are
     using "AsyncHanlder".
+
+    images upload:->
+    here we can access images in req.files instead of 
+    req.body.images because of multer
+
 */
 
 //create a new product
@@ -69,24 +74,57 @@ const getAdminProducts=asyncHandler(async(req,res)=>{
     res.status(200).send(new ApiResponse(200,products,"Product fatch from DB successfully"));
 });
 
-//update product
-const updateProduct=asyncHandler(async(req,res)=>{
+//update product(admin)
+const updateProduct = asyncHandler(async (req, res) => {
 
-    const productId=req.params.id;
-    const updateData=req.body;
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
 
-    console.log(updateData,productId);
+    if (!product) {
+        throw new ApiError(404, "Product not found!");
+    }
 
-    const updateProduct=await Product.findByIdAndUpdate(productId,updateData,{new:true,runValidators:true})
-    
-    if(!updateProduct)
-        throw new ApiError(500,"Product Not Found!")
+    let imagesLink = [...product.images]; // Keep existing images by default
 
-    return res.status(200).json(new ApiResponse(200,updateData,"Product Updated Successfully!"))
+    // Only process new images if files are uploaded
+    if (req.files && req.files.length > 0) {
+        
+        // Delete old images from Cloudinary
+        for (const image of product.images) {
+            await cloudinary.uploader.destroy(image.public_id);
+        }
 
+        // Upload new images
+        imagesLink = [];
+        for (const file of req.files) {
+            const result = await uploadOnCloudinary(file.path);
+            if (result) {
+                imagesLink.push({
+                    public_id: result.public_id,
+                    url: result.secure_url
+                });
+            }
+        }
+    }
+
+    // Update product data
+    const updateData = {
+        ...req.body,
+        images: imagesLink,
+        user: req.user.id
+    };
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+        productId,
+        updateData,
+        { new: true, runValidators: true }
+    );
+
+    res.status(200).json(
+        new ApiResponse(200, updatedProduct, "Product updated successfully!")
+    );
 });
-
-//delete product
+//delete product(admin)
 const deleteProduct=asyncHandler(async(req,res)=>{
     
     const productId=req.params.id;

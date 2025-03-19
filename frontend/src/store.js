@@ -11,6 +11,7 @@ import reviewReducer from './features/reviewSlice';
 import adminProductReducer from './features/adminProductSlice';
 import newProductReducer from './features/newProductSlice';
 import deleteProductReducer from './features/deleteProductSlice';
+import updateProductReducer from './features/updateProductSlice';
 
 const store = configureStore({
     reducer: {
@@ -26,6 +27,7 @@ const store = configureStore({
         adminProduct:adminProductReducer,
         newProduct:newProductReducer,
         deleteProduct:deleteProductReducer,
+        updateProduct:updateProductReducer,
     },
 });
 

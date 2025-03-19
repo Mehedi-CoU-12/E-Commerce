@@ -39,6 +39,8 @@ import ProtectedRoute from './components/Routes/ProtectedRoute.js';
 import Dashboard from './components/Admin/Dashboard.js';
 import ProductList from './components/Admin/ProductList.js';
 import NewProduct from './components/Admin/NewProduct.js';
+import UpdateProduct from './components/Admin/UpdateProduct.js';
+import OrderList from './components/Admin/OrderList.js';
 
 
 function App() {
@@ -127,6 +129,8 @@ function App() {
                     <Route path="/admin/dashboard" element={<Dashboard />} />
                     <Route path="/admin/products" element={<ProductList />} />
                     <Route path="/admin/products/new" element={<NewProduct />} />
+                    <Route path='/admin/product/:id' element={<UpdateProduct/>} />
+                    <Route path='/admin/orders' element={<OrderList/>} />
                 </Route>
 
                 <Route 

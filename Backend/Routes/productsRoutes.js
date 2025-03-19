@@ -23,7 +23,7 @@ productRouter.get('/reviews',getProductReviews)
 productRouter.delete('/reviews',isAuthenticatedUser,deleteProductReview)
 
 productRouter.post('/admin/products/new',isAuthenticatedUser,isRoleAdmin('admin'), upload.array('images', 10),createProduct)
-productRouter.put('/admin/product/:id',isAuthenticatedUser,isRoleAdmin('admin'),updateProduct)
+productRouter.put('/admin/product/:id',isAuthenticatedUser,isRoleAdmin('admin'),upload.array('images',10),updateProduct)
 productRouter.delete('/admin/product/:id',isAuthenticatedUser,isRoleAdmin('admin'),deleteProduct)
 productRouter.get('/admin/products',isAuthenticatedUser,isRoleAdmin('admin'),getAdminProducts)
 

@@ -1,21 +1,26 @@
 import { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  productDetails,
-  productDetailsFail,
-  productRequest,
-} from "../../features/productSlice";
 import { toast, ToastContainer } from "react-toastify";
+import { addToCart } from "../../features/cartSlice";
 import Carousel from "react-material-ui-carousel";
-import "./ProductDetails.css";
 import axios from "axios";
+import "./ProductDetails.css";
 
 import ReviewCard from "./ReviewCard";
 import Loader from "../layout/Loader/Loader";
 import MetaData from "../layout/MetaData";
-import { addToCart } from "../../features/cartSlice";
 
+import {
+    productDetailsFail,
+    productDetailsRequest,
+    productDetailsSuccess,
+} from "../../features/productSlice";
+import { 
+    reviewFailed, 
+    reviewRequest, 
+    reviewSuccess 
+} from "../../features/reviewSlice";
 import {
     Dialog,
     DialogActions,
@@ -25,7 +30,6 @@ import {
     Rating,
 } from '@mui/material';
 
-import { reviewFailed, reviewRequest, reviewSuccess } from "../../features/reviewSlice";
 
 const ProductDetails = () => {
 
@@ -42,15 +46,16 @@ const ProductDetails = () => {
     // Fetch product from Redux
     const product = useSelector((state) => state.products.productDetails);
     const loading = useSelector((state) => state.products.loading);
-    const error = useSelector((state) => state.products.error);
     const cartItems = useSelector((state) => state.cart.items);
 
     // Load product details
     const fetchProductInfo = async () => {
         try {
-            dispatch(productRequest());
-            const response = await axios.get(`http://localhost:4000/api/v1/product/${id}`);
-            dispatch(productDetails(response?.data?.data));
+            dispatch(productDetailsRequest());
+            const response = await axios.get(`http://localhost:4000/api/v1/product/${id}`,{
+                withCredentials:true
+            });
+            dispatch(productDetailsSuccess(response?.data?.data));
             setStock(response?.data?.data?.Stock);
         } catch (error) {
             dispatch(productDetailsFail(error?.response?.data?.message));
