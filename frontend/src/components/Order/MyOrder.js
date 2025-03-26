@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import MetaData from "../layout/MetaData";
 import LaunchIcon from "@mui/icons-material/Launch";
 import "./myOrder.css";
-import { clearErrors, createOrderFailed, createOrderSuccess } from "../../features/newOrderSlice";
+import { clearErrors, createOrderFailed, createOrderRequest, createOrderSuccess } from "../../features/newOrderSlice";
 import axios from "axios";
 
 const stylesForAlert={
@@ -27,6 +27,8 @@ const MyOrders = () => {
 
   const { loading, error, order } = useSelector((state) => state.newOrder);
   const { logInUser } = useSelector((state) => state.user);
+
+  console.log(order);
 
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
@@ -75,7 +77,7 @@ const MyOrders = () => {
   const rows = [];
 
   order &&
-    order.forEach((item, index) => {
+    order?.forEach((item, index) => {
       rows.push({
         itemsQty: item.orderItems.length,
         id: item._id,
@@ -89,30 +91,30 @@ const MyOrders = () => {
           toast.error(error, stylesForAlert);
           dispatch(clearErrors());
         }
-        
-        const fatchOrders=async()=>{
-            try {
-
-                const {data}=await axios.get('http://localhost:4000/api/v1/order/me',{
-                    withCredentials:true
-                });
-
-                dispatch(createOrderSuccess(data?.data));
-                
-            } catch (error) {
-                dispatch(createOrderFailed(error));
-                toast.error(error,stylesForAlert);
-            }
-        }
-
-        fatchOrders();
-
+      
+        const fetchOrders = async () => {
+          try {
+            dispatch(createOrderRequest());
+            const { data } = await axios.get("http://localhost:4000/api/v1/order/me", {
+              withCredentials: true,
+            });
+      
+            console.log("Fetched Orders:", data?.data);  // Debugging Log
+      
+            dispatch(createOrderSuccess(data?.data));
+          } catch (error) {
+            dispatch(createOrderFailed(error?.message));
+            toast.error(error?.message, stylesForAlert);
+          }
+        };
+      
+        fetchOrders();
       }, [dispatch, error]);
-
+      
   return (
     <Fragment>
         <ToastContainer/>
-        <MetaData title={`${logInUser.name} - Orders`} />
+        <MetaData title={`${logInUser?.name} - Orders`} />
 
       {loading ? (
         <Loader />
@@ -127,7 +129,7 @@ const MyOrders = () => {
             autoHeight
           />
 
-          <Typography id="myOrdersHeading">{logInUser.name}'s Orders</Typography>
+          <Typography id="myOrdersHeading">{logInUser?.name}'s Orders</Typography>
         </div>
       )}
     </Fragment>

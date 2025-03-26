@@ -222,36 +222,47 @@ const getProductReviews=asyncHandler(async(req,res)=>{
 })
 
 //delete Product review
-const deleteProductReview=asyncHandler(async(req,res)=>{
+const deleteProductReview = asyncHandler(async (req, res) => {
+    const { productId, id } = req.query;
 
-    const product=await Product.findById(req.query.productId);
+    // Find the product
+    const product = await Product.findById(productId);
 
-    if(!product)
-        throw new ApiError(404,'Product not found!');
+    if (!product) throw new ApiError(404, "Product not found!");
 
-    const reviews=product.reviews.filter((item)=>item._id.toString()!==req.query.id.toString());
-    
-    //we have to update the ratings,number of review as well
-    let totalRatings=0;
+    // Filter out the review to delete
+    const updatedReviews = product.reviews.filter((item) => item._id.toString() !== id.toString());
 
-    reviews.forEach((item)=>{
-        totalRatings+=Number(item.rating);
-    })
+    // Handle case when no reviews are left
+    let avgRatings = 0;
+    let numberOfReviews = updatedReviews.length;
 
-    const avgRatings=totalRatings/reviews.length;
-    const numberOfReviews=reviews.length;
+    if (numberOfReviews > 0) {
+        const totalRatings = updatedReviews.reduce((acc, item) => acc + Number(item.rating), 0);
+        avgRatings = totalRatings / numberOfReviews;
+    }
 
-    console.log(req.query.productId,req.query.id);
+    console.log("Avg Ratings:", avgRatings);
+    console.log("Number of Reviews:", numberOfReviews);
 
-    //update the product details
-    await Product.findByIdAndUpdate(req.query.productId,{reviews,ratings:avgRatings,numberOfReviews},{
-        new:true,
-        runValidators:true,
-        useFindAndModify:false
-    })
+    // Update the product details in the database
+    await Product.findByIdAndUpdate(
+        productId,
+        {
+            reviews: updatedReviews,
+            ratings: avgRatings,
+            numberOfReviews,
+        },
+        {
+            new: true,
+            runValidators: true,
+            useFindAndModify: false,
+        }
+    );
 
-    res.status(200).json(new ApiResponse(200,'','Review deleted successfully!'));
-})
+    res.status(200).json(new ApiResponse(200, "", "Review deleted successfully!"));
+});
+
 
 export {
     createProduct,

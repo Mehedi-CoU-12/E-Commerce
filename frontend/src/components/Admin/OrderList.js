@@ -9,42 +9,71 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SideBar from "./Sidebar";
 
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import "./productList.css";
 
-const OrderList = () => {
-  const dispatch = useDispatch();
-  const navigate=useNavigate();
-  const params=useParams();
+import axios from "axios";
+import { allOrderFailed, allOrderRequest, allOrderSuccess } from "../../features/allOrderSlice";
+import { deleteOrderFailed, deleteOrderRequest, deleteOrderSuccess } from "../../features/deleteOrderSlice";
 
-  const { error, orders } = useSelector((state) => state.allOrders);
+
+const toastOptions = {
+position: "top-right",
+autoClose: 2000,
+hideProgressBar: false,
+closeOnClick: true,
+pauseOnHover: true,
+draggable: true,
+theme: "dark",
+};
+
+const OrderList = () => {
+    const dispatch = useDispatch();
+    const navigate=useNavigate();
+    const params=useParams();
+
+    const { error, orders } = useSelector((state) => state.allOrders);
 
 //   const { error: deleteError, isDeleted } = useSelector((state) => state.order);
+const getAllOrders=async()=>{
+    try {
+        dispatch(allOrderRequest());
+        const {data}=await axios.get('http://localhost:4000/api/v1/admin/orders',{
+            withCredentials:true
+        });
+        // console.log(data.data);
+        dispatch(allOrderSuccess(data?.data));
+    } catch (error) {
+        console.log(error.messsage);
+        dispatch(allOrderFailed(error?.messsage));
+    }
+}
 
-  const deleteOrderHandler = (id) => {
+const deleteOrderHandler = (id) => {
 
         const deleteOrder=async () => {
-            
+            try {
+                dispatch(deleteOrderRequest());
+                const {data}=await axios.delete(`http://localhost:4000/api/v1/admin/order/${id}`,{
+                    withCredentials:true
+                })
+                toast.success('Order deleted successfully!',toastOptions);
+                dispatch(deleteOrderSuccess(data?.data))
+
+                getAllOrders();
+                // navigate('/admin/dashboard');
+
+            } catch (error) {
+                toast.error(error?.messsage ||'order deletion failed!',toastOptions);
+                dispatch(deleteOrderFailed(error?.messsage));
+            }
         }
 
         deleteOrder();
-  };
+    };
 
   useEffect(() => {
-    // if (error) {
-    //   dispatch(clearErrors());
-    // }
-
-    // if (deleteError) {
-    //   dispatch(clearErrors());
-    // }
-
-    // if (isDeleted) {
-      navigate("/admin/orders");
-    // }
-
-    const getAllOrders=async()=>{
-
-    }
 
     getAllOrders();
     
@@ -59,9 +88,7 @@ const OrderList = () => {
       minWidth: 150,
       flex: 0.5,
       cellClassName: (params) => {
-        return params.getValue(params.id, "status") === "Delivered"
-          ? "greenColor"
-          : "redColor";
+        return params?.row?.status === "Delivered" ? "greenColor" : "redColor";
       },
     },
     {
@@ -88,15 +115,16 @@ const OrderList = () => {
       type: "number",
       sortable: false,
       renderCell: (params) => {
+        // console.log(params);
         return (
           <Fragment>
-            <Link to={`/admin/order/${params.getValue(params.id, "id")}`}>
+            <Link to={`/admin/order/${params?.row?.id}`}>
               <EditIcon />
             </Link>
 
             <Button
               onClick={() =>
-                deleteOrderHandler(params.id)
+                deleteOrderHandler(params?.row?.id)
               }
             >
               <DeleteIcon />
@@ -109,35 +137,37 @@ const OrderList = () => {
 
   const rows = [];
 
-  orders &&
-    orders.forEach((item) => {
+  orders?.orders &&
+    orders?.orders.forEach((item) => {
       rows.push({
-        id: item._id,
-        itemsQty: item.orderItems.length,
-        amount: item.totalPrice,
-        status: item.orderStatus,
+        id: item?._id,
+        itemsQty: item?.orderItems?.length,
+        amount: item?.totalPrice,
+        status: item?.orderStatus,
       });
     });
 
   return (
     <Fragment>
-      <MetaData title={`ALL ORDERS - Admin`} />
+        <ToastContainer/>
+        <MetaData title={`ALL ORDERS - Admin`} />
 
-      <div className="dashboard">
-        <SideBar />
-        <div className="productListContainer">
-          <h1 id="productListHeading">ALL ORDERS</h1>
+        <div className="dashboard">
+            <SideBar />
+            <div className="productListContainer">
+            <h1 id="productListHeading">ALL ORDERS</h1>
 
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            pageSize={10}
-            disableSelectionOnClick
-            className="productListTable"
-            autoHeight
-          />
+            <DataGrid
+                rows={rows}
+                columns={columns}
+                pageSize={10} // Number of rows per page
+                rowsPerPageOptions={[10, 20, 30]} // Options for rows per page
+                disableSelectionOnClick
+                className="productListTable"
+                autoHeight
+            />
+            </div>
         </div>
-      </div>
     </Fragment>
   );
 };

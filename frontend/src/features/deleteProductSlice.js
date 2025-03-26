@@ -15,7 +15,7 @@ export const deleteProductSlice=createSlice({
           },
         //all product
         deleteProductSuccess:(state,action)=>{
-            state.items=action.payload;
+            state.products=action.payload;
             state.loading=false;
         },
         deleteProductFail:(state,action)=>{

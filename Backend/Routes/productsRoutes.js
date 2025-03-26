@@ -18,6 +18,7 @@ const productRouter=express.Router();
 
 productRouter.get('/products',getAllProducts);
 productRouter.get('/product/:id',getProductDetails)
+
 productRouter.put('/review',isAuthenticatedUser,createProductReviews)
 productRouter.get('/reviews',getProductReviews)
 productRouter.delete('/reviews',isAuthenticatedUser,deleteProductReview)

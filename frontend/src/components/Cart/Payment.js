@@ -63,19 +63,19 @@ const Payment = () => {
     const submitHandler = async (e) => {
         e.preventDefault();
 
-        dispatch(createOrderRequest());
         payBtn.current.disabled = true;
-
+        
         try {
             const config = {
                 headers: {
-                "Content-Type": "application/json",
+                    "Content-Type": "application/json",
                 },
                 withCredentials:true
             };
+            dispatch(createOrderRequest());
             const { data } = await axios.post("http://localhost:4000/api/v1/process/payment", paymentData, config);
 
-            const client_secret = data.data.client_secret;
+            const client_secret = data?.data?.client_secret;
 
             if (!stripe || !elements)
                 return;
@@ -121,11 +121,16 @@ const Payment = () => {
                         const {data} = await axios.post("http://localhost:4000/api/v1/order/new", order, config);
                 
                         dispatch(createOrderSuccess(data?.data)); // Save order to Redux store
+                        toast.success('Payment Successful!',stylesForAlert);
+
                     }catch (error) {
                         dispatch(createOrderFailed(error.response?.data2?.message || "Failed to place order"));
                     }
 
-                    navigate("/success");
+                    setTimeout(() => {
+                        navigate("/success");
+                    }, 2000);
+
                 } else {
                     toast.error("There's some issue while processing payment.",stylesForAlert);
                 }
@@ -167,7 +172,7 @@ const Payment = () => {
 
           <input
             type="submit"
-            value={`Pay - ৳${orderInfo && orderInfo.totalPrice}`}
+            value={`Pay - ৳${orderInfo && orderInfo?.totalPrice}`}
             ref={payBtn}
             className="paymentFormBtn"
           />

@@ -7,7 +7,7 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { logInFailed, logInRequest, logInSuccess } from '../../features/usersSlice';
+import { loadUser, logInFailed, logInRequest, logInSuccess } from '../../features/usersSlice';
 import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Loader from '../layout/Loader/Loader.js';
@@ -69,7 +69,26 @@ const LogInSignUp = () => {
     // Extract 'redirect' query parameter safely
     const redirect = new URLSearchParams(location.search).get("redirect") || "/account";
 
-    console.log(redirect);
+    const fetchUserData = async () => {
+        dispatch(logInRequest());
+        try {
+            const response = await axios.get('http://localhost:4000/api/v1/me', {
+                withCredentials: true, 
+            });
+
+            
+            dispatch(logInSuccess(response?.data?.data));
+
+        } catch (error) {
+            dispatch(logInFailed(error?.response?.data?.message || 'Error fetching user data'));
+        }
+    };
+
+    // useEffect(() => {
+    //     // fetchUserData();
+    //     dispatch(loadUser());
+    // }, [dispatch])
+    
 
     useEffect(()=>{
         if(error){
@@ -78,8 +97,8 @@ const LogInSignUp = () => {
         }
 
         if(isAuthenticated){
-            // navigate(`/${redirect}`);
-            navigate('/account');
+            navigate(`${redirect}`);
+            // navigate('/account');
         }
     },[error,isAuthenticated,redirect])
 
@@ -91,16 +110,17 @@ const LogInSignUp = () => {
 
             const config={Headers:{"Content-Type":"application/json"},withCredentials:true};
 
-            const response=await axios.post('http://localhost:4000/api/v1/login',{email:logInEmail,password:logInPassword},config);
+            const {data}=await axios.post('http://localhost:4000/api/v1/login',{email:logInEmail,password:logInPassword},config);
             
             // console.log('response',response);
-            dispatch(logInSuccess(response?.data?.data))
-            // dispatch(updateUserSuccess(response?.data?.data));
             toast.success("Log-in successful!", stylesForAlert);
+            dispatch(logInSuccess(data?.data))
+            dispatch(loadUser());
+            // fetchUserData();
 
         } catch (error) {
-            dispatch(logInFailed(error?.response?.data?.message));
-            toast.error(error?.response?.data?.message,stylesForAlert);
+            dispatch(logInFailed(error?.message));
+            toast.error(error?.message,stylesForAlert);
         }
 
         // //clear the form data

@@ -1,44 +1,44 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    review: null,
+    reviews: [],
     loading: false,
     error: null,
     success: false,
 };
 
-const reviewSlice = createSlice({
-  name: "individualOrder",
+const allReviewSlice = createSlice({
+  name: "All Reviews",
   initialState,
   reducers: {
-    reviewRequest: (state) => {
+    allReviewRequest: (state) => {
       state.loading = true;
     },
-    reviewSuccess: (state, action) => {
+    allReviewSuccess: (state, action) => {
       state.loading = false;
-      state.review = action.payload;
+      state.reviews = action.payload;
       state.success = true;
     },
-    reviewFailed: (state, action) => {
+    allReviewFailed: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
     clearErrors: (state) => {
       state.error = null;
     },
-    resetReview: (state) => {
+    resetAllReview: (state) => {
       state.success = false;
-      state.review = null; // Reset order properly
+      state.reviews = null; 
     },
   },
 });
 
 export const {
-  reviewRequest,
-  reviewSuccess,
-  reviewFailed,
+  allReviewRequest,
+  allReviewSuccess,
+  allReviewFailed,
   clearErrors,
-  resetReview,
-} = reviewSlice.actions;
+  resetAllReview,
+} = allReviewSlice.actions;
 
-export default reviewSlice.reducer;
+export default allReviewSlice.reducer;

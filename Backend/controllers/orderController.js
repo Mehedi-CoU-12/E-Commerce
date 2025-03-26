@@ -95,10 +95,15 @@ const updateOrderStatus=asyncHandler(async(req,res)=>{
     if(order.orderStatus==='Delivered')
         throw new ApiError(400,'You have  already delivered this order!');
 
-    //this will update the product stock and quantity
-    order.orderItems.forEach(async(item)=>{
-        await updateStock(item.product,item.quantity);
-    });
+    if(req.body.status==="Shipped"){
+        //this will update the product stock and quantity
+        order.orderItems.forEach(async(item)=>{
+            await updateStock(item.product,item.quantity);
+        });
+    }
+
+
+    // console.log(req.params.id,order.orderStatus,req.body);
 
     order.orderStatus=req.body.status;
 
@@ -112,7 +117,6 @@ const updateOrderStatus=asyncHandler(async(req,res)=>{
 
 async function updateStock(id,quantity) {
     
-    
     const product=await Product.findById(id);
 
     product.Stock-=quantity;
@@ -123,12 +127,13 @@ async function updateStock(id,quantity) {
 //delete order -->admin
 const deleteOrder=asyncHandler(async(req,res)=>{
 
+    // console.log(req.params.id);
     const order=await Order.findById(req.params.id);
 
     if(!order)
         throw new ApiError(400,'Order not found with this Id');
     
-    await order.remove();
+    await order.deleteOne();
 
     res.status(200).json(new ApiResponse(200,'','order deleted successfully!'));
 })

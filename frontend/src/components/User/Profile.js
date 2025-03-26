@@ -1,14 +1,16 @@
 import React, { Fragment, useEffect } from 'react'
 import MetaData from '../layout/MetaData'
 import Loader from '../layout/Loader/Loader';
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom';
 import './Profile.css';
+import { loadUser } from '../../features/usersSlice';
 
 const Profile = () => {
 
     const {logInUser:user,loading,isAuthenticated}=useSelector((state)=>state.user);
     const navigate=useNavigate();
+    const dispatch=useDispatch();
     
     useEffect(() => {
         
@@ -17,6 +19,10 @@ const Profile = () => {
         
     }, [isAuthenticated,navigate])
     
+    useEffect(()=>{
+        loadUser();
+        console.log(user);
+    },[])
 
   return (
     <Fragment>

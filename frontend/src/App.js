@@ -5,7 +5,7 @@ import './App.css';
 import { useEffect,useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logInRequest, logInSuccess, logInFailed } from './features/usersSlice.js';
+import { logInRequest, logInSuccess, logInFailed, loadUser } from './features/usersSlice.js';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
@@ -41,6 +41,12 @@ import ProductList from './components/Admin/ProductList.js';
 import NewProduct from './components/Admin/NewProduct.js';
 import UpdateProduct from './components/Admin/UpdateProduct.js';
 import OrderList from './components/Admin/OrderList.js';
+import ProcessOrder from './components/Admin/ProcessOrder.js';
+import UsersList from './components/Admin/UsersList.js';
+import UpdateUser from './components/Admin/UpdateUser.js';
+import ProductReviews from './components/Admin/ProductReviews.js';
+import Contact from './components/layout/Contact/Contact.js';
+import About from './components/layout/About/About.js';
 
 
 function App() {
@@ -50,11 +56,15 @@ function App() {
     const [stripeApiKey,setStripeApiKey]=useState('');
 
     async function getStripeApiKey() {
-        const {data}=await axios.get('http://localhost:4000/api/v1/stripeapikey',{
-            withCredentials:true
-        });
-
-        setStripeApiKey(data?.data?.stripeApiKey);
+        try {
+            const {data}=await axios.get('http://localhost:4000/api/v1/stripeapikey',{
+                withCredentials:true
+            });
+    
+            setStripeApiKey(data?.data?.stripeApiKey);
+        } catch (error) {
+            console.log('stripeApiKey error:',error?.message);
+        }
     }
 
     useEffect(() => {
@@ -65,10 +75,10 @@ function App() {
         });
 
         //store user data to the local storage
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-            dispatch(logInSuccess(JSON.parse(storedUser))); // Restore user from localStorage
-        }
+        // const storedUser = localStorage.getItem('user');
+        // if (storedUser) {
+        //     dispatch(logInSuccess(JSON.parse(storedUser))); // Restore user from localStorage
+        // }
         
         //this extra api call is for persisting login data even if we refresh the page
         const fetchUserData = async () => {
@@ -79,9 +89,9 @@ function App() {
                     withCredentials: true, 
                 });
 
-                if (response?.data?.success) {
-                    dispatch(logInSuccess(response?.data?.data));
-                }
+                
+                dispatch(logInSuccess(response?.data?.data));
+
             } catch (error) {
                 dispatch(logInFailed(error?.response?.data?.message || 'Error fetching user data'));
             }
@@ -90,10 +100,12 @@ function App() {
         // Fetch user data only if not authenticated
         if (!isAuthenticated) {
             fetchUserData();
+            // dispatch(loadUser());
         }
         
-        if(isAuthenticated)
-        getStripeApiKey();
+        if(isAuthenticated){
+            getStripeApiKey();
+        }
 
     }, [dispatch, isAuthenticated]);
 
@@ -112,6 +124,8 @@ function App() {
                 <Route path="/password/forgot" element={<ForgotPassword />} />
                 <Route path="/password/reset/:token" element={<ResetPassword />} />
                 <Route path="/cart" element={<Cart />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/about" element={<About />} />
 
                 {/* protected router */}
                 <Route element={<ProtectedRoute/>} >
@@ -131,6 +145,10 @@ function App() {
                     <Route path="/admin/products/new" element={<NewProduct />} />
                     <Route path='/admin/product/:id' element={<UpdateProduct/>} />
                     <Route path='/admin/orders' element={<OrderList/>} />
+                    <Route path='/admin/order/:id' element={<ProcessOrder/>} />
+                    <Route path="/admin/users" element={<UsersList />} />
+                    <Route path="/admin/user/:id" element={<UpdateUser />} />
+                    <Route path="/admin/reviews" element={<ProductReviews />} />
                 </Route>
 
                 <Route 

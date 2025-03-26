@@ -39,6 +39,7 @@ const ProductList = () => {
                     withCredentials:true
                 });
                 dispatch(deleteProductSuccess(data?.data));
+                toast.success('Product deleted successfully!',toastOptions);
                 navigate('/admin/dashboard');
             } catch (error) {
                 toast.error(error?.message,toastOptions);

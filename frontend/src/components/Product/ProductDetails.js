@@ -16,11 +16,13 @@ import {
     productDetailsRequest,
     productDetailsSuccess,
 } from "../../features/productSlice";
+
 import { 
     reviewFailed, 
     reviewRequest, 
     reviewSuccess 
 } from "../../features/reviewSlice";
+
 import {
     Dialog,
     DialogActions,
@@ -57,6 +59,9 @@ const ProductDetails = () => {
             });
             dispatch(productDetailsSuccess(response?.data?.data));
             setStock(response?.data?.data?.Stock);
+
+            // console.log(response?.data?.data);
+
         } catch (error) {
             dispatch(productDetailsFail(error?.response?.data?.message));
         }
@@ -172,6 +177,21 @@ const ProductDetails = () => {
         setOpen(false);
     };
 
+    //for carousel image
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+    const nextImage = () => {
+        setCurrentImageIndex(prev => 
+            prev === product?.images?.length - 1 ? 0 : prev + 1
+        );
+    };
+
+    const prevImage = () => {
+        setCurrentImageIndex(prev => 
+            prev === 0 ? product?.images?.length - 1 : prev - 1
+        );
+    };
+
     return (
         <Fragment>
             <ToastContainer />
@@ -181,16 +201,35 @@ const ProductDetails = () => {
                 <Fragment>
                     <MetaData title={`${product?.name}`} />
                     <div className="ProductDetails">
-                        <div>
-                            <Carousel animation="slide" duration={1000} navButtonsAlwaysInvisible={true}>
-                                {product &&
-                                    product.images.map((item, i) => (
-                                        <img className="CarouselImage" key={i} src={item.url} alt={`${i} Slide`} />
+                        <div className="imageContainer">
+                            {product?.images?.length > 1 && (
+                                <>
+                                    <button className="navArrow left" onClick={prevImage}>&#10094;</button>
+                                    <button className="navArrow right" onClick={nextImage}>&#10095;</button>
+                                </>
+                            )}
+                            
+                            <img 
+                                className="mainImage"
+                                src={product?.images?.[currentImageIndex]?.url} 
+                                alt={`Product view ${currentImageIndex + 1}`}
+                                onError={(e) => e.target.src = '/fallback-image.jpg'}
+                            />
+                            
+                            {product?.images?.length > 1 && (
+                                <div className="imageDots">
+                                    {product.images.map((_, index) => (
+                                        <span 
+                                            key={index}
+                                            className={`dot ${index === currentImageIndex ? "active" : ""}`}
+                                            onClick={() => setCurrentImageIndex(index)}
+                                        ></span>
                                     ))}
-                            </Carousel>
+                                </div>
+                            )}
                         </div>
 
-                        <div>
+                        <div className="productDetailsSection" >
                             <div className="detailsBlock-1">
                                 <h2>{product?.name}</h2>
                                 <p> Product # {product?._id} </p>
@@ -211,7 +250,6 @@ const ProductDetails = () => {
                                         <button onClick={increaseQuantity}>+</button>
                                     </div>
 
-                                    {/* Disable button if stock is 0 */}
                                     <button onClick={addToCartHandler} disabled={stock < 1}>
                                         {stock < 1 ? "Out of Stock" : "Add to Cart"}
                                     </button>
@@ -267,7 +305,8 @@ const ProductDetails = () => {
                         </DialogActions>
                     </Dialog>
 
-                    {product?.reviews && product.reviews[0] ? (
+                    {/* product reviews */}
+                    {product?.reviews && product?.reviews[0] ? (
                         <div className="reviews">
                             {product?.reviews.map((review) => (
                                 <ReviewCard review={review} key={review._id} />

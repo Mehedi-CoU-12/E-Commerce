@@ -227,7 +227,7 @@ const getAllUsers=asyncHandler(async(req,res)=>{
 const getSingleUser=asyncHandler(async(req,res)=>{
     const user=await User.findById(req.params.id);
 
-    console.log(req.user);
+    // console.log(req.user);
 
     if(!user)
         throw new ApiError(400,`User does not exist with id:${req.params.id}`);
@@ -260,6 +260,9 @@ const deleteUser=asyncHandler(async(req,res)=>{
 
     if(!user)
         throw new ApiError(400,`User does not exist with Id:${req.params.id}`)
+
+    //delete user image from cloudinary
+    await cloudinary.uploader.destroy(user.avatar.public_id);
 
     await user.deleteOne();
 

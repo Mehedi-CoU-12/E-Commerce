@@ -12,6 +12,11 @@ import adminProductReducer from './features/adminProductSlice';
 import newProductReducer from './features/newProductSlice';
 import deleteProductReducer from './features/deleteProductSlice';
 import updateProductReducer from './features/updateProductSlice';
+import allOrderReducer from './features/allOrderSlice';
+import deleteOrderReducer from './features/deleteOrderSlice';
+import allUserReducer from './features/allUserSlice';
+import userDetailsReducer from './features/userDetailSlice';
+import allReviewsReducer from './features/allReviewSlice';
 
 const store = configureStore({
     reducer: {
@@ -28,6 +33,11 @@ const store = configureStore({
         newProduct:newProductReducer,
         deleteProduct:deleteProductReducer,
         updateProduct:updateProductReducer,
+        allOrders:allOrderReducer,
+        deleteOrder:deleteOrderReducer,
+        allUsers:allUserReducer,
+        userDetails:userDetailsReducer,
+        allReviews:allReviewsReducer,
     },
 });
 

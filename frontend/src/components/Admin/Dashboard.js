@@ -11,6 +11,8 @@ import "./dashboard.css";
 
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement } from "chart.js";
 import Loader from "../layout/Loader/Loader.js";
+import { allOrderFailed, allOrderRequest, allOrderSuccess } from "../../features/allOrderSlice.js";
+import { allUserFailed, allUserRequest, allUserSuccess } from "../../features/allUserSlice.js";
 ChartJS.register(
   CategoryScale, 
   LinearScale, 
@@ -26,9 +28,9 @@ const Dashboard = () => {
 
   const dispatch = useDispatch();
 
-  const { products,error,loading } = useSelector((state) => state.adminProduct);
-
-//   const { orders } = useSelector((state) => state.allOrders);
+  const { products,loading } = useSelector((state) => state.adminProduct);
+  const { orders } = useSelector((state) => state.allOrders);
+  const {users}=useSelector((state)=>state.allUsers)
 
 //   const { users } = useSelector((state) => state.allUsers);
 
@@ -48,9 +50,39 @@ const Dashboard = () => {
             }
         }
 
-        getAllProduct();
+        const getAllOrders=async()=>{
+            try {
+                dispatch(allOrderRequest());
+                const {data}=await axios.get('http://localhost:4000/api/v1/admin/orders',{
+                    withCredentials:true
+                });
+                // console.log(data.data);
+                dispatch(allOrderSuccess(data?.data));
+            } catch (error) {
+                console.log(error.messsage);
+                dispatch(allOrderFailed(error?.messsage));
+            }
+        }
 
-    },[dispatch,error])
+        const getAllUsers=async()=>{
+            try {
+                dispatch(allUserRequest());
+                const {data}=await axios.get('http://localhost:4000/api/v1/admin/users',{
+                    withCredentials:true
+                });
+                // console.log(data.data);
+                dispatch(allUserSuccess(data?.data));
+            } catch (error) {
+                console.log(error.messsage);
+                dispatch(allUserFailed(error?.messsage));
+            }
+        }
+
+        getAllProduct();
+        getAllOrders();
+        getAllUsers();
+
+    },[dispatch])
 
 
   let outOfStock = 0;
@@ -124,28 +156,26 @@ const Dashboard = () => {
             <Link to="/admin/orders">
               <p>Orders</p>
               <p>
-                {/* {orders && orders.length} */}
-                50
+                {orders?.orders?.length || 0}
               </p>
             </Link>
             <Link to="/admin/users">
               <p>Users</p>
               <p>
-                {/* {users && users.length} */}
-                2
+                {users && users.length}
               </p>
             </Link>
           </div>
         </div>
 
         <div className="lineChart">
-          <Line data={lineState} />
+            <Line data={lineState} />
         </div>
 
         <div className="doughnutChart">
-          <Doughnut data={doughnutState} />
+            <Doughnut data={doughnutState} />
         </div>
-      </div>
+        </div>
     </div>}
     </Fragment>
   );
