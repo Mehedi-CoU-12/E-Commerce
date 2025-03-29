@@ -69,7 +69,7 @@ const UpdatePassword = () => {
                 withCredentials: true, // Allows cookies
             };
 
-            const {data}=await axios.put('http://localhost:4000/api/v1/password/update',myForm,config);
+            const {data}=await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/password/update`,myForm,config);
 
             dispatch(updatePasswordSuccess(data.user));
             toast.success("Password Updated successfully!", stylesForAlert);

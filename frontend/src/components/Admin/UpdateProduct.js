@@ -125,7 +125,7 @@ const UpdateProduct = () => {
         try {
             dispatch(updatePasswordRequest());
 
-            const {data}=await axios.put(`http://localhost:4000/api/v1/admin/product/${productId}`,myForm,config);
+            const {data}=await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/product/${productId}`,myForm,config);
 
             dispatch(updateProductSuccess(data?.data));
 

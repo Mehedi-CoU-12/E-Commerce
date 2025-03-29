@@ -35,27 +35,26 @@ const OrderList = () => {
 
     const { error, orders } = useSelector((state) => state.allOrders);
 
-//   const { error: deleteError, isDeleted } = useSelector((state) => state.order);
-const getAllOrders=async()=>{
-    try {
-        dispatch(allOrderRequest());
-        const {data}=await axios.get('http://localhost:4000/api/v1/admin/orders',{
-            withCredentials:true
-        });
-        // console.log(data.data);
-        dispatch(allOrderSuccess(data?.data));
-    } catch (error) {
-        console.log(error.messsage);
-        dispatch(allOrderFailed(error?.messsage));
+    const getAllOrders=async()=>{
+        try {
+            dispatch(allOrderRequest());
+            const {data}=await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/orders`,{
+                withCredentials:true
+            });
+            // console.log(data.data);
+            dispatch(allOrderSuccess(data?.data));
+        } catch (error) {
+            console.log(error.messsage);
+            dispatch(allOrderFailed(error?.messsage));
+        }
     }
-}
 
-const deleteOrderHandler = (id) => {
+    const deleteOrderHandler = (id) => {
 
         const deleteOrder=async () => {
             try {
                 dispatch(deleteOrderRequest());
-                const {data}=await axios.delete(`http://localhost:4000/api/v1/admin/order/${id}`,{
+                const {data}=await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/order/${id}`,{
                     withCredentials:true
                 })
                 toast.success('Order deleted successfully!',toastOptions);

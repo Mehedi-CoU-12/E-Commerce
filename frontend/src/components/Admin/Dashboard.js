@@ -41,10 +41,10 @@ const Dashboard = () => {
         const getAllOrders=async()=>{
             try {
                 dispatch(allOrderRequest());
-                const {data}=await axios.get('http://localhost:4000/api/v1/admin/orders',{
+                const {data}=await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/orders`,{
                     withCredentials:true
                 });
-                // console.log(data.data);
+                // console.log(data?.data);
                 dispatch(allOrderSuccess(data?.data));
             } catch (error) {
                 console.log(error.messsage);
@@ -55,7 +55,7 @@ const Dashboard = () => {
         const getAllUsers=async()=>{
             try {
                 dispatch(allUserRequest());
-                const {data}=await axios.get('http://localhost:4000/api/v1/admin/users',{
+                const {data}=await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/users`,{
                     withCredentials:true
                 });
                 // console.log(data.data);
@@ -75,24 +75,15 @@ const Dashboard = () => {
   let outOfStock = 0;
 
   products &&
-    products.forEach((item) => {
-      if (item.Stock === 0) {
+    products?.forEach((item) => {
+      if (item?.Stock === 0) {
         outOfStock += 1;
       }
     });
-    
 
-//   useEffect(() => {
-//     dispatch(getAdminProduct());
-//     dispatch(getAllOrders());
-//     dispatch(getAllUsers());
-//   }, [dispatch]);
+    let totalAmount = orders?.
+    totalAmmount || 0;
 
-  let totalAmount = 0;
-//   orders &&
-//     orders.forEach((item) => {
-//       totalAmount += item.totalPrice;
-//     });
 
   const lineState = {
     labels: ["Initial Amount", "Amount Earned"],

@@ -47,6 +47,7 @@ import UpdateUser from './components/Admin/UpdateUser.js';
 import ProductReviews from './components/Admin/ProductReviews.js';
 import Contact from './components/layout/Contact/Contact.js';
 import About from './components/layout/About/About.js';
+import NotFound from './components/layout/Not Found/NotFound.js';
 
 
 function App() {
@@ -57,7 +58,7 @@ function App() {
 
     async function getStripeApiKey() {
         try {
-            const {data}=await axios.get('http://localhost:4000/api/v1/stripeapikey',{
+            const {data}=await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/stripeapikey`,{
                 withCredentials:true
             });
     
@@ -81,6 +82,8 @@ function App() {
         }
 
     }, [dispatch, isAuthenticated]);
+
+    window.addEventListener("contextmenu",(e)=>e.preventDefault());
 
     return (
         <>
@@ -135,6 +138,7 @@ function App() {
                     }
                 />
 
+            <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
         </>

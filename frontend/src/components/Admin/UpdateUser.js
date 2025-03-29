@@ -47,7 +47,7 @@ const UpdateUser = () => {
                 try {
                     dispatch(userDetailRequest());
                     dispatch(resetUserDetails());
-                    const {data}=await axios.get(`http://localhost:4000/api/v1/admin/user/${userId}`,{
+                    const {data}=await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/user/${userId}`,{
                         withCredentials:true
                     })
             

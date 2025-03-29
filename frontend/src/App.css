@@ -11,6 +11,10 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
+body{
+    cursor: url('./images/cursor.png'),auto;
+}
+
 /* For Firefox */
 input[type="number"] {
   -moz-appearance: textfield;

@@ -137,11 +137,6 @@ const ProductDetails = () => {
     
     const reviewSubmitHandler = () => {
 
-        // const myForm = new FormData();
-        // myForm.set("rating", rating);
-        // myForm.set("comment", comment);
-        // myForm.set("productId", id);
-
         const myForm={
             rating,
             comment,
@@ -160,7 +155,7 @@ const ProductDetails = () => {
                     withCredentials:true
                 };
 
-                await axios.put('http://localhost:4000/api/v1/review',myForm,config);
+                await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/review`,myForm,config);
 
                 dispatch(reviewSuccess(myForm));
                 toast.success("Review Submitted", toastOptions);

@@ -93,7 +93,7 @@ const LogInSignUp = () => {
             dispatch(logInRequest());
             const config={Headers:{"Content-Type":"application/json"},withCredentials:true};
 
-            const {data}=await axios.post('http://localhost:4000/api/v1/login',{email:logInEmail,password:logInPassword},config);
+            const {data}=await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/login`,{email:logInEmail,password:logInPassword},config);
             
             // console.log('response',response);
             toast.success("Log-in successful!", stylesForAlert);
@@ -129,7 +129,7 @@ const LogInSignUp = () => {
 
         try {
             const config={Headers:{"Content-Type":"multipart/form-data"},withCredentials:true};
-            const {data}=await axios.post('http://localhost:4000/api/v1/register',myForm,config);
+            const {data}=await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/register`,myForm,config);
             
             // console.log(data);
             dispatch(logInSuccess(data?.user));

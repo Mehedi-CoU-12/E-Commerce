@@ -92,7 +92,8 @@ const forgetPassword=asyncHandler(async(req,res,next)=>{
 
     //creating direct link for forget password
 
-    const resetPasswordUrl=`${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
+    // const resetPasswordUrl=`${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
+    const resetPasswordUrl = `${req.protocol}://${req.get("host")}/password/reset/${resetToken}`;
 
     const message=`Your password reset token is :- \n\n ${resetPasswordUrl}\n\n if you have not requested this email then, please ignore it`;
 
@@ -173,9 +174,6 @@ const updatePassword=asyncHandler(async(req,res,next)=>{
 //update user
 const updateUser=asyncHandler(async(req,res,next)=>{
 
-    console.log('-------req.body-----------,',req.body);
-    console.log('-------req.files-----------,',req.file);
-
     let newUser={};
 
     if(req.body.name){
@@ -202,8 +200,6 @@ const updateUser=asyncHandler(async(req,res,next)=>{
             url: uploadResult.secure_url,
         };
     }
-
-    console.log('newUser---------------',newUser);
 
     const user=await User.findByIdAndUpdate(req.user.id,newUser,{
         new:true,

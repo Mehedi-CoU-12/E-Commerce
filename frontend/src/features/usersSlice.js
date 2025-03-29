@@ -13,7 +13,7 @@ const initialState = {
 export const loadUser = () => async (dispatch) => {
     try {
         dispatch(logInRequest());
-        const { data } = await axios.get('http://localhost:4000/api/v1/me', {
+        const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/me`, {
             withCredentials: true,
         });
         dispatch(logInSuccess(data?.data));

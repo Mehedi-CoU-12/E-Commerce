@@ -10,19 +10,9 @@ import Loader from '../layout/Loader/Loader.js';
 import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
-
-// const product={
-//     name:'MI 11 Lite Ne 5G',
-//     price:27500,
-//     country:'Bangladesh',
-//     images:[{url:'https://i.ibb.co/DRST11n/1.webp'}],
-//     _id:'mehedi_hasan'
-// }
-
 const stylesForAlert={
-    position: "top-right", // Position of the toast
-    autoClose: 3000, // Auto-close after 3 seconds
+    position: "top-right",
+    autoClose: 3000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
@@ -47,7 +37,7 @@ function Home() {
             try {
                 //fatch data from backend
                 dispatch(allProductRequest());
-                const response=await axios.get('http://localhost:4000/api/v1/products');
+                const response=await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/products`);
                 const products=response?.data?.data;
                 
                 //send data to the redux store

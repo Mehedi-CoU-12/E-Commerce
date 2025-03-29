@@ -45,7 +45,7 @@ const ProcessOrder = () => {
     }
 
     try {
-        const {data}=await axios.put(`http://localhost:4000/api/v1/admin/order/${id}`,{status},config);
+        const {data}=await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/order/${id}`,{status},config);
         toast.success('Order status updated successfully!',toastOptions);
         
         setTimeout(() => {
@@ -58,23 +58,10 @@ const ProcessOrder = () => {
   };
 
   useEffect(() => {
-    // if (error) {
-    //   alert.error(error);
-    //   dispatch(clearErrors());
-    // }
-    // if (updateError) {
-    //   alert.error(updateError);
-    //   dispatch(clearErrors());
-    // }
-    // if (isUpdated) {
-    //   alert.success("Order Updated Successfully");
-    //   dispatch({ type: UPDATE_ORDER_RESET });
-    // }
-
     const getIndividualOrderDetails = async () => {
         try {
             dispatch(IndOrderRequest());
-            const { data } = await axios.get(`http://localhost:4000/api/v1/order/${id}`, {
+            const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/order/${id}`, {
                 withCredentials: true,
             });
 

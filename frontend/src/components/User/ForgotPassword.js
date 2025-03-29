@@ -31,25 +31,8 @@ const ForgotPassword = () => {
     const [email,setEmail]=useState("");
 
 
-    // const [user,setUser]=useState({
-    //     name:name,
-    //     email:email
-    // });
-
-    // useEffect(()=>{
-
-    //     if(!isAuthenticated)
-    //         navigate('/login');
-
-    // },[dispatch,isAuthenticated,isUpdated])
-
     const ForgotPasswordSubmit=async(e)=>{
         e.preventDefault();
-
-        // const myForm=new FormData();
-        // myForm.set("password",password);
-        // myForm.set("newPassword",newPassword);
-        // myForm.append("confirmedPassword",confirmedPassword);
 
         const myForm={
             "email":email
@@ -63,7 +46,7 @@ const ForgotPassword = () => {
                 withCredentials: true, // Allows cookies
             };
 
-            const {data}=await axios.post('http://localhost:4000/api/v1/password/forgot',myForm,config);
+            const {data}=await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/password/forgot`,myForm,config);
 
             dispatch(forgotPasswordSuccess(data.user));
             toast.success("Password Forgoted successfully!", stylesForAlert);
