@@ -23,10 +23,36 @@ const stylesForAlert={
 };
 
 const MyOrders = () => {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
+    
+    const { loading, error, order } = useSelector((state) => state.newOrder);
+    const { logInUser } = useSelector((state) => state.user);
 
-  const { loading, error, order } = useSelector((state) => state.newOrder);
-  const { logInUser } = useSelector((state) => state.user);
+    useEffect(() => {
+        if (error) {
+          toast.error(error, stylesForAlert);
+          dispatch(clearErrors());
+        }
+      
+        const fetchOrders = async () => {
+          try {
+            dispatch(createOrderRequest());
+            const { data } = await axios.get("http://localhost:4000/api/v1/order/me", {
+              withCredentials: true,
+            });
+      
+            // console.log("Fetched Orders:", data?.data);  // Debugging Log
+      
+            dispatch(createOrderSuccess(data?.data));
+          } catch (error) {
+            dispatch(createOrderFailed(error?.message));
+            toast.error(error?.message, stylesForAlert);
+          }
+        };
+      
+        fetchOrders();
+        
+      }, [dispatch, error]);
 
 //   console.log(order);
 
@@ -86,30 +112,6 @@ const MyOrders = () => {
       });
     });
 
-    useEffect(() => {
-        if (error) {
-          toast.error(error, stylesForAlert);
-          dispatch(clearErrors());
-        }
-      
-        const fetchOrders = async () => {
-          try {
-            dispatch(createOrderRequest());
-            const { data } = await axios.get("http://localhost:4000/api/v1/order/me", {
-              withCredentials: true,
-            });
-      
-            // console.log("Fetched Orders:", data?.data);  // Debugging Log
-      
-            dispatch(createOrderSuccess(data?.data));
-          } catch (error) {
-            dispatch(createOrderFailed(error?.message));
-            toast.error(error?.message, stylesForAlert);
-          }
-        };
-      
-        fetchOrders();
-      }, [dispatch, error]);
       
   return (
     <Fragment>

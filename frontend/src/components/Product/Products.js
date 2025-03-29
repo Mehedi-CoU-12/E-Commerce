@@ -58,11 +58,13 @@ const Products = () => {
         const fetchAllProducts = async () => {
             try {
                 dispatch(allProductRequest());
+
                 
                 let link = `http://localhost:4000/api/v1/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
-
+                
                 if (category) {
                     link += `&category=${category}`;
+                    setCurrentPage(0);
                 }
 
                 console.log('link: ',link);
@@ -106,7 +108,7 @@ const Products = () => {
                             valueLabelDisplay='auto'
                             aria-labelledby='range-slider'
                             min={0}
-                            max={50000} 
+                            max={500000} 
                         />
 
                         <Typography>Category</Typography>

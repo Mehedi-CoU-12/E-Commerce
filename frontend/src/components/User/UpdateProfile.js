@@ -34,22 +34,18 @@ const UpdateProfile = () => {
     const [avatar,setAvatar]=useState("");
     const [avatarPreview,setAvatarPreview]=useState(logInUser?.avatar?.url ||"/Profile.png");
 
-
-    // const [user,setUser]=useState({
-    //     name:name,
-    //     email:email
-    // });
-
     useEffect(()=>{
 
         if(user){
-            setName(user?.name);
-            setEmail(user?.email);
-            setAvatarPreview(user?.avatar?.url);
+            setName(user?.name || "");
+            setEmail(user?.email|| "");
+            setAvatarPreview(user?.avatar?.url || "/Profile.png");
         }
 
-        if(!isAuthenticated)
+        if(!isAuthenticated){
             navigate('/login');
+            return;
+        }
 
     },[dispatch,isUpdated,isAuthenticated])
 
@@ -60,11 +56,6 @@ const UpdateProfile = () => {
         myForm.set("name",name);
         myForm.set("email",email);
         myForm.append("avatar",avatar);
-
-        // const myForm={   
-        //     name,email
-        // }
-
             
         dispatch(updateUserRequest());
 
@@ -76,8 +67,6 @@ const UpdateProfile = () => {
 
             const {data}=await axios.put('http://localhost:4000/api/v1/me/update',myForm,config);
 
-            console.log('===res===',data);
-
             dispatch(updateUserSuccess(data?.user));
             toast.success("User Updated successfully!", stylesForAlert);
             navigate('/account');
@@ -87,8 +76,6 @@ const UpdateProfile = () => {
             error?.response?.data?.message || "Something went wrong!";
             toast.error(errorMessage, stylesForAlert);
             dispatch(updateUserFailed(errorMessage));
-
-            console.log('=---error=',errorMessage);
         }
     }
 
@@ -141,18 +128,8 @@ const UpdateProfile = () => {
                             />
                         </div>
 
-                        {/* <div id="UpdateProfileImage">
-                            <img src={avatarPreview} alt="Picture"/>
-                            <input 
-                                type="file" 
-                                name='avatar'
-                                accept='image/*'
-                                onChange={UpdateProfileDataChange}
-                            />
-                        </div> */}
-
                         <div id="UpdateProfileImage">
-                            <img src={avatarPreview} alt="Picture"/>
+                            <img src={avatarPreview} alt="profile"/>
                             <input 
                                 type="file" 
                                 name='avatar'
