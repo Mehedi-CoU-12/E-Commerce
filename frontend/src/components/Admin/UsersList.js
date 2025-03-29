@@ -17,7 +17,6 @@ import "./productList.css";
 import axios from "axios";
 import { allUserFailed, allUserRequest, allUserSuccess } from "../../features/allUserSlice";
 
-
 const toastOptions = {
     position: "top-right",
     autoClose: 2000,
@@ -44,7 +43,6 @@ const UsersList = () => {
     
             dispatch(allUserSuccess(data?.data));
             toast.success('all user fatched',toastOptions);
-            // console.log(users);
     
         } catch (error) {
             dispatch(allUserFailed(error.message));
@@ -53,9 +51,7 @@ const UsersList = () => {
     }
 
     const deleteUserHandler = async(id) => {
-    // dispatch(deleteUser(id));
         try {
-
             const {data}=await axios.delete(`http://localhost:4000/api/v1/admin/user/${id}`,{
                 withCredentials:true,
             })

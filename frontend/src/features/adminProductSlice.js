@@ -1,9 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const initialState={
     products:[],
     loading:false,
     error:null,
+}
+
+export const getAllProduct=()=>async(dispatch)=>{
+    try {
+        dispatch(adminProductRequest());
+        const {data}=await axios.get('http://localhost:4000/api/v1/admin/products',{
+            withCredentials:true
+        })
+
+        dispatch(adminProductSuccess(data?.data));
+        
+    } catch (error) {
+        dispatch(adminProductFail(error));
+    }
 }
 
 export const adminProductSlice=createSlice({

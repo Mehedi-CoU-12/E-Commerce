@@ -25,8 +25,8 @@ const LogInSignUp = () => {
     const { isAuthenticated,loading,error }=useSelector((state)=>state.user);
 
     //for login data
-    const [logInEmail, setLogInEmail] = useState();
-    const [logInPassword, setLogInPassword] = useState()
+    const [logInEmail, setLogInEmail] = useState("");
+    const [logInPassword, setLogInPassword] = useState("")
     
     //for sign up data
     const [user,setUser]=useState({
@@ -36,7 +36,7 @@ const LogInSignUp = () => {
     })
     
     const {name,email,password}=user;
-    const [avatar,setAvatar]=useState();
+    const [avatar,setAvatar]=useState(null);
     const [avatarPreview,setAvatarPreview]=useState("/Profile.png");
 
     const switchTabs=(e,tab)=>{
@@ -69,25 +69,9 @@ const LogInSignUp = () => {
     // Extract 'redirect' query parameter safely
     const redirect = new URLSearchParams(location.search).get("redirect") || "/account";
 
-    const fetchUserData = async () => {
-        dispatch(logInRequest());
-        try {
-            const response = await axios.get('http://localhost:4000/api/v1/me', {
-                withCredentials: true, 
-            });
-
-            
-            dispatch(logInSuccess(response?.data?.data));
-
-        } catch (error) {
-            dispatch(logInFailed(error?.response?.data?.message || 'Error fetching user data'));
-        }
-    };
-
-    // useEffect(() => {
-    //     // fetchUserData();
-    //     dispatch(loadUser());
-    // }, [dispatch])
+    useEffect(() => {
+        dispatch(loadUser());
+    }, [dispatch])
     
 
     useEffect(()=>{
@@ -98,16 +82,15 @@ const LogInSignUp = () => {
 
         if(isAuthenticated){
             navigate(`${redirect}`);
-            // navigate('/account');
         }
+        
     },[error,isAuthenticated,redirect])
 
     const logInSubmit=async(e)=>{
         e.preventDefault();
-        dispatch(logInRequest());
-
+        
         try {
-
+            dispatch(logInRequest());
             const config={Headers:{"Content-Type":"application/json"},withCredentials:true};
 
             const {data}=await axios.post('http://localhost:4000/api/v1/login',{email:logInEmail,password:logInPassword},config);

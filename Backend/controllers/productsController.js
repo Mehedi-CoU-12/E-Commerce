@@ -43,6 +43,7 @@ const createProduct = asyncHandler(async(req, res) => {
     
     res.status(201).json(new ApiResponse(201, product, "Product Created Successfully"));
     });
+
 //get all products
 const getAllProducts=asyncHandler(async(req,res)=>{
 

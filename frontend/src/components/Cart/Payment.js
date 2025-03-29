@@ -21,6 +21,7 @@ import CreditCardIcon from "@mui/icons-material/CreditCard";
 import EventIcon from "@mui/icons-material/Event";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import { clearErrors, createOrderFailed, createOrderRequest, createOrderSuccess } from "../../features/newOrderSlice";
+import { resetShippingInfo } from "../../features/shippingSlice";
 
 const Payment = () => {
     
@@ -122,6 +123,7 @@ const Payment = () => {
                 
                         dispatch(createOrderSuccess(data?.data)); // Save order to Redux store
                         toast.success('Payment Successful!',stylesForAlert);
+                        dispatch(resetShippingInfo());
 
                     }catch (error) {
                         dispatch(createOrderFailed(error.response?.data2?.message || "Failed to place order"));
@@ -129,7 +131,7 @@ const Payment = () => {
 
                     setTimeout(() => {
                         navigate("/success");
-                    }, 2000);
+                    }, 1000);
 
                 } else {
                     toast.error("There's some issue while processing payment.",stylesForAlert);

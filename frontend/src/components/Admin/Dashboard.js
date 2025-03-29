@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { Doughnut, Line } from "react-chartjs-2";
 import { useSelector, useDispatch } from "react-redux";
 import MetaData from "../layout/MetaData";
-import { adminProductFail, adminProductRequest, adminProductSuccess } from "../../features/adminProductSlice.js";
+import { adminProductFail, adminProductRequest, adminProductSuccess, getAllProduct } from "../../features/adminProductSlice.js";
 import "./dashboard.css";
 
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement } from "chart.js";
@@ -36,19 +36,7 @@ const Dashboard = () => {
 
     useEffect(()=>{
 
-        const getAllProduct=async()=>{
-            try {
-                dispatch(adminProductRequest());
-                const {data}=await axios.get('http://localhost:4000/api/v1/admin/products',{
-                    withCredentials:true
-                })
-
-                dispatch(adminProductSuccess(data?.data));
-                
-            } catch (error) {
-                dispatch(adminProductFail(error));
-            }
-        }
+        dispatch(getAllProduct());
 
         const getAllOrders=async()=>{
             try {
@@ -77,8 +65,7 @@ const Dashboard = () => {
                 dispatch(allUserFailed(error?.messsage));
             }
         }
-
-        getAllProduct();
+        
         getAllOrders();
         getAllUsers();
 

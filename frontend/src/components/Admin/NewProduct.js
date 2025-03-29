@@ -6,7 +6,7 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import StorageIcon from "@mui/icons-material/Storage";
 import SpellcheckIcon from "@mui/icons-material/Spellcheck";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import { newProductFail, newProductRequest, newProductSuccess } from "../../features/newProductSlice";
+import { newProductFail, newProductRequest, newProductSuccess, resetProduct } from "../../features/newProductSlice";
 import { Button } from "@mui/material";
 import Sidebar from "./Sidebar";
 import MetaData from "../layout/MetaData";
@@ -19,7 +19,7 @@ const NewProduct = () => {
   const dispatch = useDispatch();
   const navigate=useNavigate();
 
-  const { loading, error, success } = useSelector((state) => state.newProduct);
+  const { loading,  success } = useSelector((state) => state.newProduct);
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
@@ -49,14 +49,32 @@ const NewProduct = () => {
         theme: "dark",
     };
 
-    // useEffect(()=>{
-    //     if(success){
-    //         navigate('/admin/dashboard');
-    //     }
-    // },[success,dispatch,navigate])
+    useEffect(() => {
+        if (success) {
+            toast.success("Product Created Successfully!", toastOptions);
+    
+            setName("");
+            setPrice(0);
+            setDescription("");
+            setCategory("");
+            setStock(0);
+            setImages([]);
+            setImagesPreview([]);
+    
+            setTimeout(() => {
+                navigate('/admin/dashboard');
+                dispatch(resetProduct());
+            }, 2000);
+        }
+    }, [success, navigate, dispatch]);
 
     const createProductSubmitHandler = (e) => {
         e.preventDefault();
+
+        if(!category){
+            toast.error("Please select a category!", toastOptions);
+            return;
+        }
 
         const myForm = new FormData();
 
@@ -85,8 +103,6 @@ const NewProduct = () => {
                 const {data}=await axios.post('http://localhost:4000/api/v1/admin/products/new',myForm,config);
 
                 dispatch(newProductSuccess(data?.data));
-                toast.success("Product Created Successfully!",toastOptions);
-                navigate('/admin/dashboard');
 
             } catch (error) {
                 dispatch(newProductFail(error?.message))

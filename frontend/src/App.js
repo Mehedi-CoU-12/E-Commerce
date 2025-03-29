@@ -74,34 +74,7 @@ function App() {
             },
         });
 
-        //store user data to the local storage
-        // const storedUser = localStorage.getItem('user');
-        // if (storedUser) {
-        //     dispatch(logInSuccess(JSON.parse(storedUser))); // Restore user from localStorage
-        // }
-        
-        //this extra api call is for persisting login data even if we refresh the page
-        const fetchUserData = async () => {
-
-            dispatch(logInRequest());
-            try {
-                const response = await axios.get('http://localhost:4000/api/v1/me', {
-                    withCredentials: true, 
-                });
-
-                
-                dispatch(logInSuccess(response?.data?.data));
-
-            } catch (error) {
-                dispatch(logInFailed(error?.response?.data?.message || 'Error fetching user data'));
-            }
-        };
-
-        // Fetch user data only if not authenticated
-        if (!isAuthenticated) {
-            fetchUserData();
-            // dispatch(loadUser());
-        }
+            dispatch(loadUser());
         
         if(isAuthenticated){
             getStripeApiKey();

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom'
 import MetaData from '../layout/MetaData';
@@ -13,12 +13,17 @@ import 'react-toastify/dist/ReactToastify.css';
 import './productList.css';
 import { deleteProductFail, deleteProductRequest, deleteProductSuccess } from '../../features/deleteProductSlice';
 import axios from 'axios';
+import { getAllProduct } from '../../features/adminProductSlice';
 
 const ProductList = () => {
 
     const dispatch=useDispatch();
     const navigate=useNavigate();
     const {products,loading}=useSelector((state)=>state.adminProduct);
+
+    useEffect(()=>{
+        dispatch(getAllProduct());
+    },[dispatch])
 
     const toastOptions = {
         position: "top-right",
@@ -106,7 +111,7 @@ const ProductList = () => {
     const rows = [];
     
     products &&
-    products.forEach((item) => {
+    products?.forEach((item) => {
         rows.push({
             id: item._id,
             stock: item.Stock,

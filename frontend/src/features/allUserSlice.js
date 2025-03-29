@@ -6,6 +6,8 @@ const initialState = {
     error: null,
 };
 
+
+
 export const allUserSlice = createSlice({
     name: 'All User',
     initialState,

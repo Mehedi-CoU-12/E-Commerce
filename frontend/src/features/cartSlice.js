@@ -22,13 +22,13 @@ export const cartSlice = createSlice({
             const existingItem = state.items.find((i) => i.id === item.id);
 
             if (existingItem) {
-                existingItem.quantity++;
+                existingItem.quantity+=Number(item.quantity);
                 existingItem.totalPrice += Number(item.price);
             } else {
-                state.items.push({ ...item, quantity: 1, totalPrice: item.price });
+                state.items.push({ ...item, quantity: item.quantity, totalPrice: item.price });
             }
 
-            state.totalQuantity++;
+            state.totalQuantity+=Number(item.quantity);
             state.totalPrice += Number(item.price);
 
             // Save updated cart to LocalStorage

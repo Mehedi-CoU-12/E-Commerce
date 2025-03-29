@@ -1,30 +1,42 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// const storedUser = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
+const storedUser = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
 
-const initialState = {
-    logInUser:null,
-    // isAuthenticated:storedUser?true: false,
-    isAuthenticated:false,
+const initialState = {  
+    logInUser:storedUser || null,
+    isAuthenticated:storedUser?true: false,
     loading: false,
     error: null,
 };
 
-export const loadUser = createAsyncThunk(
-    'user/loadUser',
-    async (_, { dispatch }) => {
-        try {
-            const { data } = await axios.get('/api/v1/me', { 
-                withCredentials: true 
-            });
-
-            return data?.data;
-        } catch (error) {
-            throw error.response.data.message;
-        }
+export const loadUser = () => async (dispatch) => {
+    try {
+        dispatch(logInRequest());
+        const { data } = await axios.get('http://localhost:4000/api/v1/me', {
+            withCredentials: true,
+        });
+        dispatch(logInSuccess(data?.data));
+        
+    } catch (error) {
+        dispatch(logInFailed(error?.data?.message || "Error loading user data"));
     }
-);
+};
+
+// export const loadUser = createAsyncThunk(
+//     'user/loadUser',
+//     async (_, { rejectWithValue }) => {
+//         try {
+//             const { data } = await axios.get('/api/v1/me', { 
+//                 withCredentials: true 
+//             });
+
+//             return data?.data;
+//         } catch (error) {
+//             return rejectWithValue(error?.data?.message);
+//         }
+//     }
+// );
 
 export const userSlice = createSlice({
     name: 'User',
@@ -41,7 +53,7 @@ export const userSlice = createSlice({
             state.isAuthenticated = true;
             state.loading = false;
             state.error = null; // Reset error in case of success
-            // localStorage.setItem("user", JSON.stringify(action.payload));
+            localStorage.setItem("user", JSON.stringify(action.payload));
         },
         // Triggered when login fails
         logInFailed: (state, action) => {
@@ -60,7 +72,7 @@ export const userSlice = createSlice({
             state.isAuthenticated=false;
             state.loading=false;
             state.error=null;
-            // localStorage.removeItem("user"); 
+            localStorage.removeItem("user"); 
         },
         logOutUserFailed:(state,action)=>{
             state.loading=false;

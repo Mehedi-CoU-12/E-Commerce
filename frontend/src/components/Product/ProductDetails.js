@@ -2,7 +2,6 @@ import { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
-import { addToCart } from "../../features/cartSlice";
 import Carousel from "react-material-ui-carousel";
 import axios from "axios";
 import "./ProductDetails.css";
@@ -11,6 +10,7 @@ import ReviewCard from "./ReviewCard";
 import Loader from "../layout/Loader/Loader";
 import MetaData from "../layout/MetaData";
 
+import { addToCart } from "../../features/cartSlice";
 import {
     productDetailsFail,
     productDetailsRequest,

@@ -6,13 +6,10 @@ import Loader from '../layout/Loader/Loader';
 const ProtectedRoute = ({ isAdmin }) => {
     const { logInUser, isAuthenticated, loading } = useSelector((state) => state.user);
 
-    // console.log('auth:', isAuthenticated);
-    // console.log('admin:', isAdmin);
-    // console.log('user:', logInUser);
-    // console.log('loading:', loading);
-
     //Wait until loading is finished before making a decision
-    if (loading) return <Loader />;
+    if (loading) {
+        return <Loader />;
+    }
 
     if (!isAuthenticated && !loading) return <Navigate to="/login" replace />;
 

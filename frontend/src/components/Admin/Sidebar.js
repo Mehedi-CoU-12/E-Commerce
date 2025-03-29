@@ -28,13 +28,13 @@ const Sidebar = () => {
         </Link>
 
         <SimpleTreeView>
-            <TreeItem itemId="1" id="products" label="Products" itemIcon={<ImportExportIcon />}>
+            <TreeItem itemId="1" id="products" label="Products" icon={<ImportExportIcon />}>
 
                 <TreeItem
                     itemId="2"
                     id="all-products"
                     label="All"
-                    itemIcon={<PostAddIcon />}
+                    icon={<PostAddIcon />}
                     onClick={() => navigate('/admin/products')}
                 />
 
@@ -42,7 +42,7 @@ const Sidebar = () => {
                     itemId="3"
                     id="create-product"
                     label="Create"
-                    itemIcon={<AddIcon />}
+                    icon={<AddIcon />}
                     onClick={() => navigate('/admin/products/new')}
                 />
             </TreeItem>

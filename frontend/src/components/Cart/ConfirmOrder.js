@@ -13,6 +13,8 @@ const ConfirmOrder = () => {
   const { items } = useSelector((state) => state.cart);
   const { logInUser } = useSelector((state) => state.user);
 
+//   console.log(items);
+
   const subtotal = items.reduce(
     (acc, item) => acc + item.quantity * item.price,
     0
@@ -68,8 +70,8 @@ const ConfirmOrder = () => {
             <Typography>Your Cart Items:</Typography>
             <div className="confirmCartItemsContainer">
               {items &&
-                items.map((item) => (
-                  <div key={item.product}>
+                items?.map((item) => (
+                  <div key={item?.id}>
                     <img src={item.image} alt="Product" />
                     <Link to={`/product/${item.product}`}>
                       {item.name}

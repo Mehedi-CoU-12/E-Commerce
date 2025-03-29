@@ -28,7 +28,7 @@ const MyOrders = () => {
   const { loading, error, order } = useSelector((state) => state.newOrder);
   const { logInUser } = useSelector((state) => state.user);
 
-  console.log(order);
+//   console.log(order);
 
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
@@ -79,10 +79,10 @@ const MyOrders = () => {
   order &&
     order?.forEach((item, index) => {
       rows.push({
-        itemsQty: item.orderItems.length,
-        id: item._id,
-        status: item.orderStatus,
-        amount: item.totalPrice,
+        itemsQty: item?.orderItems?.length,
+        id: item?._id,
+        status: item?.orderStatus,
+        amount: item?.totalPrice,
       });
     });
 
@@ -99,7 +99,7 @@ const MyOrders = () => {
               withCredentials: true,
             });
       
-            console.log("Fetched Orders:", data?.data);  // Debugging Log
+            // console.log("Fetched Orders:", data?.data);  // Debugging Log
       
             dispatch(createOrderSuccess(data?.data));
           } catch (error) {

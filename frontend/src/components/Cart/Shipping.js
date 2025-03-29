@@ -50,7 +50,7 @@ const Shipping = () => {
 
         dispatch(setShippingInfo({address,city,state,country,pinCode,phoneNo}));
         navigete('/order/confirm');
-
+        
     // Dispatch action here (if applicable)
     // dispatch(saveShippingInfo({ address, city, state, country, pinCode, phoneNo }));
   };

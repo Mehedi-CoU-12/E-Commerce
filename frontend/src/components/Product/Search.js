@@ -20,7 +20,7 @@ const Search = () => {
   return (
     <div>
         <MetaData title={`Search`}  />
-        <form class="searchBox" onSubmit={searchSubmitHandler} >
+        <form className="searchBox" onSubmit={searchSubmitHandler} >
             <input 
                 type="text" 
                 placeholder="Search a Product..."

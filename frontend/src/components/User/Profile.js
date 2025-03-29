@@ -12,17 +12,14 @@ const Profile = () => {
     const navigate=useNavigate();
     const dispatch=useDispatch();
     
+
     useEffect(() => {
-        
-        if(!isAuthenticated)
-            navigate('/login')
-        
-    }, [isAuthenticated,navigate])
+        if (!isAuthenticated) 
+            navigate('/login');
+
+        dispatch(loadUser()); 
+    }, [isAuthenticated, navigate, dispatch]);
     
-    useEffect(()=>{
-        loadUser();
-        console.log(user);
-    },[])
 
   return (
     <Fragment>

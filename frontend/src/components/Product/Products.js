@@ -42,7 +42,7 @@ const Products = () => {
     const { keyword = "" } = useParams();
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [price, setPrice] = useState([0, 50000]);
+    const [price, setPrice] = useState([0, 500000]);
     const [category, setCategory] = useState("");
     const [ratings, setRatings] = useState(0);
 
@@ -65,16 +65,16 @@ const Products = () => {
                     link += `&category=${category}`;
                 }
 
-                const response = await axios.get(link, { withCredentials: true });
+                console.log('link: ',link);
 
-                if (response?.data?.data) {
-                    dispatch(allProductSuccess(response.data.data));
-                } else {
-                    throw new Error("Invalid API response");
-                }
+                const {data} = await axios.get(link, { withCredentials: true });
+
+                // console.log(data);
+
+                dispatch(allProductSuccess(data?.data));
 
             } catch (error) {
-                const errorMessage = error.response?.data?.message || "Failed to fetch products";
+                const errorMessage = error?.message || "Failed to fetch products";
                 dispatch(allProductFail(errorMessage));
                 toast.error(errorMessage, stylesForAlert);
             }
@@ -91,14 +91,14 @@ const Products = () => {
                 loading?(<Loader/>)
                 :(<Fragment>
                     <MetaData title={`All Products`}  />
-                    <h2 class="productsHeading">Products</h2>
-                    <div class="products">
+                    <h2 className="productsHeading">Products</h2>
+                    <div className="products">
                     {
                         items?.map((item)=><ProductCard key={item._id} product={item} />)
                     }
                     </div>
 
-                    <div class="filterBox">
+                    <div className="filterBox">
                         <Typography>Price</Typography>
                         <Slider
                             value={price}
@@ -110,11 +110,11 @@ const Products = () => {
                         />
 
                         <Typography>Category</Typography>
-                        <ul class="categoryBox">
+                        <ul className="categoryBox">
                             {
                                 categories.map((categoryItem)=>(
                                     <li 
-                                        class="category-link"
+                                        className="category-link"
                                         key={categoryItem}
                                         onClick={()=>setCategory(categoryItem)}
                                     >
@@ -129,9 +129,9 @@ const Products = () => {
                                 component="legend"  
                                 style={{
                                     fontSize:"12px", 
-                                    whiteSpace: "nowrap", // Prevents text wrapping
-                                    overflow: "hidden",   // Hides overflow if text is too long
-                                    textOverflow: "ellipsis", // Adds ellipsis if text is too long
+                                    whiteSpace: "nowrap", 
+                                    overflow: "hidden",   
+                                    textOverflow: "ellipsis",
                                   }}
                             >Ratings Above</Typography>
                             <Slider
@@ -148,23 +148,24 @@ const Products = () => {
                     </div>
 
                     {
-                        currentPage*resultPerPage<productCount && (<div class="paginationBox">
-                            <Pagination
-                                activePage={currentPage}
-                                itemsCountPerPage={resultPerPage}
-                                totalItemsCount={productCount}
-                                onChange={setCurrentPageNo}
-                                nextPageText="Next"
-                                prevPageText="Prev"
-                                firstPageText="First"
-                                lastPageText="Last"
-                                itemClass='page-item'
-                                linkClass='page-link'
-                                activeClass='pageItemActive'
-                                activeLinkClass='pageLinkActive'
-    
-                            />
-                        </div>)
+                        productCount > resultPerPage && items.length === resultPerPage && (
+                            <div className="paginationBox">
+                                <Pagination
+                                    activePage={currentPage}
+                                    itemsCountPerPage={resultPerPage}
+                                    totalItemsCount={productCount}
+                                    onChange={setCurrentPageNo}
+                                    nextPageText="Next"
+                                    prevPageText="Prev"
+                                    firstPageText="First"
+                                    lastPageText="Last"
+                                    itemClass='page-item'
+                                    linkClass='page-link'
+                                    activeClass='pageItemActive'
+                                    activeLinkClass='pageLinkActive'
+                                />
+                            </div>
+                        )
                     }
                 </Fragment>)
             }
