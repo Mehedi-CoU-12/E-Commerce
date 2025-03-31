@@ -1,6 +1,6 @@
 import React from "react";
 import "./sidebar.css";
-import logo from "../../images/logo.png";
+import logo from "../../images/shoptodayBlack.png";
 import { Link, useNavigate } from "react-router-dom";
 import {  TreeItem, SimpleTreeView } from '@mui/x-tree-view';
 import PostAddIcon from "@mui/icons-material/PostAdd";

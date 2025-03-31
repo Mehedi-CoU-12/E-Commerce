@@ -65,7 +65,7 @@ function Home() {
                 <MetaData title="ECOMMERCE" />
         
                 <div className="banner">
-                    <p>Welcome to Ecommerce</p>
+                    <p>Welcome to Shop Today!</p>
                      <h1>FIND AMAZING PRODUCT BELOW</h1> 
         
                     <a href="#container">

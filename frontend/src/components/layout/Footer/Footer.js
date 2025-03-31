@@ -15,7 +15,7 @@ function Footer() {
         </div>
 
         <div className="midFooter" >
-            <h1>ECOMMERCE.</h1>
+            <h1>SHOP TODAY!.</h1>
             <p>High Quality is Our First Priority</p>
             <p>Copyrights 2024 &copy; MeMehedi</p>
         </div>
