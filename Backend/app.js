@@ -18,6 +18,7 @@ const app=express();
 
 //config
 // dotenv.config({path:'backend/config/config.env'});
+dotenv.config();
 
 //middlewere
 app.use(express.json());

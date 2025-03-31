@@ -3,6 +3,7 @@ import fs from 'fs';
 
 import dotenv from 'dotenv';
 // dotenv.config({path:'backend/config/config.env'});
+dotenv.config();
 
 cloudinary.config({ 
     cloud_name:process.env.CLOUDINARY_CLOUD_NAME, 
@@ -23,7 +24,9 @@ const uploadOnCloudinary=async(localFilePath)=>{
     
         //file uploaded successfully
         // console.log('file uploaded successfully',response.url);
-        fs.unlinkSync(localFilePath);
+        if (localFilePath) 
+            fs.unlinkSync(localFilePath);
+        // fs.unlinkSync(localFilePath);
     
         return response;
 
