@@ -3,7 +3,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 
 import dotenv from 'dotenv';
-dotenv.config({path:'backend/config/config.env'});
+// dotenv.config({path:'backend/config/config.env'});
 
 const stripe=new Stripe(process.env.STRIPE_SECRET_KEY);
 
