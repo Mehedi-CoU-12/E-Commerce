@@ -11,8 +11,8 @@ process.on('uncaughtException',(error)=>{
 })
 
 //config
-dotenv.config({path:'backend/config/config.env'});
-// dotenv.config();
+// dotenv.config({path:'backend/config/config.env'});
+dotenv.config();
 
 //connecting to database
 connectMongoDB();
