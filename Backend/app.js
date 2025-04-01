@@ -10,12 +10,12 @@ import { userRouter } from './Routes/usersRoutes.js';
 import { orderRouter } from './Routes/orderRouter.js';
 import { paymentRouter } from './Routes/paymentRouter.js';
 
-dotenv.config();
+// dotenv.config();
+//config
+dotenv.config({path:'backend/config/config.env'});
 
 const app=express();
 
-//config
-// dotenv.config({path:'backend/config/config.env'});
 
 //middlewere
 app.use(express.json());
