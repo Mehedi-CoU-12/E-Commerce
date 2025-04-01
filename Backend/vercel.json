@@ -8,8 +8,15 @@
     ],
     "routes": [
       {
-        "src": "/api/(.*)",
+        "src": "/api/.*",
         "dest": "app.js"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "app.js",
+        "headers": {
+          "Access-Control-Allow-Origin": "*"
+        }
       }
     ]
   }
