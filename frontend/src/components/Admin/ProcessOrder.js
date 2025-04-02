@@ -45,7 +45,7 @@ const ProcessOrder = () => {
     }
 
     try {
-        const {data}=await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/order/${id}`,{status},config);
+        await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/order/${id}`,{status},config);
         toast.success('Order status updated successfully!',toastOptions);
         
         setTimeout(() => {

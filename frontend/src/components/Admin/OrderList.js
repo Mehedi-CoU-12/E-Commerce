@@ -30,10 +30,8 @@ theme: "dark",
 
 const OrderList = () => {
     const dispatch = useDispatch();
-    const navigate=useNavigate();
-    const params=useParams();
 
-    const { error, orders } = useSelector((state) => state.allOrders);
+    const { orders } = useSelector((state) => state.allOrders);
 
     const getAllOrders=async()=>{
         try {
