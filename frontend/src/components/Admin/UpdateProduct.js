@@ -33,7 +33,7 @@ const UpdateProduct = () => {
     const navigate=useNavigate();
     const params=useParams();
 
-    const { isUpdated,loading } = useSelector((state) => state.updateProduct);
+    const { loading } = useSelector((state) => state.updateProduct);
 
     const [name, setName] = useState("");
     const [price, setPrice] = useState(0);

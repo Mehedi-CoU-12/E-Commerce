@@ -82,7 +82,7 @@ const ProductReviews = () => {
     if (productId.length === 24) {
         getAllReviews();
     }
-  }, [dispatch, productId,getAllReviews]);
+  }, [dispatch, productId]);
 
   const columns = [
     { field: "id", headerName: "Review ID", minWidth: 200, flex: 0.5 },
