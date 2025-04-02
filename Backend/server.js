@@ -1,4 +1,5 @@
 import app from './app.js';
+// import 'gopd/auto';
 import dotenv from 'dotenv';
 import {connectMongoDB} from './config/database.js';
 
