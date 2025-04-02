@@ -3,15 +3,16 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import apiRouter from './api.js';
+import path from 'path';
 
-import { productRouter } from './Routes/productsRoutes.js';
+import { fileURLToPath } from 'url';
 import { errorHandler } from './middleware/errorHandler.js';
-import { userRouter } from './Routes/usersRoutes.js';
-import { orderRouter } from './Routes/orderRouter.js';
-import { paymentRouter } from './Routes/paymentRouter.js';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 //config
+dotenv.config();
 // dotenv.config({path:'backend/config/config.env'});
 
 const app=express();
@@ -28,15 +29,14 @@ app.use(cookieParser());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-
-//Router 
-// app.use('/api/v1',productRouter);
-// app.use('/api/v1',userRouter);
-// app.use('/api/v1',orderRouter);
-// app.use('/api/v1',paymentRouter);
-
 //make the all the router one endpoint
 app.use('/api/v1',apiRouter);
+
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
+});
 
 //this should be last middlewere
 app.use(errorHandler);

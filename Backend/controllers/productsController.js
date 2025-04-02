@@ -243,8 +243,8 @@ const deleteProductReview = asyncHandler(async (req, res) => {
         avgRatings = totalRatings / numberOfReviews;
     }
 
-    console.log("Avg Ratings:", avgRatings);
-    console.log("Number of Reviews:", numberOfReviews);
+    // console.log("Avg Ratings:", avgRatings);
+    // console.log("Number of Reviews:", numberOfReviews);
 
     // Update the product details in the database
     await Product.findByIdAndUpdate(

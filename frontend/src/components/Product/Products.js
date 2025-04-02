@@ -67,7 +67,7 @@ const Products = () => {
                     setCurrentPage(0);
                 }
 
-                console.log('link: ',link);
+                // console.log('link: ',link);
 
                 const {data} = await axios.get(link, { withCredentials: true });
 

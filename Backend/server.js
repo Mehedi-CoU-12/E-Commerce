@@ -1,6 +1,6 @@
-import app from './app.js'
-import dotenv from 'dotenv'
-import {connectMongoDB} from './config/database.js'
+import app from './app.js';
+import dotenv from 'dotenv';
+import {connectMongoDB} from './config/database.js';
 
 //config
 // dotenv.config({path:'backend/config/config.env'});
@@ -23,11 +23,6 @@ const port=process.env.PORT || 4000;
 const server= app.listen(port,()=>{
     console.log(`SERVER IS WORKING ON http://localhost:${port}`);
 })
-
-// app.listen(port, () => { // Use the port variable
-//     console.log(`SERVER WORKING ON PORT ${port}`);
-//   })
-
 
 //unhandled promise rejection
 process.on("unhandledRejection",(error)=>{
