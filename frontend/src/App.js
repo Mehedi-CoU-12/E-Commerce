@@ -83,7 +83,8 @@ function App() {
 
     }, [dispatch, isAuthenticated]);
 
-    window.addEventListener("contextmenu",(e)=>e.preventDefault());
+    // if prevent use to inspact the website
+    // window.addEventListener("contextmenu",(e)=>e.preventDefault());
 
     return (
         <>

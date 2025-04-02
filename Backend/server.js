@@ -2,6 +2,10 @@ import app from './app.js'
 import dotenv from 'dotenv'
 import {connectMongoDB} from './config/database.js'
 
+//config
+// dotenv.config({path:'backend/config/config.env'});
+dotenv.config();
+
 //handling uncaught exception
 
 process.on('uncaughtException',(error)=>{
@@ -10,22 +14,19 @@ process.on('uncaughtException',(error)=>{
     process.exit(1);
 })
 
-//config
-// dotenv.config({path:'backend/config/config.env'});
-dotenv.config();
 
 //connecting to database
 connectMongoDB();
 
 const port=process.env.PORT || 4000;
 
-// const server= app.listen(process.env.PORT,()=>{
-//     console.log(`SERVER IS WORKING ON http://localhost:${port}`);
-// })
+const server= app.listen(port,()=>{
+    console.log(`SERVER IS WORKING ON http://localhost:${port}`);
+})
 
-app.listen(port, () => { // Use the port variable
-    console.log(`SERVER WORKING ON PORT ${port}`);
-  })
+// app.listen(port, () => { // Use the port variable
+//     console.log(`SERVER WORKING ON PORT ${port}`);
+//   })
 
 
 //unhandled promise rejection

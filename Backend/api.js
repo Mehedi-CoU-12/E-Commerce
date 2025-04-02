@@ -9,9 +9,9 @@ import { paymentRouter } from './Routes/paymentRouter.js';
 const router = express.Router();
 
 // Mount all routes under /api/v1
-router.use('/products', productRouter);
-router.use('/users', userRouter);
-router.use('/orders', orderRouter);
-router.use('/payment', paymentRouter);
+router.use('/', productRouter);
+router.use('/', userRouter);
+router.use('/', orderRouter);
+router.use('/', paymentRouter);
 
 export default router;

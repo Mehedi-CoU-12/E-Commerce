@@ -38,13 +38,6 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 //make the all the router one endpoint
 app.use('/api/v1',apiRouter);
 
-// app.use(express.static(path.join(__dirname, "../frontend/build")));
-
-// app.get("*", (req, res) => {
-//     res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
-// });
-
-
 //this should be last middlewere
 app.use(errorHandler);
 
