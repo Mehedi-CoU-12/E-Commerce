@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { DataGrid } from "@mui/x-data-grid";
 import { Button } from "@mui/material";
@@ -29,9 +29,8 @@ const toastOptions = {
 
 const UsersList = () => {
     const dispatch = useDispatch();
-    const params=useParams();
 
-    const { error, users } = useSelector((state) => state.allUsers);
+    const { users } = useSelector((state) => state.allUsers);
   
     //get all user;
     const getAllUsers=async()=>{

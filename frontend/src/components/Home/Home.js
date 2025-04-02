@@ -27,7 +27,6 @@ function Home() {
     //import data from redux store
     const allProducts=useSelector((state)=>state.products.items) || [];
     const loading=useSelector((state)=>state.products.loading);
-    const error=useSelector((state)=>state.products.error) ||  "Failed to fetch products";
 
     // console.log(allProducts,loading,error);
 

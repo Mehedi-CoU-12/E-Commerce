@@ -32,7 +32,7 @@ const UpdateUser = () => {
     const params=useParams();
     const navigate=useNavigate();
 
-    const { loading, error, user } = useSelector((state) => state.userDetails);
+    const { loading, user } = useSelector((state) => state.userDetails);
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');

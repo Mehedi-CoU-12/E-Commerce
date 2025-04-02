@@ -27,7 +27,7 @@ const ResetPassword = () => {
     const dispatch=useDispatch();
     const params=useParams();
     const navigate=useNavigate();
-    const {loading,isUpdated,error}=useSelector((state)=>state.forgotPassword);
+    const {loading,isUpdated}=useSelector((state)=>state.forgotPassword);
     
     const [newPassword,setNewPassword]=useState("");
     const [confirmedPassword,setConfirmedPassword]=useState("");

@@ -26,11 +26,15 @@ const ForgotPassword = () => {
     const dispatch=useDispatch();
     const navigate=useNavigate();
     const {isAuthenticated}=useSelector((state)=>state.user);
-    const {loading,isUpdated,error}=useSelector((state)=>state.forgotPassword);
+    const {loading}=useSelector((state)=>state.forgotPassword);
     
     const [email,setEmail]=useState("");
 
-
+    useEffect(()=>{
+        if(!isAuthenticated)
+            navigate('/login');
+    },[])
+    
     const ForgotPasswordSubmit=async(e)=>{
         e.preventDefault();
 

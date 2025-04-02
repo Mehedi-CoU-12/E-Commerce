@@ -28,7 +28,7 @@ const UpdatePassword = () => {
     const dispatch=useDispatch();
     const navigate=useNavigate();
     const {isAuthenticated}=useSelector((state)=>state.user);
-    const {loading,isUpdated,error}=useSelector((state)=>state.profile);
+    const {loading,isUpdated}=useSelector((state)=>state.profile);
     
     const [password,setPassword]=useState("");
     const [newPassword,setNewPassword]=useState("");
@@ -49,11 +49,6 @@ const UpdatePassword = () => {
 
     const UpdatePasswordSubmit=async(e)=>{
         e.preventDefault();
-
-        // const myForm=new FormData();
-        // myForm.set("password",password);
-        // myForm.set("newPassword",newPassword);
-        // myForm.append("confirmedPassword",confirmedPassword);
 
         const myForm={
             "oldPassword":password,
