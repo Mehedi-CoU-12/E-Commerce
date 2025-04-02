@@ -8,8 +8,8 @@
     },
     "scripts": {
       "start": "node app.js",
-      "dev": "nodemon Backend/server.js",
-      "vercel-build": "npm install",
+      "dev": "nodemon server.js",
+      "vercel-build": "npm install && npm run build",
       "build": "echo 'Building...'"
     },
     "dependencies": {
