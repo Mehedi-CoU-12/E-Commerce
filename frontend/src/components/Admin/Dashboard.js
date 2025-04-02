@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { Doughnut, Line } from "react-chartjs-2";
 import { useSelector, useDispatch } from "react-redux";
 import MetaData from "../layout/MetaData";
-import { adminProductFail, adminProductRequest, adminProductSuccess, getAllProduct } from "../../features/adminProductSlice.js";
+import {  getAllProduct } from "../../features/adminProductSlice.js";
 import "./dashboard.css";
 
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement } from "chart.js";

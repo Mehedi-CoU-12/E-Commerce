@@ -1,7 +1,7 @@
 import React from 'react'
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 import Typography from '@mui/material/Typography';
-import { useDispatch,useSelector } from 'react-redux';
+import {useSelector } from 'react-redux';
 import CartItemCard from './CartItemCard';
 import './Cart.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 const Cart = () => {
 
     const navigate=useNavigate();
-    const {items,totalQuantity,totalPrice}=useSelector((state)=>state.cart);
+    const {items,totalPrice}=useSelector((state)=>state.cart);
 
     // console.log(items);
 

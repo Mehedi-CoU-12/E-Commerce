@@ -5,7 +5,7 @@ import './App.css';
 import { useEffect,useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logInRequest, logInSuccess, logInFailed, loadUser } from './features/usersSlice.js';
+import { loadUser } from './features/usersSlice.js';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 

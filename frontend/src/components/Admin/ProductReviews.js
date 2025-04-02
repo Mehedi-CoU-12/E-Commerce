@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import "./productReviews.css";
 
 
@@ -30,11 +29,8 @@ const toastOptions = {
 const ProductReviews = () => {
 
     const dispatch = useDispatch();
-    const navigate=useNavigate();
 
-    const { error, reviews, loading } = useSelector(
-        (state) => state.allReviews
-    );
+    const { error, reviews, loading } = useSelector((state) => state.allReviews);
 
     const [productId, setProductId] = useState("");
 
@@ -57,7 +53,7 @@ const ProductReviews = () => {
     const deleteReviewHandler = async(reviewId) => {
         // dispatch(deleteReviews(reviewId, productId));
         try {
-            const {data}=await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/v1/reviews?id=${reviewId}&productId=${productId}`,{withCredentials:true})
+            await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/v1/reviews?id=${reviewId}&productId=${productId}`,{withCredentials:true})
             toast.success('review deleted!',toastOptions);
             getAllReviews();
         } catch (error) {
@@ -86,7 +82,7 @@ const ProductReviews = () => {
     if (productId.length === 24) {
         getAllReviews();
     }
-  }, [dispatch, productId]);
+  }, [dispatch, productId,getAllReviews]);
 
   const columns = [
     { field: "id", headerName: "Review ID", minWidth: 200, flex: 0.5 },
