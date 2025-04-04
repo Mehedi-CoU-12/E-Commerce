@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node Backend/server.js",
     "dev": "nodemon Backend/server.js",
-    "build": "npm install --legacy-peer-deps && cd frontend && npm install && npm run build",
+    "build": "npm install --legacy-peer-deps && rm -rf node_modules && npm install --production",
     "render-build": "npm install --legacy-peer-deps"
   },
   "dependencies": {
