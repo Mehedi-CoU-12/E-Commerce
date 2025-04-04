@@ -96,7 +96,7 @@ const LogInSignUp = () => {
                 withCredentials: true
               };
 
-            const {data}=await axios.post(`/api/v1/login`,{email:logInEmail,password:logInPassword},config);
+            const {data}=await axios.post(`https://shop-today.onrender.com/api/v1/login`,{email:logInEmail,password:logInPassword},config);
             
             toast.success("Log-in successful!", stylesForAlert);
             dispatch(logInSuccess(data?.data))

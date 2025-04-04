@@ -2,7 +2,6 @@ import { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
-import Carousel from "react-material-ui-carousel";
 import axios from "axios";
 import "./ProductDetails.css";
 
@@ -49,6 +48,7 @@ const ProductDetails = () => {
     const product = useSelector((state) => state.products.productDetails);
     const loading = useSelector((state) => state.products.loading);
     const cartItems = useSelector((state) => state.cart.items);
+    const {isAuthenticated}=useSelector((state) => state.user);
 
     // Load product details
     const fetchProductInfo = async () => {
@@ -59,8 +59,6 @@ const ProductDetails = () => {
             });
             dispatch(productDetailsSuccess(response?.data?.data));
             setStock(response?.data?.data?.Stock);
-
-            // console.log(response?.data?.data);
 
         } catch (error) {
             dispatch(productDetailsFail(error?.response?.data?.message));
@@ -112,6 +110,11 @@ const ProductDetails = () => {
 
     const addToCartHandler = () => {
 
+        if(!isAuthenticated){
+            toast.error("Please Login",toastOptions);
+            return;
+        }
+
         if (stock > 0) {
             const cartProduct = {
                 id: product?._id,
@@ -137,13 +140,17 @@ const ProductDetails = () => {
     
     const reviewSubmitHandler = () => {
 
+        if(!isAuthenticated){
+            toast.error("Please Login",toastOptions);
+            return;
+        }
+
         const myForm={
             rating,
             comment,
             productId:id,
         };
 
-        console.log(myForm);
 
         const sendReview=async()=>{
             try {
