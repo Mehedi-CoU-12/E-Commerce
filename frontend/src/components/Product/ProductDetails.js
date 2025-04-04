@@ -54,7 +54,7 @@ const ProductDetails = () => {
     const fetchProductInfo = async () => {
         try {
             dispatch(productDetailsRequest());
-            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/${id}`,{
+            const response = await axios.get(`/api/v1/product/${id}`,{
                 withCredentials:true
             });
             dispatch(productDetailsSuccess(response?.data?.data));
@@ -155,7 +155,7 @@ const ProductDetails = () => {
                     withCredentials:true
                 };
 
-                await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/review`,myForm,config);
+                await axios.put(`/api/v1/review`,myForm,config);
 
                 dispatch(reviewSuccess(myForm));
                 toast.success("Review Submitted", toastOptions);

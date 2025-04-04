@@ -41,7 +41,7 @@ const Dashboard = () => {
         const getAllOrders=async()=>{
             try {
                 dispatch(allOrderRequest());
-                const {data}=await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/orders`,{
+                const {data}=await axios.get(`/api/v1/admin/orders`,{
                     withCredentials:true
                 });
                 // console.log(data?.data);
@@ -55,7 +55,7 @@ const Dashboard = () => {
         const getAllUsers=async()=>{
             try {
                 dispatch(allUserRequest());
-                const {data}=await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/users`,{
+                const {data}=await axios.get(`/api/v1/admin/users`,{
                     withCredentials:true
                 });
                 // console.log(data.data);

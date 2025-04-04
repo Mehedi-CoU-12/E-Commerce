@@ -37,7 +37,7 @@ const MyOrders = () => {
         const fetchOrders = async () => {
           try {
             dispatch(createOrderRequest());
-            const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/order/me`, {
+            const { data } = await axios.get(`/api/v1/order/me`, {
               withCredentials: true,
             });
       

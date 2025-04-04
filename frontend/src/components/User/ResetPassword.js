@@ -60,7 +60,7 @@ const ResetPassword = () => {
             const token=params.token;
             // console.log('token-------->>>>>',token);
 
-            const {data}=await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/password/reset/${token}`,myForm,config);
+            const {data}=await axios.put(`/api/v1/password/reset/${token}`,myForm,config);
 
             dispatch(resetPasswordSuccess(data.user));
             toast.success("Password Updated successfully!", stylesForAlert);

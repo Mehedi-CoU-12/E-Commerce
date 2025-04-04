@@ -100,7 +100,7 @@ const NewProduct = () => {
                     withCredentials: true
                 };
 
-                const {data}=await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/products/new`,myForm,config);
+                const {data}=await axios.post(`/api/v1/admin/products/new`,myForm,config);
 
                 dispatch(newProductSuccess(data?.data));
 

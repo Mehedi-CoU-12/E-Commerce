@@ -36,7 +36,7 @@ const OrderList = () => {
     const getAllOrders=async()=>{
         try {
             dispatch(allOrderRequest());
-            const {data}=await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/orders`,{
+            const {data}=await axios.get(`/api/v1/admin/orders`,{
                 withCredentials:true
             });
             // console.log(data.data);
@@ -52,7 +52,7 @@ const OrderList = () => {
         const deleteOrder=async () => {
             try {
                 dispatch(deleteOrderRequest());
-                const {data}=await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/order/${id}`,{
+                const {data}=await axios.delete(`/api/v1/admin/order/${id}`,{
                     withCredentials:true
                 })
                 toast.success('Order deleted successfully!',toastOptions);

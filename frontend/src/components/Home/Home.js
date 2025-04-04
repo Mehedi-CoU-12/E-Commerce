@@ -36,7 +36,7 @@ function Home() {
             try {
                 //fatch data from backend
                 dispatch(allProductRequest());
-                const response=await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/products`);
+                const response=await axios.get(`/api/v1/products`);
                 const products=response?.data?.data;
                 
                 //send data to the redux store

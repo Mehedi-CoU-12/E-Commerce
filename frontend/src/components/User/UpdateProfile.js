@@ -65,7 +65,7 @@ const UpdateProfile = () => {
                 withCredentials: true,
             };
 
-            const {data}=await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/me/update`,myForm,config);
+            const {data}=await axios.put(`/api/v1/me/update`,myForm,config);
 
             dispatch(updateUserSuccess(data?.user));
             toast.success("User Updated successfully!", stylesForAlert);

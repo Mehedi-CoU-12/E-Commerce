@@ -52,16 +52,14 @@ const UserOption = ({user}) => {
 
         try {
             dispatch(logOutRequest());
-            const response=await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/logout`,{
+            await axios.get(`/api/v1/logout`,{
                 withCredentials: true,
               });
 
-            // console.log(response?.data?.message);
             dispatch(logOutUserSuccess());
 
         } catch (error) {
-            // console.log(error?.response?.data?.message)
-            dispatch(logOutUserFailed(error?.response?.data?.message));
+            dispatch(logOutUserFailed(error?.message));
         }
     }
     

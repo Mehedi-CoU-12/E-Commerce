@@ -12,16 +12,15 @@ const initialState = {
 
 export const loadUser = () => async (dispatch) => {
     try {
-        dispatch(logInRequest());
-        const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/me`, {
-            withCredentials: true,
-        });
-        dispatch(logInSuccess(data?.data));
-        
+      dispatch(logInRequest());
+      const { data } = await axios.get('/api/v1/me');
+      dispatch(logInSuccess(data?.data));
     } catch (error) {
-        dispatch(logInFailed(error?.data?.message || "Error loading user data"));
+      dispatch(logInFailed(error.response?.data?.message || "Authentication failed"));
+      // Clear invalid user data
+      localStorage.removeItem("user");
     }
-};
+  };
 
 // export const loadUser = createAsyncThunk(
 //     'user/loadUser',

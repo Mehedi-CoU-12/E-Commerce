@@ -96,7 +96,7 @@ const LogInSignUp = () => {
                 withCredentials: true
               };
 
-            const {data}=await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/login`,{email:logInEmail,password:logInPassword},config);
+            const {data}=await axios.post(`/api/v1/login`,{email:logInEmail,password:logInPassword},config);
             
             toast.success("Log-in successful!", stylesForAlert);
             dispatch(logInSuccess(data?.data))
@@ -131,7 +131,7 @@ const LogInSignUp = () => {
 
         try {
             const config={Headers:{"Content-Type":"multipart/form-data"},withCredentials:true};
-            const {data}=await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/register`,myForm,config);
+            const {data}=await axios.post(`/api/v1/register`,myForm,config);
             
             // console.log(data);
             dispatch(logInSuccess(data?.user));

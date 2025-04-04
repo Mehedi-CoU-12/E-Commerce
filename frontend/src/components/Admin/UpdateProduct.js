@@ -61,7 +61,7 @@ const UpdateProduct = () => {
             const fetchProductInfo = async () => {
                 try {
                     dispatch(productDetailsRequest());
-                    const {data} = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/${productId}`,{
+                    const {data} = await axios.get(`/api/v1/product/${productId}`,{
                         withCredentials:true
                     });
 
@@ -125,7 +125,7 @@ const UpdateProduct = () => {
         try {
             dispatch(updatePasswordRequest());
 
-            const {data}=await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/product/${productId}`,myForm,config);
+            const {data}=await axios.put(`/api/v1/admin/product/${productId}`,myForm,config);
 
             dispatch(updateProductSuccess(data?.data));
 

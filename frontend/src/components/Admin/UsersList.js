@@ -36,7 +36,7 @@ const UsersList = () => {
     const getAllUsers=async()=>{
         try {
             dispatch(allUserRequest());
-            const {data}=await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/users`,{
+            const {data}=await axios.get(`/api/v1/admin/users`,{
                 withCredentials:true
             });
     
@@ -51,7 +51,7 @@ const UsersList = () => {
 
     const deleteUserHandler = async(id) => {
         try {
-            const {data}=await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/user/${id}`,{
+            const {data}=await axios.delete(`/api/v1/admin/user/${id}`,{
                 withCredentials:true,
             })
             toast.success('user deleted!',toastOptions);

@@ -40,7 +40,7 @@ const ProductList = () => {
         const deleteProduct=async()=>{
             try {
                 dispatch(deleteProductRequest());
-                const {data}=await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/product/${id}`,{
+                const {data}=await axios.delete(`/api/v1/admin/product/${id}`,{
                     withCredentials:true
                 });
                 dispatch(deleteProductSuccess(data?.data));

@@ -45,7 +45,7 @@ const ProcessOrder = () => {
     }
 
     try {
-        await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/order/${id}`,{status},config);
+        await axios.put(`/api/v1/admin/order/${id}`,{status},config);
         toast.success('Order status updated successfully!',toastOptions);
         
         setTimeout(() => {
@@ -61,7 +61,7 @@ const ProcessOrder = () => {
     const getIndividualOrderDetails = async () => {
         try {
             dispatch(IndOrderRequest());
-            const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/order/${id}`, {
+            const { data } = await axios.get(`/api/v1/order/${id}`, {
                 withCredentials: true,
             });
 

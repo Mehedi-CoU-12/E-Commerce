@@ -74,7 +74,7 @@ const Payment = () => {
                 withCredentials:true
             };
             dispatch(createOrderRequest());
-            const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/process/payment`, paymentData, config);
+            const { data } = await axios.post(`/api/v1/process/payment`, paymentData, config);
 
             const client_secret = data?.data?.client_secret;
 
@@ -119,7 +119,7 @@ const Payment = () => {
                             withCredentials: true,
                         };
                     
-                        const {data} = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/order/new`, order, config);
+                        const {data} = await axios.post(`/api/v1/order/new`, order, config);
                 
                         dispatch(createOrderSuccess(data?.data)); // Save order to Redux store
                         toast.success('Payment Successful!',stylesForAlert);

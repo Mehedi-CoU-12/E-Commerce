@@ -50,7 +50,7 @@ const ForgotPassword = () => {
                 withCredentials: true, // Allows cookies
             };
 
-            const {data}=await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/password/forgot`,myForm,config);
+            const {data}=await axios.post(`/api/v1/password/forgot`,myForm,config);
 
             dispatch(forgotPasswordSuccess(data.user));
             toast.success("Password Forgoted successfully!", stylesForAlert);

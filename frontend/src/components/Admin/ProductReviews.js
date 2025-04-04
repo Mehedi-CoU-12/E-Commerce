@@ -39,7 +39,7 @@ const ProductReviews = () => {
         try {
             dispatch(allReviewRequest());
             const { data } = await axios.get(
-                `${process.env.REACT_APP_BACKEND_URL}/api/v1/reviews?id=${productId}`,
+                `/api/v1/reviews?id=${productId}`,
                 { withCredentials: true }
             );
             dispatch(allReviewSuccess(data?.data));
@@ -53,7 +53,7 @@ const ProductReviews = () => {
     const deleteReviewHandler = async(reviewId) => {
         // dispatch(deleteReviews(reviewId, productId));
         try {
-            await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/v1/reviews?id=${reviewId}&productId=${productId}`,{withCredentials:true})
+            await axios.delete(`/api/v1/reviews?id=${reviewId}&productId=${productId}`,{withCredentials:true})
             toast.success('review deleted!',toastOptions);
             getAllReviews();
         } catch (error) {
