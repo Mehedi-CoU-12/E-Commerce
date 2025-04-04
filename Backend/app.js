@@ -22,7 +22,8 @@ const app=express();
 app.use(express.json());
 app.use(cors({
     origin: [
-      process.env.FRONTEND_URL
+        'https://shop-today.onrender.com',
+        process.env.FRONTEND_URL
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
