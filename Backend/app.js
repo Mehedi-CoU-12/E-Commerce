@@ -21,9 +21,14 @@ const app=express();
 //middlewere
 app.use(express.json());
 app.use(cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true
-}));
+    origin: [
+      'https://shop-today.onrender.com',
+      process.env.FRONTEND_URL
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+  }));
 
 app.use(cookieParser());
 app.use(express.json({ limit: '50mb' }));

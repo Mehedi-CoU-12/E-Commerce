@@ -91,11 +91,13 @@ const LogInSignUp = () => {
         
         try {
             dispatch(logInRequest());
-            const config={Headers:{"Content-Type":"application/json"},withCredentials:true};
+            const config = {
+                headers: {"Content-Type": "application/json"},
+                withCredentials: true
+              };
 
             const {data}=await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/login`,{email:logInEmail,password:logInPassword},config);
             
-            // console.log('response',response);
             toast.success("Log-in successful!", stylesForAlert);
             dispatch(logInSuccess(data?.data))
             dispatch(loadUser());
