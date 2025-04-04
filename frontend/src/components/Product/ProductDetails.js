@@ -54,7 +54,7 @@ const ProductDetails = () => {
     const fetchProductInfo = async () => {
         try {
             dispatch(productDetailsRequest());
-            const response = await axios.get(`http://localhost:4000/api/v1/product/${id}`,{
+            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/${id}`,{
                 withCredentials:true
             });
             dispatch(productDetailsSuccess(response?.data?.data));

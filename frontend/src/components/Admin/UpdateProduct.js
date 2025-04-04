@@ -61,7 +61,7 @@ const UpdateProduct = () => {
             const fetchProductInfo = async () => {
                 try {
                     dispatch(productDetailsRequest());
-                    const {data} = await axios.get(`http://localhost:4000/api/v1/product/${productId}`,{
+                    const {data} = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/${productId}`,{
                         withCredentials:true
                     });
 

@@ -86,7 +86,7 @@ const UpdateUser = () => {
         //update the user;
         try {
             dispatch(userDetailRequest());
-            const {data}=await axios.put(`http://localhost:4000/api/v1/admin/user/${userId}`,myForm,config);
+            const {data}=await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/user/${userId}`,myForm,config);
             dispatch(userDetailSuccess(data?.data?.user));
 
             toast.success('user updated!',toastOptions);

@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.5b2b396e.css",
-    "main.js": "/static/js/main.88fe4479.js",
+    "main.js": "/static/js/main.c18eef64.js",
     "static/media/shoptodayBlack.png": "/static/media/shoptodayBlack.7cb87f78050a4e3614a8.png",
     "static/media/cover.jfif": "/static/media/cover.e2edeab17643ab2951c0.jfif",
     "static/media/Profile.png": "/static/media/Profile.697fdcd21f6d157b9073.png",
@@ -9,10 +9,10 @@
     "static/media/Appstore.png": "/static/media/Appstore.d0c5839937e3c36285f6.png",
     "index.html": "/index.html",
     "main.5b2b396e.css.map": "/static/css/main.5b2b396e.css.map",
-    "main.88fe4479.js.map": "/static/js/main.88fe4479.js.map"
+    "main.c18eef64.js.map": "/static/js/main.c18eef64.js.map"
   },
   "entrypoints": [
     "static/css/main.5b2b396e.css",
-    "static/js/main.88fe4479.js"
+    "static/js/main.c18eef64.js"
   ]
 }
