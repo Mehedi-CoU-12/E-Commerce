@@ -58,7 +58,7 @@ function App() {
 
     async function getStripeApiKey() {
         try {
-            const {data}=await axios.get(`/api/v1/stripeapikey`,{
+            const {data}=await axios.get(`https://shop-today.onrender.com/api/v1/stripeapikey`,{
                 withCredentials:true
             });
     

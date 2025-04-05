@@ -58,7 +58,9 @@ export const userSlice = createSlice({
         logInFailed: (state, action) => {
             state.loading = false;
             state.isAuthenticated = false;
-            state.error = action.payload; // Set the error
+            state.error = action.payload;
+
+            localStorage.removeItem("user"); 
         },
 
         //log-out 
@@ -71,6 +73,7 @@ export const userSlice = createSlice({
             state.isAuthenticated=false;
             state.loading=false;
             state.error=null;
+            
             localStorage.removeItem("user"); 
         },
         logOutUserFailed:(state,action)=>{
