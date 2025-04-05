@@ -91,6 +91,7 @@ const LogInSignUp = () => {
         
         try {
             dispatch(logInRequest());
+            
             const config = {
                 headers: {"Content-Type": "application/json"},
                 withCredentials: true
