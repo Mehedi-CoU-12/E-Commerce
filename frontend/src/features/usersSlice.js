@@ -13,7 +13,7 @@ const initialState = {
 export const loadUser = () => async (dispatch) => {
     try {
       dispatch(logInRequest());
-      const { data } = await axios.get('https://shop-today.onrender.com/api/v1/me');
+      const { data } = await axios.get('https://shop-today.onrender.com/api/v1/me',{withCredentials:true});
       dispatch(logInSuccess(data?.data));
     } catch (error) {
       dispatch(logInFailed(error.response?.data?.message || "Authentication failed"));
