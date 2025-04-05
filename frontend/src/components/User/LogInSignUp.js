@@ -74,17 +74,17 @@ const LogInSignUp = () => {
     }, [dispatch])
     
 
-    // useEffect(()=>{
-    //     if(error){
-    //         // console.log('error',error)
-    //         toast.error(error?.response?.data?.message,stylesForAlert);
-    //     }
+    useEffect(()=>{
+        if(error){
+            // console.log('error',error)
+            toast.error(error?.response?.data?.message,stylesForAlert);
+        }
 
-    //     if(isAuthenticated){
-    //         navigate(`${redirect}`);
-    //     }
+        if(isAuthenticated){
+            navigate(`${redirect}`);
+        }
         
-    // },[error,isAuthenticated,redirect])
+    },[error,isAuthenticated,redirect])
 
     const logInSubmit=async(e)=>{
         e.preventDefault();
