@@ -74,9 +74,6 @@ cd frontend
 npm start
 ```
 
-## 📸 Screenshots
-_(Add screenshots of your project UI here)_
-
 ## 📜 API Endpoints
 - `POST /api/v1/auth/register` - Register a new user
 - `POST /api/v1/auth/login` - Login user
@@ -85,9 +82,6 @@ _(Add screenshots of your project UI here)_
 - `GET /api/v1/products` - Get all products
 - `POST /api/v1/orders` - Create a new order
 _(More API endpoints documented in the code)_
-
-## 🌎 Deployment
-_(Add deployment details if hosted on Vercel, Heroku, Render, etc.)_
 
 ## 🤝 Contributing
 Feel free to fork this repository and contribute by submitting a pull request!
