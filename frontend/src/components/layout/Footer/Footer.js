@@ -8,7 +8,7 @@ function Footer() {
     <footer id="footer" >
     
         <div className="leftFooter" >
-            <h4>Download Our App</h4>
+            <h4>Download Our App(Comming Soon)</h4>
             <p>Download Our App For Android and IOS Mobile Phone</p>
             <img src={playStore} alt='playStore' />
             <img src={appStore} alt='appStore' />
@@ -22,9 +22,9 @@ function Footer() {
 
         <div className="rightFooter" >
             <h4>Follow Us</h4>
-            <a href='http://facebook.com/mehedi' >Facebook</a>
-            <a href='http://instagram.com/mehedi' >Instagram</a>
-            <a href='http://youtube.com/mehedi' >YouTube</a>
+            <a href='http://facebook.com/mehedi.hasan.007.cou' >Facebook</a>
+            <a href='http://instagram.com/mehedi.hasan.007.cou' >Instagram</a>
+            <a href='http://youtube.com/@MDMehediHasan-kp2lz' >YouTube</a>
         </div>
         
     </footer>
