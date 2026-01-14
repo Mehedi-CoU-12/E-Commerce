@@ -22,9 +22,9 @@ function Footer() {
 
         <div className="rightFooter" >
             <h4>Follow Us</h4>
-            <a href='http://facebook.com/mehedi.hasan.007.cou' >Facebook</a>
-            <a href='http://instagram.com/mehedi.hasan.007.cou' >Instagram</a>
-            <a href='http://youtube.com/@MDMehediHasan-kp2lz' >YouTube</a>
+            <a href='http://facebook.com/mehedi.hasan.007.cou' target="_blank" >Facebook</a>
+            <a href='http://instagram.com/mehedi.hasan.007.cou' target="_blank" >Instagram</a>
+            <a href='http://youtube.com/@MDMehediHasan-kp2lz' target="_blank">YouTube</a>
         </div>
         
     </footer>
